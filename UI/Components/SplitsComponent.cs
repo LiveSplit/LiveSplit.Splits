@@ -1,0 +1,339 @@
+﻿using LiveSplit.Model;
+using LiveSplit.Model.Comparisons;
+using LiveSplit.Options;
+using LiveSplit.UI.Components;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace LiveSplit.UI.Components
+{
+    public class SplitsComponent : IComponent
+    {
+        public ComponentRendererComponent InternalComponent { get; protected set; }
+
+        public float PaddingTop { get { return InternalComponent.PaddingTop; } }
+        public float PaddingLeft { get { return InternalComponent.PaddingLeft; } }
+        public float PaddingBottom { get { return InternalComponent.PaddingBottom; } }
+        public float PaddingRight { get { return InternalComponent.PaddingRight; } }
+
+        protected IList<IComponent> Components { get; set; }
+        protected IList<SplitComponent> SplitComponents { get; set; }
+
+        protected SplitsSettings Settings { get; set; }
+
+        private Dictionary<Image, Image> ShadowImages { get; set; }
+
+        private int visualSplitCount;
+        private int settingsSplitCount;
+
+        protected int ScrollOffset { get; set; }
+        protected int LastSplitSeparatorIndex { get; set; }
+
+        protected LiveSplitState OldState { get; set; }
+
+        protected Color OldShadowsColor { get; set; }
+
+        public string ComponentName
+        {
+            get { return "Splits" + (Settings.Comparison == "Current Comparison" ? "" : " (" + CompositeComparisons.GetShortComparisonName(Settings.Comparison) + ")"); }
+        }
+
+        public float VerticalHeight
+        {
+            get { return InternalComponent.VerticalHeight; }
+        }
+
+        public float MinimumWidth
+        {
+            get { return InternalComponent.MinimumWidth; }
+        }
+
+        public float HorizontalWidth
+        {
+            get { return InternalComponent.HorizontalWidth; }
+        }
+
+        public float MinimumHeight
+        {
+            get { return InternalComponent.MinimumHeight; }
+        }
+
+        public IDictionary<string, Action> ContextMenuControls
+        {
+            get { return null; }
+        }
+
+        public SplitsComponent(LiveSplitState state)
+        {
+            Settings = new SplitsSettings()
+            {
+                CurrentState = state
+            };
+            InternalComponent = new ComponentRendererComponent();
+            ShadowImages = new Dictionary<Image, Image>();
+            visualSplitCount = Settings.VisualSplitCount;
+            settingsSplitCount = Settings.VisualSplitCount;
+            Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
+            ScrollOffset = 0;
+            RebuildVisualSplits();
+        }
+
+        void Settings_SplitLayoutChanged(object sender, EventArgs e)
+        {
+            RebuildVisualSplits();
+        }
+
+        private void RebuildVisualSplits()
+        {
+            Components = new List<IComponent>();
+            SplitComponents = new List<SplitComponent>();
+            InternalComponent.VisibleComponents = Components;
+
+            var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
+
+            for (var i = 0; i < totalSplits; ++i)
+            {
+                if ((i == totalSplits - 1 && totalSplits > 1 && Settings.LockLastSplit && i > 0)
+                    || (i == visualSplitCount - 1 && totalSplits > 1 && !Settings.LockLastSplit && i > 0))
+                {
+                    LastSplitSeparatorIndex = Components.Count;
+                    if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit)
+                        Components.Add(new SeparatorComponent());
+                    else if (Settings.ShowThinSeparators)
+                        Components.Add(new ThinSeparatorComponent());
+                }
+
+                var splitComponent = new SplitComponent(Settings);
+                Components.Add(splitComponent);
+                if (i < visualSplitCount - 1 + (Settings.LockLastSplit ? 0 : 1) || i == totalSplits - 1 + (Settings.LockLastSplit ? 0 : 1))
+                    SplitComponents.Add(splitComponent);                   
+
+                if (Settings.ShowThinSeparators && ((i < totalSplits - 2 && Settings.LockLastSplit) || (!Settings.LockLastSplit && i != visualSplitCount-2 && i < totalSplits-1)))
+                    Components.Add(new ThinSeparatorComponent());
+            }
+        }
+
+        private void Prepare(LiveSplitState state)
+        {
+            if (state != OldState)
+            {
+                state.OnScrollDown += state_OnScrollDown;
+                state.OnScrollUp += state_OnScrollUp;
+                state.OnStart += state_OnStart;
+                state.OnReset += state_OnReset;
+                state.OnSplit += state_OnSplit;
+                state.OnSkipSplit += state_OnSkipSplit;
+                state.OnUndoSplit += state_OnUndoSplit;
+                OldState = state;
+            }
+
+            var previousSplitCount = visualSplitCount;
+            visualSplitCount = Math.Min(state.Run.Count, Settings.VisualSplitCount);
+            if (previousSplitCount != visualSplitCount 
+                || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount))
+            {
+                RebuildVisualSplits();
+            }
+            settingsSplitCount = Settings.VisualSplitCount;
+
+            var skipCount = Math.Min(
+                Math.Max(
+                    0,
+                    state.CurrentSplitIndex - (visualSplitCount - 2 - Settings.SplitPreviewCount + (Settings.AlwaysShowLastSplit ? 0 : 1))),
+                state.Run.Count - visualSplitCount);
+            ScrollOffset = Math.Min(Math.Max(ScrollOffset, -skipCount), state.Run.Count - skipCount - visualSplitCount);
+            skipCount += ScrollOffset;
+
+            if (OldShadowsColor != state.LayoutSettings.ShadowsColor)
+                ShadowImages.Clear();
+
+            foreach (var split in state.Run)
+            {
+                if (split.Icon != null && (!ShadowImages.ContainsKey(split.Icon) || OldShadowsColor != state.LayoutSettings.ShadowsColor))
+                {
+                    ShadowImages.Add(split.Icon, IconShadow.Generate(split.Icon, state.LayoutSettings.ShadowsColor));
+                }
+            }
+            foreach (var split in SplitComponents)
+            {
+                split.DisplayIcon = Settings.DisplayIcons;
+
+                if (split.Split != null && split.Split.Icon != null)
+                    split.ShadowImage = ShadowImages[split.Split.Icon];
+                else
+                    split.ShadowImage = null;
+            }
+            OldShadowsColor = state.LayoutSettings.ShadowsColor;
+
+            foreach (var component in Components)
+            {
+                if (component is SeparatorComponent)
+                {
+                    var separator = (SeparatorComponent)component;
+                    var index = Components.IndexOf(separator);
+                    if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
+                    {
+                        if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
+                            separator.LockToBottom = true;
+                        else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                            separator.LockToBottom = false;
+                    }
+                    if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit && index == LastSplitSeparatorIndex)
+                    {
+                        if (skipCount >= state.Run.Count - visualSplitCount)
+                        {
+                            if (Settings.ShowThinSeparators)
+                                separator.DisplayedSize = 1f;
+                            else
+                                separator.DisplayedSize = 0f;
+
+                            separator.UseSeparatorColor = false;
+                        }
+                        else
+                        {
+                            separator.DisplayedSize = 2f;
+                            separator.UseSeparatorColor = true;
+                        }
+                    }
+                }
+                else if (component is ThinSeparatorComponent)
+                {
+                    var separator = (ThinSeparatorComponent)component;
+                    var index = Components.IndexOf(separator);
+                    if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
+                    {
+                        if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
+                            separator.LockToBottom = true;
+                        else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                            separator.LockToBottom = false;
+                    }
+                }
+            }
+        }
+
+        void state_OnUndoSplit(object sender, EventArgs e)
+        {
+            ScrollOffset = 0;
+        }
+
+        void state_OnSkipSplit(object sender, EventArgs e)
+        {
+            ScrollOffset = 0;
+        }
+
+        void state_OnSplit(object sender, EventArgs e)
+        {
+            ScrollOffset = 0;
+        }
+
+        void state_OnReset(object sender, EventArgs e)
+        {
+            ScrollOffset = 0;
+        }
+
+        void state_OnStart(object sender, EventArgs e)
+        {
+            ScrollOffset = 0;
+        }
+
+        void state_OnScrollUp(object sender, EventArgs e)
+        {
+            ScrollOffset--;
+        }
+
+        void state_OnScrollDown(object sender, EventArgs e)
+        {
+            ScrollOffset++;
+        }
+
+        void DrawBackground(Graphics g, float width, float height)
+        {
+            if (Settings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()
+                || Settings.BackgroundGradient != GradientType.Plain
+                && Settings.BackgroundColor2.ToArgb() != Color.Transparent.ToArgb())
+            {
+                var gradientBrush = new LinearGradientBrush(
+                            new PointF(0, 0),
+                            Settings.BackgroundGradient == GradientType.Horizontal
+                            ? new PointF(width, 0)
+                            : new PointF(0, height),
+                            Settings.BackgroundColor,
+                            Settings.BackgroundGradient == GradientType.Plain
+                            ? Settings.BackgroundColor
+                            : Settings.BackgroundColor2);
+                g.FillRectangle(gradientBrush, 0, 0, width, height);
+            }
+        }
+
+        public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
+        {
+            Prepare(state);
+            DrawBackground(g, width, VerticalHeight);
+            InternalComponent.DrawVertical(g, state, width, clipRegion);
+        }
+
+        public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region clipRegion)
+        {
+            Prepare(state);
+            DrawBackground(g, HorizontalWidth, height);
+            InternalComponent.DrawHorizontal(g, state, height, clipRegion);
+        }
+
+        public Control GetSettingsControl(LayoutMode mode)
+        {
+            Settings.Mode = mode;
+            return Settings;
+        }
+
+        public void SetSettings(System.Xml.XmlNode settings)
+        {
+            Settings.SetSettings(settings);
+            RebuildVisualSplits();
+        }
+
+
+        public System.Xml.XmlNode GetSettings(System.Xml.XmlDocument document)
+        {
+            return Settings.GetSettings(document);
+        }
+
+
+        public void RenameComparison(string oldName, string newName)
+        {
+            if (Settings.Comparison == oldName)
+                Settings.Comparison = newName;
+        }
+
+
+        public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
+        {
+            var skipCount = Math.Min(
+                Math.Max(
+                    0,
+                    state.CurrentSplitIndex - (visualSplitCount - 2 - Settings.SplitPreviewCount + (Settings.AlwaysShowLastSplit ? 0 : 1))),
+                state.Run.Count - visualSplitCount);
+            ScrollOffset = Math.Min(Math.Max(ScrollOffset, -skipCount), state.Run.Count - skipCount - visualSplitCount);
+            skipCount += ScrollOffset;
+
+            var i = 0;
+            if (SplitComponents.Count >= visualSplitCount)
+            {
+                foreach (var split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
+                {
+                    SplitComponents[i++].Split = split;
+                }
+                if (Settings.AlwaysShowLastSplit)
+                    SplitComponents[i].Split = state.Run.Last();
+            }
+
+            if (invalidator != null)
+                InternalComponent.Update(invalidator, state, width, height, mode);
+        }
+    }
+}
