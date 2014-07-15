@@ -15,6 +15,16 @@ namespace LiveSplit.UI.Components
             get { return "Splits"; }
         }
 
+        public string Description
+        {
+            get { return "Displays a list of split times and deltas in relation to a comparison."; }
+        }
+
+        public ComponentCategory Category
+        {
+            get { return ComponentCategory.List; }
+        }
+
         public IComponent Create(LiveSplitState state)
         {
             return new SplitsComponent(state);
