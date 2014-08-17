@@ -77,6 +77,7 @@
     <Compile Include="UI\Components\SplitsSettings.Designer.cs">
       <DependentUpon>SplitsSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ExtendedGradientType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LiveSplit.Core\LiveSplit.Core.csproj">

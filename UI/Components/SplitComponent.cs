@@ -115,6 +115,13 @@ namespace LiveSplit.UI.Components
             if (NeedUpdateAll)
                 UpdateAll(state);
 
+            if (Settings.BackgroundGradient == ExtendedGradientType.Alternating)
+                g.FillRectangle(new SolidBrush(
+                    state.Run.IndexOf(Split) % 2 == 1 
+                    ? Settings.BackgroundColor2 
+                    : Settings.BackgroundColor
+                    ), 0, 0, width, height);
+
             MeasureTimeLabel.Text = TimeFormatter.Format(new TimeSpan(24, 0, 0));
             MeasureDeltaLabel.Text = DeltaTimeFormatter.Format(new TimeSpan(0, 24, 0, 0));
 
@@ -450,6 +457,10 @@ namespace LiveSplit.UI.Components
                     invalidator.Invalidate(0, 0, width, height);
                 }
             }
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -44,11 +44,11 @@ namespace LiveSplit.UI.Components
         public Color BackgroundColor { get; set; }
         public Color BackgroundColor2 { get; set; }
 
-        public GradientType BackgroundGradient { get; set; }
+        public ExtendedGradientType BackgroundGradient { get; set; }
         public String GradientString
         {
             get { return BackgroundGradient.ToString(); }
-            set { BackgroundGradient = (GradientType)Enum.Parse(typeof(GradientType), value); }
+            set { BackgroundGradient = (ExtendedGradientType)Enum.Parse(typeof(ExtendedGradientType), value); }
         }
 
         public String Comparison { get; set; }
@@ -116,10 +116,10 @@ namespace LiveSplit.UI.Components
             AfterTimesColor = Color.FromArgb(255, 255, 255);
             OverrideTimesColor = false;
             CurrentSplitGradient = GradientType.Vertical;
-            cmbSplitGradient.SelectedIndexChanged += cmbGradientType_SelectedIndexChanged;
+            cmbSplitGradient.SelectedIndexChanged += cmbSplitGradient_SelectedIndexChanged;
             BackgroundColor = Color.Transparent;
             BackgroundColor2 = Color.Transparent;
-            BackgroundGradient = GradientType.Plain;
+            BackgroundGradient = ExtendedGradientType.Plain;
             DropDecimals = true;
             DeltasAccuracy = TimeAccuracy.Tenths;
             OverrideDeltasColor = false;
@@ -329,7 +329,7 @@ namespace LiveSplit.UI.Components
             {
                 trkSize.DataBindings.Clear();
                 trkSize.Minimum = 0;
-                trkSize.Maximum = 200;
+                trkSize.Maximum = 250;
                 ScaledSplitHeight = Math.Min(Math.Max(trkSize.Minimum, ScaledSplitHeight), trkSize.Maximum);
                 trkSize.DataBindings.Add("Value", this, "ScaledSplitHeight", false, DataSourceUpdateMode.OnPropertyChanged);
                 lblSplitSize.Text = "Split Height:";
@@ -354,7 +354,7 @@ namespace LiveSplit.UI.Components
             DisplayIcons = Boolean.Parse(element["DisplayIcons"].InnerText);
             ShowThinSeparators = Boolean.Parse(element["ShowThinSeparators"].InnerText);
             AlwaysShowLastSplit = Boolean.Parse(element["AlwaysShowLastSplit"].InnerText);
-            SplitWidth = Single.Parse(element["SplitWidth"].InnerText);
+            SplitWidth = Single.Parse(element["SplitWidth"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
             
             if (version >= new Version(1, 3))
             {
@@ -365,7 +365,7 @@ namespace LiveSplit.UI.Components
                 BeforeNamesColor = ParseColor(element["BeforeNamesColor"]);
                 CurrentNamesColor = ParseColor(element["CurrentNamesColor"]);
                 AfterNamesColor = ParseColor(element["AfterNamesColor"]);
-                SplitHeight = Single.Parse(element["SplitHeight"].InnerText);
+                SplitHeight = Single.Parse(element["SplitHeight"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
                 SplitGradientString = element["CurrentSplitGradient"].InnerText;
                 BackgroundColor = ParseColor(element["BackgroundColor"]);
                 BackgroundColor2 = ParseColor(element["BackgroundColor2"]);
@@ -396,7 +396,7 @@ namespace LiveSplit.UI.Components
                 CurrentSplitGradient = GradientType.Vertical;
                 BackgroundColor = Color.Transparent;
                 BackgroundColor2 = Color.Transparent;
-                BackgroundGradient = GradientType.Plain;
+                BackgroundGradient = ExtendedGradientType.Plain;
                 SeparatorLastSplit = true;
                 DropDecimals = true;
                 DeltasAccuracy = TimeAccuracy.Tenths;
@@ -415,7 +415,7 @@ namespace LiveSplit.UI.Components
                     OverrideTextColor = !Boolean.Parse(element["UseTextColor"].InnerText);
                 ShowBlankSplits = Boolean.Parse(element["ShowBlankSplits"].InnerText);
                 LockLastSplit = Boolean.Parse(element["LockLastSplit"].InnerText);
-                IconSize = Single.Parse(element["IconSize"].InnerText);
+                IconSize = Single.Parse(element["IconSize"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
                 IconShadows = Boolean.Parse(element["IconShadows"].InnerText);
             }
             else
@@ -434,7 +434,7 @@ namespace LiveSplit.UI.Components
         public XmlNode GetSettings(XmlDocument document)
         {
             var parent = document.CreateElement("Settings");
-            parent.AppendChild(ToElement(document, "Version", "1.3"));
+            parent.AppendChild(ToElement(document, "Version", "1.4"));
             parent.AppendChild(ToElement(document, CurrentSplitTopColor, "CurrentSplitTopColor"));
             parent.AppendChild(ToElement(document, CurrentSplitBottomColor, "CurrentSplitBottomColor"));
             parent.AppendChild(ToElement(document, "VisualSplitCount", VisualSplitCount));
@@ -503,6 +503,13 @@ namespace LiveSplit.UI.Components
         {
             var element = document.CreateElement(name);
             element.InnerText = value.ToString();
+            return element;
+        }
+
+        private XmlElement ToElement(XmlDocument document, String name, float value)
+        {
+            var element = document.CreateElement(name);
+            element.InnerText = value.ToString(CultureInfo.InvariantCulture);
             return element;
         }
 
