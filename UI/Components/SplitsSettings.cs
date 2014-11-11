@@ -118,8 +118,8 @@ namespace LiveSplit.UI.Components
             CurrentSplitGradient = GradientType.Vertical;
             cmbSplitGradient.SelectedIndexChanged += cmbSplitGradient_SelectedIndexChanged;
             BackgroundColor = Color.Transparent;
-            BackgroundColor2 = Color.Transparent;
-            BackgroundGradient = ExtendedGradientType.Plain;
+            BackgroundColor2 = Color.FromArgb(1, 255, 255, 255);
+            BackgroundGradient = ExtendedGradientType.Alternating;
             DropDecimals = true;
             DeltasAccuracy = TimeAccuracy.Tenths;
             OverrideDeltasColor = false;
