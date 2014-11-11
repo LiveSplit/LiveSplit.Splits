@@ -53,6 +53,7 @@ namespace LiveSplit.UI.Components
 
         public String Comparison { get; set; }
         public LiveSplitState CurrentState { get; set; }
+        public String TimingMethod { get; set; }
 
         public bool DisplayIcons { get; set; }
         public bool IconShadows { get; set; }
@@ -125,6 +126,7 @@ namespace LiveSplit.UI.Components
             OverrideDeltasColor = false;
             DeltasColor = Color.FromArgb(255, 255, 255);
             Comparison = "Current Comparison";
+            TimingMethod = "Current Timing Method";
             Display2Rows = false;
 
             dmnTotalSegments.DataBindings.Add("Value", this, "VisualSplitCount", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -161,6 +163,8 @@ namespace LiveSplit.UI.Components
             cmbSplitGradient.SelectedIndexChanged += cmbSplitGradient_SelectedIndexChanged;
             cmbComparison.SelectedIndexChanged += cmbComparison_SelectedIndexChanged;
             cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbTimingMethod.SelectedIndexChanged += cmbTimingMethod_SelectedIndexChanged;
 
             cmbGradientType.SelectedIndexChanged += cmbGradientType_SelectedIndexChanged;
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -203,6 +207,10 @@ namespace LiveSplit.UI.Components
         void cmbComparison_SelectedIndexChanged(object sender, EventArgs e)
         {
             Comparison = cmbComparison.SelectedItem.ToString();
+        }
+        void cmbTimingMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TimingMethod = cmbTimingMethod.SelectedItem.ToString();
         }
 
         void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
@@ -356,6 +364,14 @@ namespace LiveSplit.UI.Components
             AlwaysShowLastSplit = Boolean.Parse(element["AlwaysShowLastSplit"].InnerText);
             SplitWidth = Single.Parse(element["SplitWidth"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
             
+            if (version >= new Version(1, 5))
+            {
+                TimingMethod = element["TimingMethod"].InnerText;
+            }
+            else
+            {
+                TimingMethod = "Current Timing Method";
+            }
             if (version >= new Version(1, 3))
             {
                 OverrideTimesColor = Boolean.Parse(element["OverrideTimesColor"].InnerText);
@@ -434,7 +450,7 @@ namespace LiveSplit.UI.Components
         public XmlNode GetSettings(XmlDocument document)
         {
             var parent = document.CreateElement("Settings");
-            parent.AppendChild(ToElement(document, "Version", "1.4"));
+            parent.AppendChild(ToElement(document, "Version", "1.5"));
             parent.AppendChild(ToElement(document, CurrentSplitTopColor, "CurrentSplitTopColor"));
             parent.AppendChild(ToElement(document, CurrentSplitBottomColor, "CurrentSplitBottomColor"));
             parent.AppendChild(ToElement(document, "VisualSplitCount", VisualSplitCount));
@@ -468,6 +484,7 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "OverrideDeltasColor", OverrideDeltasColor));
             parent.AppendChild(ToElement(document, DeltasColor, "DeltasColor"));
             parent.AppendChild(ToElement(document, "Comparison", Comparison));
+            parent.AppendChild(ToElement(document, "TimingMethod", TimingMethod));
             parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
             return parent;
         }
@@ -511,6 +528,16 @@ namespace LiveSplit.UI.Components
             var element = document.CreateElement(name);
             element.InnerText = value.ToString(CultureInfo.InvariantCulture);
             return element;
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void cmbComparison_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
         }
 
     }
