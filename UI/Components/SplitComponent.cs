@@ -358,31 +358,37 @@ namespace LiveSplit.UI.Components
                 if (!state.Run.Comparisons.Contains(comparison))
                     comparison = state.CurrentComparison;
 
+                var timingMethod = state.CurrentTimingMethod;
+                if (Settings.TimingMethod == "Real Time")
+                    timingMethod = TimingMethod.RealTime;
+                else if (Settings.TimingMethod == "Game Time")
+                    timingMethod = TimingMethod.GameTime;
+
                 var splitIndex = state.Run.IndexOf(Split);
                 if (splitIndex < state.CurrentSplitIndex)
                 {
                     TimeLabel.ForeColor = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.BeforeNamesColor : state.LayoutSettings.TextColor;
-                    var deltaTime = Split.SplitTime[state.CurrentTimingMethod] - Split.Comparisons[comparison][state.CurrentTimingMethod];
+                    var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
                     if (!Settings.ShowSplitTimes)
                     {
-                        var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, state.CurrentTimingMethod);
+                        var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, timingMethod);
                         if (color == null)
                             color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                         TimeLabel.ForeColor = color.Value;
                         if (deltaTime != null)
                             TimeLabel.Text = DeltaTimeFormatter.Format(deltaTime);
                         else
-                            TimeLabel.Text = TimeFormatter.Format(Split.SplitTime[state.CurrentTimingMethod]);
+                            TimeLabel.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                         DeltaLabel.Text = "";
                     }
                     else
                     {
-                        var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, state.CurrentTimingMethod);
+                        var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, timingMethod);
                         if (color == null)
                             color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                         DeltaLabel.ForeColor = color.Value;
-                        TimeLabel.Text = TimeFormatter.Format(Split.SplitTime[state.CurrentTimingMethod]);
+                        TimeLabel.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                         DeltaLabel.Text = DeltaTimeFormatter.Format(deltaTime);
                     }
 
@@ -399,9 +405,9 @@ namespace LiveSplit.UI.Components
                         TimeLabel.ForeColor = Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
                         NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
                     }
-                    TimeLabel.Text = TimeFormatter.Format(Split.Comparisons[comparison][state.CurrentTimingMethod]);
+                    TimeLabel.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
                     //Live Delta
-                    var bestDelta = LiveSplitStateHelper.CheckBestSegment(state, false, state.LayoutSettings.ShowBestSegments, comparison, state.CurrentTimingMethod);
+                    var bestDelta = LiveSplitStateHelper.CheckBestSegment(state, false, state.LayoutSettings.ShowBestSegments, comparison, timingMethod);
                     if (bestDelta != null && Split == state.CurrentSplit)
                     {
                         if (!Settings.ShowSplitTimes)
