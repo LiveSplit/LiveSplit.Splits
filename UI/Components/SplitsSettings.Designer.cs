@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmbTimingMethod = new System.Windows.Forms.ComboBox();
             this.cmbComparison = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.cmbSplitGradient = new System.Windows.Forms.ComboBox();
             this.btnBottomColor = new System.Windows.Forms.Button();
             this.btnTopColor = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.cmbGradientType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dmnTotalSegments = new System.Windows.Forms.NumericUpDown();
@@ -76,9 +76,6 @@
             this.rdoHundredths = new System.Windows.Forms.RadioButton();
             this.lblSplitSize = new System.Windows.Forms.Label();
             this.trkSize = new System.Windows.Forms.TrackBar();
-            this.label11 = new System.Windows.Forms.Label();
-            this.btnColor1 = new System.Windows.Forms.Button();
-            this.btnColor2 = new System.Windows.Forms.Button();
             this.chkSeparatorLastSplit = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -96,8 +93,12 @@
             this.chkDisplayRows = new System.Windows.Forms.CheckBox();
             this.chkLockLastSplit = new System.Windows.Forms.CheckBox();
             this.chkShowBlankSplits = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.cmbTimingMethod = new System.Windows.Forms.ComboBox();
+            this.btnColor1 = new System.Windows.Forms.Button();
+            this.btnColor2 = new System.Windows.Forms.Button();
+            this.cmbGradientType = new System.Windows.Forms.ComboBox();
+            this.chkHideIcons = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
@@ -180,6 +181,21 @@
             this.tableLayoutPanel1.TabIndex = 0;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
+            // cmbTimingMethod
+            // 
+            this.cmbTimingMethod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.cmbTimingMethod, 3);
+            this.cmbTimingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTimingMethod.FormattingEnabled = true;
+            this.cmbTimingMethod.Items.AddRange(new object[] {
+            "Current Timing Method",
+            "Real Time",
+            "Game Time"});
+            this.cmbTimingMethod.Location = new System.Drawing.Point(197, 33);
+            this.cmbTimingMethod.Name = "cmbTimingMethod";
+            this.cmbTimingMethod.Size = new System.Drawing.Size(245, 21);
+            this.cmbTimingMethod.TabIndex = 45;
+            // 
             // cmbComparison
             // 
             this.cmbComparison.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -251,21 +267,6 @@
             this.label4.Size = new System.Drawing.Size(188, 13);
             this.label4.TabIndex = 3;
             this.label4.Text = "Current Split Background Color:";
-            // 
-            // cmbGradientType
-            // 
-            this.cmbGradientType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbGradientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbGradientType.FormattingEnabled = true;
-            this.cmbGradientType.Items.AddRange(new object[] {
-            "Plain",
-            "Vertical",
-            "Horizontal",
-            "Alternating"});
-            this.cmbGradientType.Location = new System.Drawing.Point(255, 4);
-            this.cmbGradientType.Name = "cmbGradientType";
-            this.cmbGradientType.Size = new System.Drawing.Size(187, 21);
-            this.cmbGradientType.TabIndex = 2;
             // 
             // label1
             // 
@@ -482,13 +483,15 @@
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.64896F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.35104F));
+            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel4.Controls.Add(this.chkDisplayIcons, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label5, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.trkIconSize, 1, 1);
             this.tableLayoutPanel4.Controls.Add(this.chkIconShadows, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.chkHideIcons, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -505,7 +508,7 @@
             this.chkDisplayIcons.Location = new System.Drawing.Point(7, 6);
             this.chkDisplayIcons.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkDisplayIcons.Name = "chkDisplayIcons";
-            this.chkDisplayIcons.Size = new System.Drawing.Size(178, 17);
+            this.chkDisplayIcons.Size = new System.Drawing.Size(134, 17);
             this.chkDisplayIcons.TabIndex = 0;
             this.chkDisplayIcons.Text = "Display Icons";
             this.chkDisplayIcons.UseVisualStyleBackColor = true;
@@ -516,18 +519,19 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 37);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(182, 13);
+            this.label5.Size = new System.Drawing.Size(138, 13);
             this.label5.TabIndex = 23;
             this.label5.Text = "Size:";
             // 
             // trkIconSize
             // 
+            this.tableLayoutPanel4.SetColumnSpan(this.trkIconSize, 2);
             this.trkIconSize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trkIconSize.Location = new System.Drawing.Point(191, 32);
+            this.trkIconSize.Location = new System.Drawing.Point(147, 32);
             this.trkIconSize.Maximum = 80;
             this.trkIconSize.Minimum = 10;
             this.trkIconSize.Name = "trkIconSize";
-            this.trkIconSize.Size = new System.Drawing.Size(239, 23);
+            this.trkIconSize.Size = new System.Drawing.Size(283, 23);
             this.trkIconSize.TabIndex = 2;
             this.trkIconSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkIconSize.Value = 16;
@@ -536,12 +540,12 @@
             // 
             this.chkIconShadows.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkIconShadows.AutoSize = true;
-            this.chkIconShadows.Location = new System.Drawing.Point(195, 6);
+            this.chkIconShadows.Location = new System.Drawing.Point(151, 6);
             this.chkIconShadows.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkIconShadows.Name = "chkIconShadows";
-            this.chkIconShadows.Size = new System.Drawing.Size(235, 17);
+            this.chkIconShadows.Size = new System.Drawing.Size(134, 17);
             this.chkIconShadows.TabIndex = 1;
-            this.chkIconShadows.Text = "Icon Shadows";
+            this.chkIconShadows.Text = "Show Icon Shadows";
             this.chkIconShadows.UseVisualStyleBackColor = true;
             // 
             // groupBox4
@@ -787,42 +791,6 @@
             this.trkSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkSize.Value = 80;
             // 
-            // label11
-            // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 8);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(188, 13);
-            this.label11.TabIndex = 27;
-            this.label11.Text = "Background Color:";
-            // 
-            // btnColor1
-            // 
-            this.btnColor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnColor1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnColor1.Location = new System.Drawing.Point(197, 3);
-            this.btnColor1.Name = "btnColor1";
-            this.btnColor1.Size = new System.Drawing.Size(23, 23);
-            this.btnColor1.TabIndex = 0;
-            this.btnColor1.UseVisualStyleBackColor = false;
-            this.btnColor1.Click += new System.EventHandler(this.ColorButtonClick);
-            // 
-            // btnColor2
-            // 
-            this.btnColor2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnColor2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnColor2.Location = new System.Drawing.Point(226, 3);
-            this.btnColor2.Name = "btnColor2";
-            this.btnColor2.Size = new System.Drawing.Size(23, 23);
-            this.btnColor2.TabIndex = 1;
-            this.btnColor2.UseVisualStyleBackColor = false;
-            this.btnColor2.Click += new System.EventHandler(this.ColorButtonClick);
-            // 
             // chkSeparatorLastSplit
             // 
             this.chkSeparatorLastSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -1043,6 +1011,16 @@
             this.chkShowBlankSplits.Text = "Fill with Blank Space if Not Enough Splits";
             this.chkShowBlankSplits.UseVisualStyleBackColor = true;
             // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(3, 8);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(188, 13);
+            this.label11.TabIndex = 27;
+            this.label11.Text = "Background Color:";
+            // 
             // label14
             // 
             this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -1053,20 +1031,58 @@
             this.label14.TabIndex = 44;
             this.label14.Text = "Timing Method:";
             // 
-            // cmbTimingMethod
+            // btnColor1
             // 
-            this.cmbTimingMethod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbTimingMethod, 3);
-            this.cmbTimingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTimingMethod.FormattingEnabled = true;
-            this.cmbTimingMethod.Items.AddRange(new object[] {
-            "Current Timing Method",
-            "Real Time",
-            "Game Time"});
-            this.cmbTimingMethod.Location = new System.Drawing.Point(197, 33);
-            this.cmbTimingMethod.Name = "cmbTimingMethod";
-            this.cmbTimingMethod.Size = new System.Drawing.Size(245, 21);
-            this.cmbTimingMethod.TabIndex = 45;
+            this.btnColor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColor1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnColor1.Location = new System.Drawing.Point(197, 3);
+            this.btnColor1.Name = "btnColor1";
+            this.btnColor1.Size = new System.Drawing.Size(23, 23);
+            this.btnColor1.TabIndex = 0;
+            this.btnColor1.UseVisualStyleBackColor = false;
+            this.btnColor1.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // btnColor2
+            // 
+            this.btnColor2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColor2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnColor2.Location = new System.Drawing.Point(226, 3);
+            this.btnColor2.Name = "btnColor2";
+            this.btnColor2.Size = new System.Drawing.Size(23, 23);
+            this.btnColor2.TabIndex = 1;
+            this.btnColor2.UseVisualStyleBackColor = false;
+            this.btnColor2.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // cmbGradientType
+            // 
+            this.cmbGradientType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbGradientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGradientType.FormattingEnabled = true;
+            this.cmbGradientType.Items.AddRange(new object[] {
+            "Plain",
+            "Vertical",
+            "Horizontal",
+            "Alternating"});
+            this.cmbGradientType.Location = new System.Drawing.Point(255, 4);
+            this.cmbGradientType.Name = "cmbGradientType";
+            this.cmbGradientType.Size = new System.Drawing.Size(187, 21);
+            this.cmbGradientType.TabIndex = 2;
+            // 
+            // chkHideIcons
+            // 
+            this.chkHideIcons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkHideIcons.AutoSize = true;
+            this.chkHideIcons.Location = new System.Drawing.Point(295, 6);
+            this.chkHideIcons.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
+            this.chkHideIcons.Name = "chkHideIcons";
+            this.chkHideIcons.Size = new System.Drawing.Size(135, 17);
+            this.chkHideIcons.TabIndex = 24;
+            this.chkHideIcons.Text = "Hide Icons If All Blank";
+            this.chkHideIcons.UseVisualStyleBackColor = true;
             // 
             // SplitsSettings
             // 
@@ -1181,5 +1197,6 @@
         private System.Windows.Forms.CheckBox chkDisplayRows;
         private System.Windows.Forms.ComboBox cmbTimingMethod;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox chkHideIcons;
     }
 }

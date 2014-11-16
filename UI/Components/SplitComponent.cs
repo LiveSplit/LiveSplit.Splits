@@ -450,6 +450,7 @@ namespace LiveSplit.UI.Components
                     else
                         FrameCount = Split.Icon.GetFrameCount(new FrameDimension(Split.Icon.FrameDimensionsList[0]));
                 }
+                Cache["DisplayIcon"] = DisplayIcon;
                 Cache["SplitName"] = NameLabel.Text;
                 Cache["DeltaLabel"] = DeltaLabel.Text;
                 Cache["TimeLabel"] = TimeLabel.Text;

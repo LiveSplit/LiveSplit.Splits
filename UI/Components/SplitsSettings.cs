@@ -57,6 +57,7 @@ namespace LiveSplit.UI.Components
 
         public bool DisplayIcons { get; set; }
         public bool IconShadows { get; set; }
+        public bool HideIconsIfAllBlank { get; set; }
         public bool ShowThinSeparators { get; set; }
         public bool AlwaysShowLastSplit { get; set; }
         public bool ShowSplitTimes { get; set; }
@@ -94,6 +95,7 @@ namespace LiveSplit.UI.Components
             VisualSplitCount = 8;
             SplitPreviewCount = 1;
             DisplayIcons = true;
+            HideIconsIfAllBlank = true;
             IconShadows = true;
             ShowThinSeparators = true;
             AlwaysShowLastSplit = true;
@@ -141,6 +143,7 @@ namespace LiveSplit.UI.Components
             btnAfterTimesColor.DataBindings.Add("BackColor", this, "AfterTimesColor", false, DataSourceUpdateMode.OnPropertyChanged);
             chkDisplayIcons.DataBindings.Add("Checked", this, "DisplayIcons", false, DataSourceUpdateMode.OnPropertyChanged);
             chkIconShadows.DataBindings.Add("Checked", this, "IconShadows", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkHideIcons.DataBindings.Add("Checked", this, "HideIconsIfAllBlank", false, DataSourceUpdateMode.OnPropertyChanged);
             chkThinSeparators.DataBindings.Add("Checked", this, "ShowThinSeparators", false, DataSourceUpdateMode.OnPropertyChanged);
             chkLastSplit.DataBindings.Add("Checked", this, "AlwaysShowLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
             chkShowTimes.DataBindings.Add("Checked", this, "ShowSplitTimes", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -185,7 +188,7 @@ namespace LiveSplit.UI.Components
 
         void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
         {
-            trkIconSize.Enabled = label5.Enabled = chkIconShadows.Enabled = chkDisplayIcons.Checked;
+            trkIconSize.Enabled = label5.Enabled = chkIconShadows.Enabled = chkHideIcons.Enabled = chkDisplayIcons.Checked;
         }
 
         void chkOverrideTimesColor_CheckedChanged(object sender, EventArgs e)
@@ -367,10 +370,12 @@ namespace LiveSplit.UI.Components
             if (version >= new Version(1, 5))
             {
                 TimingMethod = element["TimingMethod"].InnerText;
+                HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
             }
             else
             {
                 TimingMethod = "Current Timing Method";
+                HideIconsIfAllBlank = true;
             }
             if (version >= new Version(1, 3))
             {
@@ -486,6 +491,7 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "Comparison", Comparison));
             parent.AppendChild(ToElement(document, "TimingMethod", TimingMethod));
             parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
+            parent.AppendChild(ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
             return parent;
         }
 
