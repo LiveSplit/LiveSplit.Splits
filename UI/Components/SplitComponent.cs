@@ -344,10 +344,6 @@ namespace LiveSplit.UI.Components
             get { throw new NotSupportedException(); }
         }
 
-        public void RenameComparison(string oldName, string newName)
-        {
-        }
-
         protected void UpdateAll(LiveSplitState state)
         {
             if (Split != null)
