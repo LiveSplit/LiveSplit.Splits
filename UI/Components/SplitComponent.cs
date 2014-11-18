@@ -403,7 +403,7 @@ namespace LiveSplit.UI.Components
                     }
                     TimeLabel.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
                     //Live Delta
-                    var bestDelta = LiveSplitStateHelper.CheckBestSegment(state, false, state.LayoutSettings.ShowBestSegments, comparison, timingMethod);
+                    var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, false, comparison, timingMethod);
                     if (bestDelta != null && Split == state.CurrentSplit)
                     {
                         if (!Settings.ShowSplitTimes)
