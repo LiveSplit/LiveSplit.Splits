@@ -89,7 +89,10 @@ namespace LiveSplit.UI.Components
         {
             var args = (RenameEventArgs)e;
             if (Settings.Comparison == args.OldName)
+            {
                 Settings.Comparison = args.NewName;
+                ((LiveSplitState)sender).Layout.HasChanged = true;
+            }
         }
 
         void Settings_SplitLayoutChanged(object sender, EventArgs e)
