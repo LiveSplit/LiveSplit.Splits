@@ -31,11 +31,9 @@ namespace LiveSplit.UI.Components
         {
             InitializeComponent();
 
+            Data = new ColumnData(columnName, ColumnType.Delta, "Current Comparison", "Current Timing Method");
+
             CurrentState = state;
-            Name = columnName;
-            Type = "Delta";
-            Comparison = "Current Comparison";
-            TimingMethod = "Current Timing Method";
 
             txtName.DataBindings.Add("Text", this, "Name", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbColumnType.DataBindings.Add("Value", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
