@@ -1,5 +1,6 @@
 ﻿using Fetze.WinFormsColor;
 using LiveSplit.Model;
+using LiveSplit.Model.Comparisons;
 using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace LiveSplit.UI.Components
         public LiveSplitState CurrentState { get; set; }
 
         public EventHandler ColumnRemoved;
+        public EventHandler MovedUp;
+        public EventHandler MovedDown;
 
         public ColumnSettings(LiveSplitState state, String columnName)
         {
@@ -41,6 +44,15 @@ namespace LiveSplit.UI.Components
             cmbTimingMethod.DataBindings.Add("Value", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
 
             txtName.TextChanged += txtName_TextChanged;
+            this.Load += ColumnSettings_Load;
+        }
+
+        void ColumnSettings_Load(object sender, EventArgs e)
+        {
+            cmbComparison.Items.Add("Current Comparison");
+            cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
+            if (!cmbComparison.Items.Contains(Comparison))
+                cmbComparison.Items.Add(Comparison);
         }
 
         void txtName_TextChanged(object sender, EventArgs e)
@@ -66,7 +78,20 @@ namespace LiveSplit.UI.Components
 
         private void btnRemoveColumn_Click(object sender, EventArgs e)
         {
-            ColumnRemoved(this, null);
+            if (ColumnRemoved != null)
+                ColumnRemoved(this, null);
+        }
+
+        private void btnMoveUp_Click(object sender, EventArgs e)
+        {
+            if (MovedUp != null)
+                MovedUp(this, null);
+        }
+
+        private void btnMoveDown_Click(object sender, EventArgs e)
+        {
+            if (MovedDown != null)
+                MovedDown(this, null);
         }
     }
 }
