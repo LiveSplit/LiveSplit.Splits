@@ -183,9 +183,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 187F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 240F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 1021);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 992);
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // cmbTimingMethod
             // 
@@ -200,7 +199,7 @@
             this.cmbTimingMethod.Location = new System.Drawing.Point(197, 33);
             this.cmbTimingMethod.Name = "cmbTimingMethod";
             this.cmbTimingMethod.Size = new System.Drawing.Size(245, 21);
-            this.cmbTimingMethod.TabIndex = 45;
+            this.cmbTimingMethod.TabIndex = 3;
             // 
             // cmbComparison
             // 
@@ -211,8 +210,7 @@
             this.cmbComparison.Location = new System.Drawing.Point(197, 62);
             this.cmbComparison.Name = "cmbComparison";
             this.cmbComparison.Size = new System.Drawing.Size(245, 21);
-            this.cmbComparison.TabIndex = 3;
-            this.cmbComparison.SelectedIndexChanged += new System.EventHandler(this.cmbComparison_SelectedIndexChanged_1);
+            this.cmbComparison.TabIndex = 4;
             // 
             // label12
             // 
@@ -236,7 +234,7 @@
             this.cmbSplitGradient.Location = new System.Drawing.Point(255, 265);
             this.cmbSplitGradient.Name = "cmbSplitGradient";
             this.cmbSplitGradient.Size = new System.Drawing.Size(187, 21);
-            this.cmbSplitGradient.TabIndex = 15;
+            this.cmbSplitGradient.TabIndex = 16;
             // 
             // btnBottomColor
             // 
@@ -247,7 +245,7 @@
             this.btnBottomColor.Location = new System.Drawing.Point(226, 264);
             this.btnBottomColor.Name = "btnBottomColor";
             this.btnBottomColor.Size = new System.Drawing.Size(23, 23);
-            this.btnBottomColor.TabIndex = 14;
+            this.btnBottomColor.TabIndex = 15;
             this.btnBottomColor.UseVisualStyleBackColor = false;
             this.btnBottomColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
@@ -260,7 +258,7 @@
             this.btnTopColor.Location = new System.Drawing.Point(197, 264);
             this.btnTopColor.Name = "btnTopColor";
             this.btnTopColor.Size = new System.Drawing.Size(23, 23);
-            this.btnTopColor.TabIndex = 13;
+            this.btnTopColor.TabIndex = 14;
             this.btnTopColor.UseVisualStyleBackColor = false;
             this.btnTopColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
@@ -311,7 +309,7 @@
             0});
             this.dmnTotalSegments.Name = "dmnTotalSegments";
             this.dmnTotalSegments.Size = new System.Drawing.Size(245, 20);
-            this.dmnTotalSegments.TabIndex = 4;
+            this.dmnTotalSegments.TabIndex = 5;
             this.dmnTotalSegments.Value = new decimal(new int[] {
             2,
             0,
@@ -330,7 +328,7 @@
             0});
             this.dmnUpcomingSegments.Name = "dmnUpcomingSegments";
             this.dmnUpcomingSegments.Size = new System.Drawing.Size(245, 20);
-            this.dmnUpcomingSegments.TabIndex = 5;
+            this.dmnUpcomingSegments.TabIndex = 6;
             this.dmnUpcomingSegments.Value = new decimal(new int[] {
             1,
             0,
@@ -345,7 +343,7 @@
             this.groupBox2.Location = new System.Drawing.Point(3, 293);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(439, 134);
-            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Split Names Color";
             // 
@@ -459,7 +457,7 @@
             this.chkThinSeparators.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkThinSeparators.Name = "chkThinSeparators";
             this.chkThinSeparators.Size = new System.Drawing.Size(184, 17);
-            this.chkThinSeparators.TabIndex = 6;
+            this.chkThinSeparators.TabIndex = 7;
             this.chkThinSeparators.Text = "Show Thin Separators";
             this.chkThinSeparators.UseVisualStyleBackColor = true;
             // 
@@ -471,7 +469,7 @@
             this.chkLastSplit.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkLastSplit.Name = "chkLastSplit";
             this.chkLastSplit.Size = new System.Drawing.Size(184, 17);
-            this.chkLastSplit.TabIndex = 8;
+            this.chkLastSplit.TabIndex = 9;
             this.chkLastSplit.Text = "Always Show Last Split";
             this.chkLastSplit.UseVisualStyleBackColor = true;
             // 
@@ -483,7 +481,7 @@
             this.groupBox3.Location = new System.Drawing.Point(3, 433);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(439, 75);
-            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabIndex = 18;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Icons";
             // 
@@ -538,7 +536,7 @@
             this.trkIconSize.Minimum = 10;
             this.trkIconSize.Name = "trkIconSize";
             this.trkIconSize.Size = new System.Drawing.Size(283, 23);
-            this.trkIconSize.TabIndex = 2;
+            this.trkIconSize.TabIndex = 3;
             this.trkIconSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkIconSize.Value = 16;
             // 
@@ -562,7 +560,7 @@
             this.chkHideIcons.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkHideIcons.Name = "chkHideIcons";
             this.chkHideIcons.Size = new System.Drawing.Size(135, 17);
-            this.chkHideIcons.TabIndex = 24;
+            this.chkHideIcons.TabIndex = 2;
             this.chkHideIcons.Text = "Hide Icons If All Blank";
             this.chkHideIcons.UseVisualStyleBackColor = true;
             // 
@@ -574,7 +572,7 @@
             this.groupBox4.Location = new System.Drawing.Point(3, 701);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(439, 234);
-            this.groupBox4.TabIndex = 19;
+            this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Split Times";
             // 
@@ -805,7 +803,7 @@
             this.trkSize.Minimum = 5;
             this.trkSize.Name = "trkSize";
             this.trkSize.Size = new System.Drawing.Size(245, 23);
-            this.trkSize.TabIndex = 12;
+            this.trkSize.TabIndex = 13;
             this.trkSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkSize.Value = 80;
             // 
@@ -818,7 +816,7 @@
             this.chkSeparatorLastSplit.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkSeparatorLastSplit.Name = "chkSeparatorLastSplit";
             this.chkSeparatorLastSplit.Size = new System.Drawing.Size(241, 17);
-            this.chkSeparatorLastSplit.TabIndex = 7;
+            this.chkSeparatorLastSplit.TabIndex = 8;
             this.chkSeparatorLastSplit.Text = "Show Separator Before Last Split";
             this.chkSeparatorLastSplit.UseVisualStyleBackColor = true;
             // 
@@ -830,7 +828,7 @@
             this.groupBox6.Location = new System.Drawing.Point(3, 514);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(439, 181);
-            this.groupBox6.TabIndex = 18;
+            this.groupBox6.TabIndex = 19;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Deltas";
             // 
@@ -1000,7 +998,7 @@
             this.chkDisplayRows.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkDisplayRows.Name = "chkDisplayRows";
             this.chkDisplayRows.Size = new System.Drawing.Size(241, 17);
-            this.chkDisplayRows.TabIndex = 11;
+            this.chkDisplayRows.TabIndex = 12;
             this.chkDisplayRows.Text = "Display 2 Rows";
             this.chkDisplayRows.UseVisualStyleBackColor = true;
             // 
@@ -1012,7 +1010,7 @@
             this.chkLockLastSplit.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkLockLastSplit.Name = "chkLockLastSplit";
             this.chkLockLastSplit.Size = new System.Drawing.Size(184, 17);
-            this.chkLockLastSplit.TabIndex = 9;
+            this.chkLockLastSplit.TabIndex = 11;
             this.chkLockLastSplit.Text = "Lock Last Split to Bottom";
             this.chkLockLastSplit.UseVisualStyleBackColor = true;
             // 
@@ -1097,8 +1095,8 @@
             this.groupColumns.Controls.Add(this.tableColumns);
             this.groupColumns.Location = new System.Drawing.Point(3, 941);
             this.groupColumns.Name = "groupColumns";
-            this.groupColumns.Size = new System.Drawing.Size(439, 77);
-            this.groupColumns.TabIndex = 46;
+            this.groupColumns.Size = new System.Drawing.Size(439, 48);
+            this.groupColumns.TabIndex = 21;
             this.groupColumns.TabStop = false;
             this.groupColumns.Text = "Columns";
             // 
@@ -1108,14 +1106,13 @@
             this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableColumns.Controls.Add(this.chkColumnLabels, 0, 0);
-            this.tableColumns.Controls.Add(this.btnAddColumn, 0, 1);
+            this.tableColumns.Controls.Add(this.btnAddColumn, 1, 0);
             this.tableColumns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableColumns.Location = new System.Drawing.Point(3, 16);
             this.tableColumns.Name = "tableColumns";
-            this.tableColumns.RowCount = 2;
+            this.tableColumns.RowCount = 1;
             this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableColumns.Size = new System.Drawing.Size(433, 58);
+            this.tableColumns.Size = new System.Drawing.Size(433, 29);
             this.tableColumns.TabIndex = 0;
             // 
             // chkColumnLabels
@@ -1132,12 +1129,13 @@
             // btnAddColumn
             // 
             this.btnAddColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnAddColumn.Location = new System.Drawing.Point(3, 32);
+            this.btnAddColumn.Location = new System.Drawing.Point(219, 3);
             this.btnAddColumn.Name = "btnAddColumn";
             this.btnAddColumn.Size = new System.Drawing.Size(75, 23);
             this.btnAddColumn.TabIndex = 1;
             this.btnAddColumn.Text = "Add Column";
             this.btnAddColumn.UseVisualStyleBackColor = true;
+            this.btnAddColumn.Click += new System.EventHandler(this.btnAddColumn_Click);
             // 
             // SplitsSettings
             // 
@@ -1146,7 +1144,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "SplitsSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(459, 1035);
+            this.Size = new System.Drawing.Size(459, 1006);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).EndInit();

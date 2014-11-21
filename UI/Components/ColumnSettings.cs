@@ -18,30 +18,35 @@ namespace LiveSplit.UI.Components
 {
     public partial class ColumnSettings : UserControl
     {
-        public String Name { get { return Data.Name; } set { Data.Name = value; } }
+        public String ColumnName { get { return Data.Name; } set { Data.Name = value; } }
         public String Type { get { return GetColumnType(Data.Type); } set { Data.Type = ParseColumnType(value); } }
         public String Comparison { get { return Data.Comparison; } set { Data.Comparison = value; } }
         public String TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
 
         public ColumnData Data { get; set; }
         public LiveSplitState CurrentState { get; set; }
+        public IList<ColumnSettings> ColumnsList { get; set; }
 
-        public EventHandler ColumnRemoved;
-        public EventHandler MovedUp;
-        public EventHandler MovedDown;
+        public int ColumnIndex { get { return ColumnsList.IndexOf(this); } }
+        public int TotalColumns { get { return ColumnsList.Count; } }
 
-        public ColumnSettings(LiveSplitState state, String columnName)
+        public event EventHandler ColumnRemoved;
+        public event EventHandler MovedUp;
+        public event EventHandler MovedDown;
+
+        public ColumnSettings(LiveSplitState state, String columnName, IList<ColumnSettings> columnsList)
         {
             InitializeComponent();
 
             Data = new ColumnData(columnName, ColumnType.Delta, "Current Comparison", "Current Timing Method");
 
             CurrentState = state;
+            ColumnsList = columnsList;
 
-            txtName.DataBindings.Add("Text", this, "Name", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbColumnType.DataBindings.Add("Value", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbComparison.DataBindings.Add("Value", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbTimingMethod.DataBindings.Add("Value", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtName.DataBindings.Add("Text", this, "ColumnName", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbColumnType.DataBindings.Add("SelectedItem", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
 
             txtName.TextChanged += txtName_TextChanged;
             this.Load += ColumnSettings_Load;
@@ -53,6 +58,12 @@ namespace LiveSplit.UI.Components
             cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
             if (!cmbComparison.Items.Contains(Comparison))
                 cmbComparison.Items.Add(Comparison);
+        }
+
+        public void UpdateEnabledButtons()
+        {
+            btnMoveDown.Enabled = ColumnIndex < TotalColumns - 1;
+            btnMoveUp.Enabled = ColumnIndex > 0;
         }
 
         void txtName_TextChanged(object sender, EventArgs e)
@@ -92,6 +103,11 @@ namespace LiveSplit.UI.Components
         {
             if (MovedDown != null)
                 MovedDown(this, null);
+        }
+
+        public void SelectControl()
+        {
+            btnRemoveColumn.Select();
         }
     }
 }

@@ -72,7 +72,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(401, 146);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(415, 146);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -107,8 +107,8 @@
             "Game Time"});
             this.cmbTimingMethod.Location = new System.Drawing.Point(93, 91);
             this.cmbTimingMethod.Name = "cmbTimingMethod";
-            this.cmbTimingMethod.Size = new System.Drawing.Size(305, 21);
-            this.cmbTimingMethod.TabIndex = 40;
+            this.cmbTimingMethod.Size = new System.Drawing.Size(319, 21);
+            this.cmbTimingMethod.TabIndex = 48;
             // 
             // txtName
             // 
@@ -116,7 +116,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.txtName, 3);
             this.txtName.Location = new System.Drawing.Point(93, 4);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(305, 20);
+            this.txtName.Size = new System.Drawing.Size(319, 20);
             this.txtName.TabIndex = 43;
             // 
             // label3
@@ -152,7 +152,7 @@
             "Segment Time"});
             this.cmbColumnType.Location = new System.Drawing.Point(93, 33);
             this.cmbColumnType.Name = "cmbColumnType";
-            this.cmbColumnType.Size = new System.Drawing.Size(305, 21);
+            this.cmbColumnType.Size = new System.Drawing.Size(319, 21);
             this.cmbColumnType.TabIndex = 46;
             // 
             // cmbComparison
@@ -163,16 +163,16 @@
             this.cmbComparison.FormattingEnabled = true;
             this.cmbComparison.Location = new System.Drawing.Point(93, 62);
             this.cmbComparison.Name = "cmbComparison";
-            this.cmbComparison.Size = new System.Drawing.Size(305, 21);
+            this.cmbComparison.Size = new System.Drawing.Size(319, 21);
             this.cmbComparison.TabIndex = 47;
             // 
             // btnRemoveColumn
             // 
             this.btnRemoveColumn.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnRemoveColumn.Location = new System.Drawing.Point(304, 119);
+            this.btnRemoveColumn.Location = new System.Drawing.Point(318, 119);
             this.btnRemoveColumn.Name = "btnRemoveColumn";
             this.btnRemoveColumn.Size = new System.Drawing.Size(94, 23);
-            this.btnRemoveColumn.TabIndex = 48;
+            this.btnRemoveColumn.TabIndex = 52;
             this.btnRemoveColumn.Text = "Remove Column";
             this.btnRemoveColumn.UseVisualStyleBackColor = true;
             this.btnRemoveColumn.Click += new System.EventHandler(this.btnRemoveColumn_Click);
@@ -181,9 +181,9 @@
             // 
             this.groupColumn.Controls.Add(this.tableLayoutPanel1);
             this.groupColumn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupColumn.Location = new System.Drawing.Point(7, 7);
+            this.groupColumn.Location = new System.Drawing.Point(0, 0);
             this.groupColumn.Name = "groupColumn";
-            this.groupColumn.Size = new System.Drawing.Size(407, 165);
+            this.groupColumn.Size = new System.Drawing.Size(421, 165);
             this.groupColumn.TabIndex = 1;
             this.groupColumn.TabStop = false;
             this.groupColumn.Text = "Column Name";
@@ -194,7 +194,7 @@
             this.btnMoveDown.Location = new System.Drawing.Point(223, 119);
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(75, 23);
-            this.btnMoveDown.TabIndex = 49;
+            this.btnMoveDown.TabIndex = 51;
             this.btnMoveDown.Text = "Move Down";
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
@@ -216,8 +216,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupColumn);
             this.Name = "ColumnSettings";
-            this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(421, 179);
+            this.Size = new System.Drawing.Size(421, 165);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupColumn.ResumeLayout(false);

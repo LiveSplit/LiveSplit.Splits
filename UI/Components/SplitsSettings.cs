@@ -91,6 +91,8 @@ namespace LiveSplit.UI.Components
 
         public LayoutMode Mode { get; set; }
 
+        public IList<ColumnSettings> ColumnsList { get; set; }
+
         public SplitsSettings()
         {
             InitializeComponent();
@@ -188,6 +190,8 @@ namespace LiveSplit.UI.Components
             chkOverrideDeltaColor.CheckedChanged += chkOverrideDeltaColor_CheckedChanged;
             chkOverrideTimesColor.CheckedChanged += chkOverrideTimesColor_CheckedChanged;
             chkDisplayIcons.CheckedChanged += chkDisplayIcons_CheckedChanged;
+
+            ColumnsList = new List<ColumnSettings>();
         }
 
         void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
@@ -309,6 +313,8 @@ namespace LiveSplit.UI.Components
 
         void SplitsSettings_Load(object sender, EventArgs e)
         {
+            ResetColumns();
+
             chkOverrideDeltaColor_CheckedChanged(null, null);
             chkOverrideTextColor_CheckedChanged(null, null);
             chkOverrideTimesColor_CheckedChanged(null, null);
@@ -376,6 +382,14 @@ namespace LiveSplit.UI.Components
                 TimingMethod = element["TimingMethod"].InnerText;
                 HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
                 ShowColumnLabels = Boolean.Parse(element["ShowColumnLabels"].InnerText);
+
+                var columnsElement = element["Columns"];
+                ColumnsList.Clear();
+                foreach (var child in columnsElement.ChildNodes)
+                {
+                    var columnData = ColumnData.FromXml((XmlNode)child);
+                    ColumnsList.Add(new ColumnSettings(CurrentState, columnData.Name, ColumnsList) { Data = columnData });
+                }
             }
             else
             {
@@ -499,6 +513,12 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
             parent.AppendChild(ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
             parent.AppendChild(ToElement(document, "ShowColumnLabels", ShowColumnLabels));
+
+            var columnsElement = document.CreateElement("Columns");
+            foreach (var columnData in ColumnsList.Select(x => x.Data))
+                columnsElement.AppendChild(columnData.ToXml(document));
+            parent.AppendChild(columnsElement);
+
             return parent;
         }
 
@@ -543,14 +563,96 @@ namespace LiveSplit.UI.Components
             return element;
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        private void ResetColumns()
         {
-
+            ClearLayout();
+            var index = 1;
+            foreach (var column in ColumnsList)
+            {
+                UpdateLayoutForColumn();
+                AddColumnToLayout(column, index);
+                column.UpdateEnabledButtons();
+                index++;
+            }
         }
 
-        private void cmbComparison_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void AddColumnToLayout(ColumnSettings column, int index)
         {
+            tableColumns.Controls.Add(column, 0, index);
+            tableColumns.SetColumnSpan(column, 2);
+            column.ColumnRemoved -= column_ColumnRemoved;
+            column.MovedUp -= column_MovedUp;
+            column.MovedDown -= column_MovedDown;
+            column.ColumnRemoved += column_ColumnRemoved;
+            column.MovedUp += column_MovedUp;
+            column.MovedDown += column_MovedDown;
+        }
 
+        void column_MovedDown(object sender, EventArgs e)
+        {
+            var column = (ColumnSettings)sender;
+            var index = ColumnsList.IndexOf(column);
+            ColumnsList.Remove(column);
+            ColumnsList.Insert(index + 1, column);
+            ResetColumns();
+            column.SelectControl();
+        }
+
+        void column_MovedUp(object sender, EventArgs e)
+        {
+            var column = (ColumnSettings)sender;
+            var index = ColumnsList.IndexOf(column);
+            ColumnsList.Remove(column);
+            ColumnsList.Insert(index - 1, column);
+            ResetColumns();
+            column.SelectControl();
+        }
+
+        void column_ColumnRemoved(object sender, EventArgs e)
+        {
+            var column = (ColumnSettings)sender;
+            var index = ColumnsList.IndexOf(column);
+            ColumnsList.Remove(column);
+            ResetColumns();
+            if (ColumnsList.Count > 0)
+                ColumnsList.Last().SelectControl();
+            else
+                chkColumnLabels.Select();
+        }
+
+        private void ClearLayout()
+        {
+            tableColumns.RowCount = 1;
+            tableColumns.RowStyles.Clear();
+            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 29f));
+            tableColumns.Size = new Size(433, 29);
+            foreach (var control in tableColumns.Controls)
+            {
+                if (control is ColumnSettings)
+                    tableColumns.Controls.Remove((Control)control);
+            }
+            this.Size = new Size(459, 1006);
+        }
+
+        private void UpdateLayoutForColumn()
+        {
+            tableColumns.RowCount++;
+            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 179f));
+            tableColumns.Size = new Size(this.tableColumns.Size.Width, this.tableColumns.Size.Height + 179);
+            Size = new Size(this.Size.Width, this.Size.Height + 179);
+            groupColumns.Size = new Size(this.groupColumns.Size.Width, this.groupColumns.Size.Height + 179);
+        }
+
+        private void btnAddColumn_Click(object sender, EventArgs e)
+        {
+            UpdateLayoutForColumn();
+
+            var columnControl = new ColumnSettings(CurrentState, "Column " + (ColumnsList.Count + 1), ColumnsList);
+            ColumnsList.Add(columnControl);
+            AddColumnToLayout(columnControl, ColumnsList.Count);
+
+            foreach (var column in ColumnsList)
+                column.UpdateEnabledButtons();
         }
 
     }

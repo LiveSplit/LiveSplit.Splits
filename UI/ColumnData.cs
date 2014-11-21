@@ -22,7 +22,7 @@ namespace LiveSplit.UI
             TimingMethod = method;
         }
 
-        public void FromXml(XmlNode node)
+        public static ColumnData FromXml(XmlNode node)
         {
             var element = (XmlElement)node;
             Version version;
@@ -30,10 +30,10 @@ namespace LiveSplit.UI
                 version = Version.Parse(element["Version"].InnerText);
             else
                 version = new Version(1, 0, 0, 0);
-            Name = element["Name"].InnerText;
-            Type = (ColumnType)Enum.Parse(typeof(ColumnType), element["Type"].InnerText);
-            Comparison = element["Comparison"].InnerText;
-            TimingMethod = element["TimingMethod"].InnerText;
+            return new ColumnData(element["Name"].InnerText,
+                (ColumnType)Enum.Parse(typeof(ColumnType), element["Type"].InnerText),
+                element["Comparison"].InnerText,
+                element["TimingMethod"].InnerText);
         }
 
         public XmlNode ToXml(XmlDocument document)
