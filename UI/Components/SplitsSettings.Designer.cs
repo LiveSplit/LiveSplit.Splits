@@ -101,6 +101,8 @@
             this.cmbGradientType = new System.Windows.Forms.ComboBox();
             this.groupColumns = new System.Windows.Forms.GroupBox();
             this.tableColumns = new System.Windows.Forms.TableLayoutPanel();
+            this.chkColumnLabels = new System.Windows.Forms.CheckBox();
+            this.btnAddColumn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
@@ -123,6 +125,7 @@
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.groupColumns.SuspendLayout();
+            this.tableColumns.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -1104,6 +1107,8 @@
             this.tableColumns.ColumnCount = 2;
             this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableColumns.Controls.Add(this.chkColumnLabels, 0, 0);
+            this.tableColumns.Controls.Add(this.btnAddColumn, 0, 1);
             this.tableColumns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableColumns.Location = new System.Drawing.Point(3, 16);
             this.tableColumns.Name = "tableColumns";
@@ -1112,6 +1117,27 @@
             this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableColumns.Size = new System.Drawing.Size(433, 58);
             this.tableColumns.TabIndex = 0;
+            // 
+            // chkColumnLabels
+            // 
+            this.chkColumnLabels.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkColumnLabels.AutoSize = true;
+            this.chkColumnLabels.Location = new System.Drawing.Point(3, 6);
+            this.chkColumnLabels.Name = "chkColumnLabels";
+            this.chkColumnLabels.Size = new System.Drawing.Size(210, 17);
+            this.chkColumnLabels.TabIndex = 0;
+            this.chkColumnLabels.Text = "Show Column Labels";
+            this.chkColumnLabels.UseVisualStyleBackColor = true;
+            // 
+            // btnAddColumn
+            // 
+            this.btnAddColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnAddColumn.Location = new System.Drawing.Point(3, 32);
+            this.btnAddColumn.Name = "btnAddColumn";
+            this.btnAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.btnAddColumn.TabIndex = 1;
+            this.btnAddColumn.Text = "Add Column";
+            this.btnAddColumn.UseVisualStyleBackColor = true;
             // 
             // SplitsSettings
             // 
@@ -1151,6 +1177,8 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.groupColumns.ResumeLayout(false);
+            this.tableColumns.ResumeLayout(false);
+            this.tableColumns.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1230,5 +1258,7 @@
         private System.Windows.Forms.CheckBox chkHideIcons;
         private System.Windows.Forms.GroupBox groupColumns;
         private System.Windows.Forms.TableLayoutPanel tableColumns;
+        private System.Windows.Forms.CheckBox chkColumnLabels;
+        private System.Windows.Forms.Button btnAddColumn;
     }
 }

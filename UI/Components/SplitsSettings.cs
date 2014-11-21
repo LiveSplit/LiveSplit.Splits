@@ -71,6 +71,8 @@ namespace LiveSplit.UI.Components
         public bool OverrideDeltasColor { get; set; }
         public Color DeltasColor { get; set; }
 
+        public bool ShowColumnLabels { get; set; }
+
         public Color BeforeNamesColor { get; set; }
         public Color CurrentNamesColor { get; set; }
         public Color AfterNamesColor { get; set; }
@@ -130,6 +132,7 @@ namespace LiveSplit.UI.Components
             Comparison = "Current Comparison";
             TimingMethod = "Current Timing Method";
             Display2Rows = false;
+            ShowColumnLabels = false;
 
             dmnTotalSegments.DataBindings.Add("Value", this, "VisualSplitCount", false, DataSourceUpdateMode.OnPropertyChanged);
             dmnUpcomingSegments.DataBindings.Add("Value", this, "SplitPreviewCount", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -155,6 +158,7 @@ namespace LiveSplit.UI.Components
             chkDropDecimals.DataBindings.Add("Checked", this, "DropDecimals", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideDeltaColor.DataBindings.Add("Checked", this, "OverrideDeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnDeltaColor.DataBindings.Add("BackColor", this, "DeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkColumnLabels.DataBindings.Add("Checked", this, "ShowColumnLabels", false, DataSourceUpdateMode.OnPropertyChanged);
             this.Load += SplitsSettings_Load;
             chkThinSeparators.CheckedChanged += chkThinSeparators_CheckedChanged;
             chkLastSplit.CheckedChanged += chkLastSplit_CheckedChanged;
@@ -371,11 +375,13 @@ namespace LiveSplit.UI.Components
             {
                 TimingMethod = element["TimingMethod"].InnerText;
                 HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
+                ShowColumnLabels = Boolean.Parse(element["ShowColumnLabels"].InnerText);
             }
             else
             {
                 TimingMethod = "Current Timing Method";
                 HideIconsIfAllBlank = true;
+                ShowColumnLabels = false;
             }
             if (version >= new Version(1, 3))
             {
@@ -492,6 +498,7 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "TimingMethod", TimingMethod));
             parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
             parent.AppendChild(ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
+            parent.AppendChild(ToElement(document, "ShowColumnLabels", ShowColumnLabels));
             return parent;
         }
 
