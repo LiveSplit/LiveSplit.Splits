@@ -51,9 +51,9 @@ namespace LiveSplit.UI.Components
             set { BackgroundGradient = (ExtendedGradientType)Enum.Parse(typeof(ExtendedGradientType), value); }
         }
 
-        public String Comparison { get; set; }
+        public String Comparison { get; set; } //remove this later
         public LiveSplitState CurrentState { get; set; }
-        public String TimingMethod { get; set; }
+        public String TimingMethod { get; set; } //remove this later
 
         public bool DisplayIcons { get; set; }
         public bool IconShadows { get; set; }
@@ -92,10 +92,16 @@ namespace LiveSplit.UI.Components
         public LayoutMode Mode { get; set; }
 
         public IList<ColumnSettings> ColumnsList { get; set; }
+        public Size StartingSize { get; set; }
+        public Size StartingTableLayoutSize { get; set; }
 
         public SplitsSettings()
         {
             InitializeComponent();
+
+            StartingSize = this.Size;
+            StartingTableLayoutSize = tableColumns.Size;
+
             VisualSplitCount = 8;
             SplitPreviewCount = 1;
             DisplayIcons = true;
@@ -170,10 +176,6 @@ namespace LiveSplit.UI.Components
             trkIconSize.DataBindings.Add("Value", this, "IconSize", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbSplitGradient.DataBindings.Add("SelectedItem", this, "SplitGradientString", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbSplitGradient.SelectedIndexChanged += cmbSplitGradient_SelectedIndexChanged;
-            cmbComparison.SelectedIndexChanged += cmbComparison_SelectedIndexChanged;
-            cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbTimingMethod.SelectedIndexChanged += cmbTimingMethod_SelectedIndexChanged;
 
             cmbGradientType.SelectedIndexChanged += cmbGradientType_SelectedIndexChanged;
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -214,14 +216,6 @@ namespace LiveSplit.UI.Components
         {
             label3.Enabled = label10.Enabled = label13.Enabled = btnBeforeNamesColor.Enabled
             = btnCurrentNamesColor.Enabled = btnAfterNamesColor.Enabled = chkOverrideTextColor.Checked;
-        }
-        void cmbComparison_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Comparison = cmbComparison.SelectedItem.ToString();
-        }
-        void cmbTimingMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            TimingMethod = cmbTimingMethod.SelectedItem.ToString();
         }
 
         void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
@@ -320,11 +314,6 @@ namespace LiveSplit.UI.Components
             chkOverrideTimesColor_CheckedChanged(null, null);
             chkDisplayIcons_CheckedChanged(null, null);
             chkLockLastSplit.Enabled = chkShowBlankSplits.Checked;
-            cmbComparison.Items.Clear();
-            cmbComparison.Items.Add("Current Comparison");
-            cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != NoneComparisonGenerator.ComparisonName).ToArray());
-            if (!cmbComparison.Items.Contains(Comparison))
-                cmbComparison.Items.Add(Comparison);
 
             rdoSeconds.Checked = SplitTimesAccuracy == TimeAccuracy.Seconds;
             rdoTenths.Checked = SplitTimesAccuracy == TimeAccuracy.Tenths;
@@ -625,13 +614,13 @@ namespace LiveSplit.UI.Components
             tableColumns.RowCount = 1;
             tableColumns.RowStyles.Clear();
             tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 29f));
-            tableColumns.Size = new Size(433, 29);
+            tableColumns.Size = StartingTableLayoutSize;
             foreach (var control in tableColumns.Controls)
             {
                 if (control is ColumnSettings)
                     tableColumns.Controls.Remove((Control)control);
             }
-            this.Size = new Size(459, 1006);
+            this.Size = StartingSize;
         }
 
         private void UpdateLayoutForColumn()
