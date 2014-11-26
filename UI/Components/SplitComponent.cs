@@ -65,7 +65,7 @@ namespace LiveSplit.UI.Components
 
         public float HorizontalWidth
         {
-            get { return Settings.SplitWidth + (Split != null ? CalculateLabelsWidth() : 0) + IconWidth; }
+            get { return Settings.SplitWidth + CalculateLabelsWidth() + IconWidth; }
         }
 
         public float MinimumHeight { get; set; }
@@ -127,7 +127,7 @@ namespace LiveSplit.UI.Components
                 label.SetActualWidth(g);
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
             }
-            MinimumWidth = (Split != null ? CalculateLabelsWidth() : 0) + IconWidth + 10;
+            MinimumWidth = CalculateLabelsWidth() + IconWidth + 10;
             MinimumHeight = 0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height);
 
             if (Settings.SplitTimesAccuracy != CurrentAccuracy)
@@ -244,6 +244,8 @@ namespace LiveSplit.UI.Components
                 NameLabel.X = 5 + IconWidth;
                 NameLabel.HasShadow = state.LayoutSettings.DropShadows;
 
+                RecreateLabels();
+
                 var curX = width - 7;
                 var nameX = width - 7;
                 foreach (var label in LabelsList.Reverse())
@@ -334,8 +336,7 @@ namespace LiveSplit.UI.Components
         {
             if (Split != null)
             {
-                if (LabelsList.Count != ColumnsList.Count)
-                    RecreateLabels();
+                RecreateLabels();
 
                 NameLabel.Text = Split.Name;
 
@@ -446,23 +447,30 @@ namespace LiveSplit.UI.Components
 
         protected float CalculateLabelsWidth()
         {
-            var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaandSplitTime || x.Type == ColumnType.SegmentDeltaandSegmentTime);
-            var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
-            var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
-            return mixedCount * Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth)
-                + deltaCount * MeasureDeltaLabel.ActualWidth
-                + timeCount * MeasureTimeLabel.ActualWidth;
+            if (ColumnsList != null)
+            {
+                var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaandSplitTime || x.Type == ColumnType.SegmentDeltaandSegmentTime);
+                var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
+                var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
+                return mixedCount * Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth)
+                    + deltaCount * MeasureDeltaLabel.ActualWidth
+                    + timeCount * MeasureTimeLabel.ActualWidth;
+            }
+            return 0f;
         }
 
         protected void RecreateLabels()
         {
-            LabelsList.Clear();
-            foreach (var column in ColumnsList)
+            if (ColumnsList != null && LabelsList.Count != ColumnsList.Count)
             {
-                LabelsList.Add(new SimpleLabel()
-                    {
-                        HorizontalAlignment = StringAlignment.Far
-                    });
+                LabelsList.Clear();
+                foreach (var column in ColumnsList)
+                {
+                    LabelsList.Add(new SimpleLabel()
+                        {
+                            HorizontalAlignment = StringAlignment.Far
+                        });
+                }
             }
         }
 
@@ -490,6 +498,7 @@ namespace LiveSplit.UI.Components
                 Cache["SplitName"] = NameLabel.Text;
                 Cache["IsActive"] = IsActive;
                 Cache["NameColor"] = NameLabel.ForeColor.ToArgb();
+                Cache["ColumnsCount"] = ColumnsList.Count;
                 foreach (var label in LabelsList)
                 {
                     Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;

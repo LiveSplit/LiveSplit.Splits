@@ -342,7 +342,10 @@ namespace LiveSplit.UI.Components
                     i++;
                 }
                 if (Settings.AlwaysShowLastSplit)
+                {
                     SplitComponents[i].Split = state.Run.Last();
+                    SplitComponents[i].ColumnsList = ColumnsList;
+                }
             }
 
             if (invalidator != null)
