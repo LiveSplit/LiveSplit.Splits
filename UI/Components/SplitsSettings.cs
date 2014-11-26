@@ -51,16 +51,13 @@ namespace LiveSplit.UI.Components
             set { BackgroundGradient = (ExtendedGradientType)Enum.Parse(typeof(ExtendedGradientType), value); }
         }
 
-        public String Comparison { get; set; } //remove this later
         public LiveSplitState CurrentState { get; set; }
-        public String TimingMethod { get; set; } //remove this later
 
         public bool DisplayIcons { get; set; }
         public bool IconShadows { get; set; }
         public bool HideIconsIfAllBlank { get; set; }
         public bool ShowThinSeparators { get; set; }
         public bool AlwaysShowLastSplit { get; set; }
-        public bool ShowSplitTimes { get; set; }
         public bool ShowBlankSplits { get; set; }
         public bool LockLastSplit { get; set; }
         public bool SeparatorLastSplit { get; set; }
@@ -109,7 +106,6 @@ namespace LiveSplit.UI.Components
             IconShadows = true;
             ShowThinSeparators = true;
             AlwaysShowLastSplit = true;
-            ShowSplitTimes = true;
             ShowBlankSplits = true;
             LockLastSplit = true;
             SeparatorLastSplit = true;
@@ -137,8 +133,6 @@ namespace LiveSplit.UI.Components
             DeltasAccuracy = TimeAccuracy.Tenths;
             OverrideDeltasColor = false;
             DeltasColor = Color.FromArgb(255, 255, 255);
-            Comparison = "Current Comparison";
-            TimingMethod = "Current Timing Method";
             Display2Rows = false;
             ShowColumnLabels = false;
 
@@ -368,10 +362,8 @@ namespace LiveSplit.UI.Components
             
             if (version >= new Version(1, 5))
             {
-                TimingMethod = element["TimingMethod"].InnerText;
                 HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
                 ShowColumnLabels = Boolean.Parse(element["ShowColumnLabels"].InnerText);
-
                 var columnsElement = element["Columns"];
                 ColumnsList.Clear();
                 foreach (var child in columnsElement.ChildNodes)
@@ -382,9 +374,19 @@ namespace LiveSplit.UI.Components
             }
             else
             {
-                TimingMethod = "Current Timing Method";
                 HideIconsIfAllBlank = true;
                 ShowColumnLabels = false;
+                ColumnsList.Clear();
+                var comparison = element["Comparison"].InnerText;
+                if (Boolean.Parse(element["ShowSplitTimes"].InnerText))
+                {
+                    ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, comparison, "Current Timing Method")});
+                    ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("+/-", ColumnType.SplitTime, comparison, "Current Timing Method")});
+                }
+                else
+                {
+                    ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.DeltaandSplitTime, comparison, "Current Timing Method") });
+                }
             }
             if (version >= new Version(1, 3))
             {
@@ -405,7 +407,6 @@ namespace LiveSplit.UI.Components
                 DeltasAccuracy = ParseEnum<TimeAccuracy>(element["DeltasAccuracy"]);
                 OverrideDeltasColor = Boolean.Parse(element["OverrideDeltasColor"].InnerText);
                 DeltasColor = ParseColor(element["DeltasColor"]);
-                Comparison = element["Comparison"].InnerText;
                 Display2Rows = Boolean.Parse(element["Display2Rows"].InnerText);
             }
             else
@@ -432,12 +433,10 @@ namespace LiveSplit.UI.Components
                 DeltasAccuracy = TimeAccuracy.Tenths;
                 OverrideDeltasColor = false;
                 DeltasColor = Color.FromArgb(255, 255, 255);
-                Comparison = "Current Comparison";
                 Display2Rows = false;
             }              
             if (version >= new Version(1, 2))
             {
-                ShowSplitTimes = Boolean.Parse(element["ShowSplitTimes"].InnerText);
                 SplitTimesAccuracy = ParseEnum<TimeAccuracy>(element["SplitTimesAccuracy"]);
                 if (version >= new Version(1, 3))
                     OverrideTextColor = Boolean.Parse(element["OverrideTextColor"].InnerText);
@@ -450,7 +449,6 @@ namespace LiveSplit.UI.Components
             }
             else
             {
-                ShowSplitTimes = true;
                 SplitTimesAccuracy = TimeAccuracy.Seconds;
                 OverrideTextColor = false;
                 ShowBlankSplits = true;
@@ -473,7 +471,6 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "ShowThinSeparators", ShowThinSeparators));
             parent.AppendChild(ToElement(document, "AlwaysShowLastSplit", AlwaysShowLastSplit));
             parent.AppendChild(ToElement(document, "SplitWidth", SplitWidth));
-            parent.AppendChild(ToElement(document, "ShowSplitTimes", ShowSplitTimes));
             parent.AppendChild(ToElement(document, "SplitTimesAccuracy", SplitTimesAccuracy));
             parent.AppendChild(ToElement(document, BeforeNamesColor, "BeforeNamesColor"));
             parent.AppendChild(ToElement(document, CurrentNamesColor, "CurrentNamesColor"));
@@ -497,8 +494,6 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "DropDecimals", DropDecimals));
             parent.AppendChild(ToElement(document, "OverrideDeltasColor", OverrideDeltasColor));
             parent.AppendChild(ToElement(document, DeltasColor, "DeltasColor"));
-            parent.AppendChild(ToElement(document, "Comparison", Comparison));
-            parent.AppendChild(ToElement(document, "TimingMethod", TimingMethod));
             parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
             parent.AppendChild(ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
             parent.AppendChild(ToElement(document, "ShowColumnLabels", ShowColumnLabels));
