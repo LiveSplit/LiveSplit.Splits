@@ -53,7 +53,7 @@ namespace LiveSplit.UI.Components
         public float PaddingBottom { get { return 0f; } }
         public float PaddingRight { get { return 0f; } }
 
-        public IList<ColumnData> ColumnsList { get; set; }
+        public IEnumerable<ColumnData> ColumnsList { get; set; }
         public IList<SimpleLabel> LabelsList { get; set; }
 
         public float VerticalHeight
@@ -244,35 +244,36 @@ namespace LiveSplit.UI.Components
                 NameLabel.X = 5 + IconWidth;
                 NameLabel.HasShadow = state.LayoutSettings.DropShadows;
 
-                RecreateLabels();
-
-                var curX = width - 7;
-                var nameX = width - 7;
-                foreach (var label in LabelsList.Reverse())
+                if (ColumnsList.Count() == LabelsList.Count)
                 {
-                    var column = ColumnsList[LabelsList.IndexOf(label)];
+                    var curX = width - 7;
+                    var nameX = width - 7;
+                    foreach (var label in LabelsList.Reverse())
+                    {
+                        var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
-                    if (!String.IsNullOrEmpty(label.Text))
-                        nameX = curX - label.ActualWidth;
+                        if (!String.IsNullOrEmpty(label.Text))
+                            nameX = curX - label.ActualWidth;
 
-                    var labelWidth = 0f;
-                    if (column.Type == ColumnType.DeltaandSplitTime || column.Type == ColumnType.SegmentDeltaandSegmentTime)
-                        labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
-                    else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
-                        labelWidth = MeasureDeltaLabel.ActualWidth;
-                    else
-                        labelWidth = MeasureTimeLabel.ActualWidth;
-                    curX -= labelWidth + 5;
-                    label.Width = labelWidth + 20;
-                    label.X = curX - 15;
+                        var labelWidth = 0f;
+                        if (column.Type == ColumnType.DeltaandSplitTime || column.Type == ColumnType.SegmentDeltaandSegmentTime)
+                            labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
+                        else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
+                            labelWidth = MeasureDeltaLabel.ActualWidth;
+                        else
+                            labelWidth = MeasureTimeLabel.ActualWidth;
+                        curX -= labelWidth + 5;
+                        label.Width = labelWidth + 20;
+                        label.X = curX - 15;
 
-                    label.Font = state.LayoutSettings.TimesFont;
-                    label.HasShadow = state.LayoutSettings.DropShadows;
-                    label.IsMonospaced = true;
-                    label.Draw(g);
+                        label.Font = state.LayoutSettings.TimesFont;
+                        label.HasShadow = state.LayoutSettings.DropShadows;
+                        label.IsMonospaced = true;
+                        label.Draw(g);
+                    }
+                    NameLabel.Width = nameX - IconWidth;
+                    NameLabel.Draw(g);
                 }
-                NameLabel.Width = nameX - IconWidth;
-                NameLabel.Draw(g);
             }
             else DisplayIcon = Settings.DisplayIcons;
         }
@@ -355,7 +356,7 @@ namespace LiveSplit.UI.Components
 
                 foreach (var label in LabelsList)
                 {
-                    var column = ColumnsList[LabelsList.IndexOf(label)];
+                    var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
                     UpdateColumn(state, label, column);
                 }
             }
@@ -380,68 +381,87 @@ namespace LiveSplit.UI.Components
             {
                 if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
                     label.ForeColor = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
-                var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
-                if (type == ColumnType.DeltaandSplitTime)
+                
+                if (type == ColumnType.DeltaandSplitTime || type == ColumnType.Delta || type == ColumnType.SplitTime)
                 {
+                    var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
                     var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, timingMethod);
                     if (color == null)
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
-                    if (deltaTime != null)
-                        label.Text = DeltaTimeFormatter.Format(deltaTime);
-                    else
-                        label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
-                }
-                else
-                {
-                    if (type == ColumnType.Delta)
+
+                    if (type == ColumnType.DeltaandSplitTime)
                     {
-                        var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, timingMethod);
-                        if (color == null)
-                            color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
-                        label.ForeColor = color.Value;
-                        label.Text = DeltaTimeFormatter.Format(deltaTime);
+                        if (deltaTime != null)
+                            label.Text = DeltaTimeFormatter.Format(deltaTime);
+                        else
+                            label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                     }
-                    else if (type == ColumnType.SplitTime)
+
+                    else if (type == ColumnType.Delta)
+                        label.Text = DeltaTimeFormatter.Format(deltaTime);
+
+                    else //SplitTime
                         label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                 }
 
+                else if (type == ColumnType.SegmentDeltaandSegmentTime || type == ColumnType.SegmentDelta || type == ColumnType.SegmentTime)
+                {
+                    var segmentDelta = LiveSplitStateHelper.GetPreviousSegment(state, state.CurrentSplitIndex, true, false, comparison, timingMethod);
+                    var segmentTime = LiveSplitStateHelper.GetPreviousSegment(state, state.CurrentSplitIndex, false, true, comparison, timingMethod);
+                    var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, 1, splitIndex, comparison, timingMethod);
+                    if (color == null)
+                        color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
+                    label.ForeColor = color.Value;
+
+                    if (type == ColumnType.SegmentDeltaandSegmentTime)
+                    {
+                        if (segmentDelta != null)
+                            label.Text = DeltaTimeFormatter.Format(segmentDelta);
+                        else
+                            label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
+                    }
+
+                    else if (type == ColumnType.SegmentDelta)
+                        label.Text = DeltaTimeFormatter.Format(segmentDelta);
+
+                    else //SegmentTime
+                        label.Text = TimeFormatter.Format(segmentTime);
+                }               
             }
             else
             {
                 if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
                 {
                     if (Split == state.CurrentSplit)
-                    {
                         label.ForeColor = Settings.OverrideTimesColor ? Settings.CurrentTimesColor : state.LayoutSettings.TextColor;
-                    }
                     else
-                    {
                         label.ForeColor = Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
-                    }
+
                     if (type == ColumnType.SplitTime)
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
+
+                    else //SegmentTime
+                    {
+                        var previousTime = splitIndex > 0 ? state.Run[splitIndex - 1].Comparisons[comparison][timingMethod] : TimeSpan.Zero;
+                        label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
+                    }
                 }
-                
+
                 //Live Delta
                 var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, false, comparison, timingMethod);
                 if (bestDelta != null && Split == state.CurrentSplit)
                 {
-                    if (type == ColumnType.DeltaandSplitTime)
-                    {
+                    if (type == ColumnType.DeltaandSplitTime || type == ColumnType.Delta)
                         label.Text = DeltaTimeFormatter.Format(bestDelta);
-                        label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
-                    }
-                    else if (type == ColumnType.Delta)
-                    {
-                        label.Text = DeltaTimeFormatter.Format(bestDelta);
-                        label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
-                    }
+
+                    else if (type == ColumnType.SegmentDeltaandSegmentTime || type == ColumnType.SegmentDelta)
+                        label.Text = DeltaTimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, true, false, comparison, timingMethod));
+
+                    label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
                 }
-                else if (type == ColumnType.Delta)
-                {
+                else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
                     label.Text = "";
-                }
             }
         }
 
@@ -461,7 +481,7 @@ namespace LiveSplit.UI.Components
 
         protected void RecreateLabels()
         {
-            if (ColumnsList != null && LabelsList.Count != ColumnsList.Count)
+            if (ColumnsList != null && LabelsList.Count != ColumnsList.Count())
             {
                 LabelsList.Clear();
                 foreach (var column in ColumnsList)
@@ -498,7 +518,7 @@ namespace LiveSplit.UI.Components
                 Cache["SplitName"] = NameLabel.Text;
                 Cache["IsActive"] = IsActive;
                 Cache["NameColor"] = NameLabel.ForeColor.ToArgb();
-                Cache["ColumnsCount"] = ColumnsList.Count;
+                Cache["ColumnsCount"] = ColumnsList.Count();
                 foreach (var label in LabelsList)
                 {
                     Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;

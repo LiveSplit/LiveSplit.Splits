@@ -39,7 +39,7 @@ namespace LiveSplit.UI.Components
 
         protected Color OldShadowsColor { get; set; }
 
-        protected IList<ColumnData> ColumnsList { get { return Settings.ColumnsList.Select(x => x.Data).ToList(); } }
+        protected IEnumerable<ColumnData> ColumnsList { get { return Settings.ColumnsList.Select(x => x.Data); } }
 
         public string ComponentName
         {

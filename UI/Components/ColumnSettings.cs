@@ -24,11 +24,11 @@ namespace LiveSplit.UI.Components
         public String TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
 
         public ColumnData Data { get; set; }
-        public LiveSplitState CurrentState { get; set; }
-        public IList<ColumnSettings> ColumnsList { get; set; }
+        protected LiveSplitState CurrentState { get; set; }
+        protected IList<ColumnSettings> ColumnsList { get; set; }
 
-        public int ColumnIndex { get { return ColumnsList.IndexOf(this); } }
-        public int TotalColumns { get { return ColumnsList.Count; } }
+        protected int ColumnIndex { get { return ColumnsList.IndexOf(this); } }
+        protected int TotalColumns { get { return ColumnsList.Count; } }
 
         public event EventHandler ColumnRemoved;
         public event EventHandler MovedUp;
@@ -48,8 +48,27 @@ namespace LiveSplit.UI.Components
             cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
 
+            cmbColumnType.SelectedIndexChanged += cmbColumnType_SelectedIndexChanged;
+            cmbComparison.SelectedIndexChanged += cmbComparison_SelectedIndexChanged;
+            cmbTimingMethod.SelectedIndexChanged += cmbTimingMethod_SelectedIndexChanged;
+
             txtName.TextChanged += txtName_TextChanged;
             this.Load += ColumnSettings_Load;
+        }
+
+        void cmbTimingMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TimingMethod = cmbTimingMethod.SelectedItem.ToString();
+        }
+
+        void cmbComparison_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Comparison = cmbComparison.SelectedItem.ToString();
+        }
+
+        void cmbColumnType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Type = cmbColumnType.SelectedItem.ToString();
         }
 
         void ColumnSettings_Load(object sender, EventArgs e)
