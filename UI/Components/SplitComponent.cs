@@ -388,7 +388,7 @@ namespace LiveSplit.UI.Components
 
                     else //SegmentTime
                     {
-                        var segmentTime = LiveSplitStateHelper.GetPreviousSegment(state, state.CurrentSplitIndex, false, true, comparison, timingMethod);
+                        var segmentTime = LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, false, true, comparison, timingMethod);
                         label.Text = TimeFormatter.Format(segmentTime);
                     }
                 }
@@ -415,7 +415,7 @@ namespace LiveSplit.UI.Components
 
                 else if (type == ColumnType.SegmentDeltaandSegmentTime || type == ColumnType.SegmentDelta)
                 {
-                    var segmentDelta = LiveSplitStateHelper.GetPreviousSegment(state, state.CurrentSplitIndex, true, false, comparison, timingMethod);
+                    var segmentDelta = LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, false, false, comparison, timingMethod);
                     var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, 1, splitIndex, comparison, timingMethod);
                     if (color == null)
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
