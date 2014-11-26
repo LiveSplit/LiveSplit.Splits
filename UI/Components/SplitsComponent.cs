@@ -39,9 +39,11 @@ namespace LiveSplit.UI.Components
 
         protected Color OldShadowsColor { get; set; }
 
+        protected IList<ColumnData> ColumnsList { get { return Settings.ColumnsList.Select(x => x.Data).ToList(); } }
+
         public string ComponentName
         {
-            get { return "Splits" + (Settings.Comparison == "Current Comparison" ? "" : " (" + CompositeComparisons.GetShortComparisonName(Settings.Comparison) + ")"); }
+            get { return "Splits"; }
         }
 
         public float VerticalHeight
@@ -88,10 +90,13 @@ namespace LiveSplit.UI.Components
         void state_ComparisonRenamed(object sender, EventArgs e)
         {
             var args = (RenameEventArgs)e;
-            if (Settings.Comparison == args.OldName)
+            foreach (var column in ColumnsList)
             {
-                Settings.Comparison = args.NewName;
-                ((LiveSplitState)sender).Layout.HasChanged = true;
+                if (column.Comparison == args.OldName)
+                {
+                    column.Comparison = args.NewName;
+                    ((LiveSplitState)sender).Layout.HasChanged = true;
+                }
             }
         }
 
@@ -332,7 +337,9 @@ namespace LiveSplit.UI.Components
             {
                 foreach (var split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
                 {
-                    SplitComponents[i++].Split = split;
+                    SplitComponents[i].Split = split;
+                    SplitComponents[i].ColumnsList = ColumnsList;
+                    i++;
                 }
                 if (Settings.AlwaysShowLastSplit)
                     SplitComponents[i].Split = state.Run.Last();

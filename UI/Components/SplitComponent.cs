@@ -55,6 +55,8 @@ namespace LiveSplit.UI.Components
         public float PaddingBottom { get { return 0f; } }
         public float PaddingRight { get { return 0f; } }
 
+        public IList<ColumnData> ColumnsList { get; set; }
+
         public float VerticalHeight
         {
             get { return 25 + Settings.SplitHeight; }
