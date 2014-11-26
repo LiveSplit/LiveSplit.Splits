@@ -92,13 +92,18 @@ namespace LiveSplit.UI.Components
 
         private String GetColumnType(ColumnType type)
         {
-            if (type == ColumnType.Delta)
+            if (type == ColumnType.SplitTime)
+                return "Split Time";
+            else if (type == ColumnType.Delta)
                 return "Delta";
-            else if (type == ColumnType.SegmentDelta)
-                return "Segment Delta";
+            else if (type == ColumnType.DeltaandSplitTime)
+                return "Delta and Split Time";
             else if (type == ColumnType.SegmentTime)
                 return "Segment Time";
-            return "Split Time";
+            else if (type == ColumnType.SegmentDelta)
+                return "Segment Delta";
+            else
+                return "Segment Delta and Segment Time";
         }
 
         private ColumnType ParseColumnType(String columnType)
