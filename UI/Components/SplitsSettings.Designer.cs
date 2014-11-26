@@ -66,7 +66,6 @@
             this.btnBeforeTimesColor = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAfterTimesColor = new System.Windows.Forms.Button();
-            this.chkShowTimes = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.rdoSeconds = new System.Windows.Forms.RadioButton();
@@ -171,11 +170,9 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 187F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 240F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 215F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 934);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 909);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // cmbSplitGradient
@@ -527,7 +524,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 643);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(439, 234);
+            this.groupBox4.Size = new System.Drawing.Size(439, 209);
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Split Times";
@@ -536,17 +533,16 @@
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.groupBox5, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.chkShowTimes, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.groupBox1, 0, 2);
+            this.tableLayoutPanel5.Controls.Add(this.groupBox5, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.groupBox1, 0, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 3;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 141F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(433, 215);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(433, 190);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // groupBox5
@@ -554,7 +550,7 @@
             this.tableLayoutPanel5.SetColumnSpan(this.groupBox5, 2);
             this.groupBox5.Controls.Add(this.tableLayoutPanel6);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(3, 28);
+            this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(427, 135);
             this.groupBox5.TabIndex = 1;
@@ -664,23 +660,11 @@
             this.btnAfterTimesColor.UseVisualStyleBackColor = false;
             this.btnAfterTimesColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
-            // chkShowTimes
-            // 
-            this.chkShowTimes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkShowTimes.AutoSize = true;
-            this.chkShowTimes.Location = new System.Drawing.Point(7, 4);
-            this.chkShowTimes.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
-            this.chkShowTimes.Name = "chkShowTimes";
-            this.chkShowTimes.Size = new System.Drawing.Size(423, 17);
-            this.chkShowTimes.TabIndex = 0;
-            this.chkShowTimes.Text = "Show Split Times";
-            this.chkShowTimes.UseVisualStyleBackColor = true;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 169);
+            this.groupBox1.Location = new System.Drawing.Point(3, 144);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(427, 43);
             this.groupBox1.TabIndex = 2;
@@ -1039,7 +1023,7 @@
             this.groupColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.groupColumns, 4);
             this.groupColumns.Controls.Add(this.tableColumns);
-            this.groupColumns.Location = new System.Drawing.Point(3, 883);
+            this.groupColumns.Location = new System.Drawing.Point(3, 858);
             this.groupColumns.Name = "groupColumns";
             this.groupColumns.Size = new System.Drawing.Size(439, 48);
             this.groupColumns.TabIndex = 21;
@@ -1090,7 +1074,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "SplitsSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(459, 948);
+            this.Size = new System.Drawing.Size(459, 923);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).EndInit();
@@ -1104,7 +1088,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trkIconSize)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
@@ -1142,7 +1125,6 @@
         private System.Windows.Forms.TrackBar trkSize;
         private System.Windows.Forms.CheckBox chkThinSeparators;
         private System.Windows.Forms.CheckBox chkLastSplit;
-        private System.Windows.Forms.CheckBox chkShowTimes;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.RadioButton rdoSeconds;
