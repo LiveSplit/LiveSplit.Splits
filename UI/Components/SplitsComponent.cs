@@ -338,7 +338,7 @@ namespace LiveSplit.UI.Components
                 foreach (var split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
                 {
                     SplitComponents[i].Split = split;
-                    SplitComponents[i].ColumnsList = ColumnsList;
+                    SplitComponents[i].ColumnList = ColumnsList;
                     i++;
                 }
                 if (Settings.AlwaysShowLastSplit)
