@@ -380,7 +380,7 @@ namespace LiveSplit.UI.Components
                 if (Boolean.Parse(element["ShowSplitTimes"].InnerText))
                 {
                     ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, comparison, "Current Timing Method")});
-                    ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("+/-", ColumnType.SplitTime, comparison, "Current Timing Method")});
+                    ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("Time", ColumnType.SplitTime, comparison, "Current Timing Method")});
                 }
                 else
                 {
