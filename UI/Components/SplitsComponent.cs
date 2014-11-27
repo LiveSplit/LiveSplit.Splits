@@ -32,6 +32,8 @@ namespace LiveSplit.UI.Components
         private int visualSplitCount;
         private int settingsSplitCount;
 
+        protected bool PreviousShowLabels { get; set; }
+
         protected int ScrollOffset { get; set; }
         protected int LastSplitSeparatorIndex { get; set; }
 
@@ -39,9 +41,11 @@ namespace LiveSplit.UI.Components
 
         protected Color OldShadowsColor { get; set; }
 
+        protected IEnumerable<ColumnData> ColumnsList { get { return Settings.ColumnsList.Select(x => x.Data); } }
+
         public string ComponentName
         {
-            get { return "Splits" + (Settings.Comparison == "Current Comparison" ? "" : " (" + CompositeComparisons.GetShortComparisonName(Settings.Comparison) + ")"); }
+            get { return "Splits"; }
         }
 
         public float VerticalHeight
@@ -88,10 +92,13 @@ namespace LiveSplit.UI.Components
         void state_ComparisonRenamed(object sender, EventArgs e)
         {
             var args = (RenameEventArgs)e;
-            if (Settings.Comparison == args.OldName)
+            foreach (var column in ColumnsList)
             {
-                Settings.Comparison = args.NewName;
-                ((LiveSplitState)sender).Layout.HasChanged = true;
+                if (column.Comparison == args.OldName)
+                {
+                    column.Comparison = args.NewName;
+                    ((LiveSplitState)sender).Layout.HasChanged = true;
+                }
             }
         }
 
@@ -107,6 +114,12 @@ namespace LiveSplit.UI.Components
             InternalComponent.VisibleComponents = Components;
 
             var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
+
+            if (Settings.ShowColumnLabels)
+            {
+                Components.Add(new LabelsComponent(Settings, ColumnsList));
+                Components.Add(new SeparatorComponent());
+            }
 
             for (var i = 0; i < totalSplits; ++i)
             {
@@ -147,8 +160,10 @@ namespace LiveSplit.UI.Components
             var previousSplitCount = visualSplitCount;
             visualSplitCount = Math.Min(state.Run.Count, Settings.VisualSplitCount);
             if (previousSplitCount != visualSplitCount 
-                || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount))
+                || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount)
+                || Settings.ShowColumnLabels != PreviousShowLabels)
             {
+                PreviousShowLabels = Settings.ShowColumnLabels;
                 RebuildVisualSplits();
             }
             settingsSplitCount = Settings.VisualSplitCount;
@@ -194,7 +209,7 @@ namespace LiveSplit.UI.Components
                     {
                         if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = true;
-                        else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                        else if (Components[index - 1] is SplitComponent && ((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = false;
                     }
                     if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit && index == LastSplitSeparatorIndex)
@@ -332,10 +347,15 @@ namespace LiveSplit.UI.Components
             {
                 foreach (var split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
                 {
-                    SplitComponents[i++].Split = split;
+                    SplitComponents[i].Split = split;
+                    SplitComponents[i].ColumnsList = ColumnsList;
+                    i++;
                 }
                 if (Settings.AlwaysShowLastSplit)
+                {
                     SplitComponents[i].Split = state.Run.Last();
+                    SplitComponents[i].ColumnsList = ColumnsList;
+                }
             }
 
             if (invalidator != null)

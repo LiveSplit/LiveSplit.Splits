@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmbTimingMethod = new System.Windows.Forms.ComboBox();
-            this.cmbComparison = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.cmbSplitGradient = new System.Windows.Forms.ComboBox();
             this.btnBottomColor = new System.Windows.Forms.Button();
             this.btnTopColor = new System.Windows.Forms.Button();
@@ -57,6 +54,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.trkIconSize = new System.Windows.Forms.TrackBar();
             this.chkIconShadows = new System.Windows.Forms.CheckBox();
+            this.chkHideIcons = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -68,7 +66,6 @@
             this.btnBeforeTimesColor = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAfterTimesColor = new System.Windows.Forms.Button();
-            this.chkShowTimes = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.rdoSeconds = new System.Windows.Forms.RadioButton();
@@ -90,15 +87,19 @@
             this.chkDropDecimals = new System.Windows.Forms.CheckBox();
             this.rdoDeltaTenths = new System.Windows.Forms.RadioButton();
             this.rdoDeltaHundredths = new System.Windows.Forms.RadioButton();
-            this.chkDisplayRows = new System.Windows.Forms.CheckBox();
             this.chkLockLastSplit = new System.Windows.Forms.CheckBox();
             this.chkShowBlankSplits = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.btnColor1 = new System.Windows.Forms.Button();
             this.btnColor2 = new System.Windows.Forms.Button();
             this.cmbGradientType = new System.Windows.Forms.ComboBox();
-            this.chkHideIcons = new System.Windows.Forms.CheckBox();
+            this.chkDisplayRows = new System.Windows.Forms.CheckBox();
+            this.groupColumns = new System.Windows.Forms.GroupBox();
+            this.tableColumns = new System.Windows.Forms.TableLayoutPanel();
+            this.chkColumnLabels = new System.Windows.Forms.CheckBox();
+            this.btnAddColumn = new System.Windows.Forms.Button();
+            this.btnLabelColor = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
@@ -120,6 +121,8 @@
             this.tableLayoutPanel9.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.groupColumns.SuspendLayout();
+            this.tableColumns.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -129,41 +132,35 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 193F));
-            this.tableLayoutPanel1.Controls.Add(this.cmbTimingMethod, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.cmbComparison, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label12, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cmbSplitGradient, 3, 10);
-            this.tableLayoutPanel1.Controls.Add(this.btnBottomColor, 2, 10);
-            this.tableLayoutPanel1.Controls.Add(this.btnTopColor, 1, 10);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 10);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.dmnTotalSegments, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.dmnUpcomingSegments, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 11);
-            this.tableLayoutPanel1.Controls.Add(this.chkThinSeparators, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.chkLastSplit, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 12);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox4, 0, 14);
-            this.tableLayoutPanel1.Controls.Add(this.lblSplitSize, 0, 9);
-            this.tableLayoutPanel1.Controls.Add(this.trkSize, 1, 9);
-            this.tableLayoutPanel1.Controls.Add(this.chkSeparatorLastSplit, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox6, 0, 13);
-            this.tableLayoutPanel1.Controls.Add(this.chkDisplayRows, 0, 8);
-            this.tableLayoutPanel1.Controls.Add(this.chkLockLastSplit, 0, 7);
-            this.tableLayoutPanel1.Controls.Add(this.chkShowBlankSplits, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.cmbSplitGradient, 3, 7);
+            this.tableLayoutPanel1.Controls.Add(this.btnBottomColor, 2, 7);
+            this.tableLayoutPanel1.Controls.Add(this.btnTopColor, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.dmnTotalSegments, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dmnUpcomingSegments, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.chkThinSeparators, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.chkLastSplit, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox4, 0, 11);
+            this.tableLayoutPanel1.Controls.Add(this.lblSplitSize, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.trkSize, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.chkSeparatorLastSplit, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox6, 0, 10);
+            this.tableLayoutPanel1.Controls.Add(this.chkLockLastSplit, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.chkShowBlankSplits, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label11, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label14, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnColor1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnColor2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.cmbGradientType, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.chkDisplayRows, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.groupColumns, 0, 12);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(7, 7);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 15;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel1.RowCount = 13;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
@@ -175,48 +172,10 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 187F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 966);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 215F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 909);
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
-            // 
-            // cmbTimingMethod
-            // 
-            this.cmbTimingMethod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbTimingMethod, 3);
-            this.cmbTimingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTimingMethod.FormattingEnabled = true;
-            this.cmbTimingMethod.Items.AddRange(new object[] {
-            "Current Timing Method",
-            "Real Time",
-            "Game Time"});
-            this.cmbTimingMethod.Location = new System.Drawing.Point(197, 33);
-            this.cmbTimingMethod.Name = "cmbTimingMethod";
-            this.cmbTimingMethod.Size = new System.Drawing.Size(245, 21);
-            this.cmbTimingMethod.TabIndex = 45;
-            // 
-            // cmbComparison
-            // 
-            this.cmbComparison.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbComparison, 3);
-            this.cmbComparison.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbComparison.FormattingEnabled = true;
-            this.cmbComparison.Location = new System.Drawing.Point(197, 62);
-            this.cmbComparison.Name = "cmbComparison";
-            this.cmbComparison.Size = new System.Drawing.Size(245, 21);
-            this.cmbComparison.TabIndex = 3;
-            this.cmbComparison.SelectedIndexChanged += new System.EventHandler(this.cmbComparison_SelectedIndexChanged_1);
-            // 
-            // label12
-            // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 66);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(188, 13);
-            this.label12.TabIndex = 43;
-            this.label12.Text = "Comparison:";
             // 
             // cmbSplitGradient
             // 
@@ -227,10 +186,10 @@
             "Plain",
             "Vertical",
             "Horizontal"});
-            this.cmbSplitGradient.Location = new System.Drawing.Point(255, 294);
+            this.cmbSplitGradient.Location = new System.Drawing.Point(255, 207);
             this.cmbSplitGradient.Name = "cmbSplitGradient";
             this.cmbSplitGradient.Size = new System.Drawing.Size(187, 21);
-            this.cmbSplitGradient.TabIndex = 15;
+            this.cmbSplitGradient.TabIndex = 16;
             // 
             // btnBottomColor
             // 
@@ -238,10 +197,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBottomColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBottomColor.Location = new System.Drawing.Point(226, 293);
+            this.btnBottomColor.Location = new System.Drawing.Point(226, 206);
             this.btnBottomColor.Name = "btnBottomColor";
             this.btnBottomColor.Size = new System.Drawing.Size(23, 23);
-            this.btnBottomColor.TabIndex = 14;
+            this.btnBottomColor.TabIndex = 15;
             this.btnBottomColor.UseVisualStyleBackColor = false;
             this.btnBottomColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
@@ -251,10 +210,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTopColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnTopColor.Location = new System.Drawing.Point(197, 293);
+            this.btnTopColor.Location = new System.Drawing.Point(197, 206);
             this.btnTopColor.Name = "btnTopColor";
             this.btnTopColor.Size = new System.Drawing.Size(23, 23);
-            this.btnTopColor.TabIndex = 13;
+            this.btnTopColor.TabIndex = 14;
             this.btnTopColor.UseVisualStyleBackColor = false;
             this.btnTopColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
@@ -262,7 +221,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 298);
+            this.label4.Location = new System.Drawing.Point(3, 211);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(188, 13);
             this.label4.TabIndex = 3;
@@ -272,7 +231,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 95);
+            this.label1.Location = new System.Drawing.Point(3, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(188, 13);
             this.label1.TabIndex = 0;
@@ -282,7 +241,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 124);
+            this.label2.Location = new System.Drawing.Point(3, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(188, 13);
             this.label2.TabIndex = 1;
@@ -292,7 +251,7 @@
             // 
             this.dmnTotalSegments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.dmnTotalSegments, 3);
-            this.dmnTotalSegments.Location = new System.Drawing.Point(197, 91);
+            this.dmnTotalSegments.Location = new System.Drawing.Point(197, 33);
             this.dmnTotalSegments.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -305,7 +264,7 @@
             0});
             this.dmnTotalSegments.Name = "dmnTotalSegments";
             this.dmnTotalSegments.Size = new System.Drawing.Size(245, 20);
-            this.dmnTotalSegments.TabIndex = 4;
+            this.dmnTotalSegments.TabIndex = 5;
             this.dmnTotalSegments.Value = new decimal(new int[] {
             2,
             0,
@@ -316,7 +275,7 @@
             // 
             this.dmnUpcomingSegments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.dmnUpcomingSegments, 3);
-            this.dmnUpcomingSegments.Location = new System.Drawing.Point(197, 120);
+            this.dmnUpcomingSegments.Location = new System.Drawing.Point(197, 62);
             this.dmnUpcomingSegments.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -324,7 +283,7 @@
             0});
             this.dmnUpcomingSegments.Name = "dmnUpcomingSegments";
             this.dmnUpcomingSegments.Size = new System.Drawing.Size(245, 20);
-            this.dmnUpcomingSegments.TabIndex = 5;
+            this.dmnUpcomingSegments.TabIndex = 6;
             this.dmnUpcomingSegments.Value = new decimal(new int[] {
             1,
             0,
@@ -336,10 +295,10 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox2, 4);
             this.groupBox2.Controls.Add(this.tableLayoutPanel3);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 322);
+            this.groupBox2.Location = new System.Drawing.Point(3, 235);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(439, 134);
-            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Split Names Color";
             // 
@@ -449,11 +408,11 @@
             // 
             this.chkThinSeparators.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkThinSeparators.AutoSize = true;
-            this.chkThinSeparators.Location = new System.Drawing.Point(7, 151);
+            this.chkThinSeparators.Location = new System.Drawing.Point(7, 93);
             this.chkThinSeparators.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkThinSeparators.Name = "chkThinSeparators";
             this.chkThinSeparators.Size = new System.Drawing.Size(184, 17);
-            this.chkThinSeparators.TabIndex = 6;
+            this.chkThinSeparators.TabIndex = 7;
             this.chkThinSeparators.Text = "Show Thin Separators";
             this.chkThinSeparators.UseVisualStyleBackColor = true;
             // 
@@ -461,11 +420,11 @@
             // 
             this.chkLastSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkLastSplit.AutoSize = true;
-            this.chkLastSplit.Location = new System.Drawing.Point(7, 180);
+            this.chkLastSplit.Location = new System.Drawing.Point(7, 122);
             this.chkLastSplit.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkLastSplit.Name = "chkLastSplit";
             this.chkLastSplit.Size = new System.Drawing.Size(184, 17);
-            this.chkLastSplit.TabIndex = 8;
+            this.chkLastSplit.TabIndex = 9;
             this.chkLastSplit.Text = "Always Show Last Split";
             this.chkLastSplit.UseVisualStyleBackColor = true;
             // 
@@ -474,10 +433,10 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox3, 4);
             this.groupBox3.Controls.Add(this.tableLayoutPanel4);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 462);
+            this.groupBox3.Location = new System.Drawing.Point(3, 375);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(439, 75);
-            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabIndex = 18;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Icons";
             // 
@@ -532,7 +491,7 @@
             this.trkIconSize.Minimum = 10;
             this.trkIconSize.Name = "trkIconSize";
             this.trkIconSize.Size = new System.Drawing.Size(283, 23);
-            this.trkIconSize.TabIndex = 2;
+            this.trkIconSize.TabIndex = 3;
             this.trkIconSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkIconSize.Value = 16;
             // 
@@ -548,15 +507,27 @@
             this.chkIconShadows.Text = "Show Icon Shadows";
             this.chkIconShadows.UseVisualStyleBackColor = true;
             // 
+            // chkHideIcons
+            // 
+            this.chkHideIcons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkHideIcons.AutoSize = true;
+            this.chkHideIcons.Location = new System.Drawing.Point(295, 6);
+            this.chkHideIcons.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
+            this.chkHideIcons.Name = "chkHideIcons";
+            this.chkHideIcons.Size = new System.Drawing.Size(135, 17);
+            this.chkHideIcons.TabIndex = 2;
+            this.chkHideIcons.Text = "Hide Icons If All Blank";
+            this.chkHideIcons.UseVisualStyleBackColor = true;
+            // 
             // groupBox4
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox4, 4);
             this.groupBox4.Controls.Add(this.tableLayoutPanel5);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 730);
+            this.groupBox4.Location = new System.Drawing.Point(3, 643);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(439, 233);
-            this.groupBox4.TabIndex = 19;
+            this.groupBox4.Size = new System.Drawing.Size(439, 209);
+            this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Split Times";
             // 
@@ -564,17 +535,16 @@
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.groupBox5, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.chkShowTimes, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.groupBox1, 0, 2);
+            this.tableLayoutPanel5.Controls.Add(this.groupBox5, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.groupBox1, 0, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 3;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 141F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(433, 214);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(433, 190);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // groupBox5
@@ -582,7 +552,7 @@
             this.tableLayoutPanel5.SetColumnSpan(this.groupBox5, 2);
             this.groupBox5.Controls.Add(this.tableLayoutPanel6);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(3, 28);
+            this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(427, 135);
             this.groupBox5.TabIndex = 1;
@@ -692,25 +662,13 @@
             this.btnAfterTimesColor.UseVisualStyleBackColor = false;
             this.btnAfterTimesColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
-            // chkShowTimes
-            // 
-            this.chkShowTimes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkShowTimes.AutoSize = true;
-            this.chkShowTimes.Location = new System.Drawing.Point(7, 4);
-            this.chkShowTimes.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
-            this.chkShowTimes.Name = "chkShowTimes";
-            this.chkShowTimes.Size = new System.Drawing.Size(423, 17);
-            this.chkShowTimes.TabIndex = 0;
-            this.chkShowTimes.Text = "Show Split Times";
-            this.chkShowTimes.UseVisualStyleBackColor = true;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 169);
+            this.groupBox1.Location = new System.Drawing.Point(3, 144);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(427, 42);
+            this.groupBox1.Size = new System.Drawing.Size(427, 43);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Accuracy";
@@ -729,7 +687,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(421, 23);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(421, 24);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // rdoSeconds
@@ -772,7 +730,7 @@
             // 
             this.lblSplitSize.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblSplitSize.AutoSize = true;
-            this.lblSplitSize.Location = new System.Drawing.Point(3, 269);
+            this.lblSplitSize.Location = new System.Drawing.Point(3, 182);
             this.lblSplitSize.Name = "lblSplitSize";
             this.lblSplitSize.Size = new System.Drawing.Size(111, 13);
             this.lblSplitSize.TabIndex = 14;
@@ -782,12 +740,12 @@
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.trkSize, 3);
             this.trkSize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trkSize.Location = new System.Drawing.Point(197, 264);
+            this.trkSize.Location = new System.Drawing.Point(197, 177);
             this.trkSize.Maximum = 120;
             this.trkSize.Minimum = 5;
             this.trkSize.Name = "trkSize";
             this.trkSize.Size = new System.Drawing.Size(245, 23);
-            this.trkSize.TabIndex = 12;
+            this.trkSize.TabIndex = 13;
             this.trkSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkSize.Value = 80;
             // 
@@ -796,11 +754,11 @@
             this.chkSeparatorLastSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSeparatorLastSplit.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.chkSeparatorLastSplit, 3);
-            this.chkSeparatorLastSplit.Location = new System.Drawing.Point(201, 151);
+            this.chkSeparatorLastSplit.Location = new System.Drawing.Point(201, 93);
             this.chkSeparatorLastSplit.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkSeparatorLastSplit.Name = "chkSeparatorLastSplit";
             this.chkSeparatorLastSplit.Size = new System.Drawing.Size(241, 17);
-            this.chkSeparatorLastSplit.TabIndex = 7;
+            this.chkSeparatorLastSplit.TabIndex = 8;
             this.chkSeparatorLastSplit.Text = "Show Separator Before Last Split";
             this.chkSeparatorLastSplit.UseVisualStyleBackColor = true;
             // 
@@ -809,10 +767,10 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox6, 4);
             this.groupBox6.Controls.Add(this.tableLayoutPanel7);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox6.Location = new System.Drawing.Point(3, 543);
+            this.groupBox6.Location = new System.Drawing.Point(3, 456);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(439, 181);
-            this.groupBox6.TabIndex = 18;
+            this.groupBox6.TabIndex = 19;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Deltas";
             // 
@@ -973,28 +931,15 @@
             this.rdoDeltaHundredths.Text = "Hundredths";
             this.rdoDeltaHundredths.UseVisualStyleBackColor = true;
             // 
-            // chkDisplayRows
-            // 
-            this.chkDisplayRows.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkDisplayRows.AutoSize = true;
-            this.chkDisplayRows.Location = new System.Drawing.Point(7, 238);
-            this.chkDisplayRows.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
-            this.chkDisplayRows.Name = "chkDisplayRows";
-            this.chkDisplayRows.Size = new System.Drawing.Size(184, 17);
-            this.chkDisplayRows.TabIndex = 11;
-            this.chkDisplayRows.Text = "Display 2 Rows";
-            this.chkDisplayRows.UseVisualStyleBackColor = true;
-            // 
             // chkLockLastSplit
             // 
             this.chkLockLastSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkLockLastSplit.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.chkLockLastSplit, 3);
-            this.chkLockLastSplit.Location = new System.Drawing.Point(7, 209);
+            this.chkLockLastSplit.Location = new System.Drawing.Point(7, 151);
             this.chkLockLastSplit.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkLockLastSplit.Name = "chkLockLastSplit";
-            this.chkLockLastSplit.Size = new System.Drawing.Size(242, 17);
-            this.chkLockLastSplit.TabIndex = 9;
+            this.chkLockLastSplit.Size = new System.Drawing.Size(184, 17);
+            this.chkLockLastSplit.TabIndex = 11;
             this.chkLockLastSplit.Text = "Lock Last Split to Bottom";
             this.chkLockLastSplit.UseVisualStyleBackColor = true;
             // 
@@ -1003,7 +948,7 @@
             this.chkShowBlankSplits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkShowBlankSplits.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.chkShowBlankSplits, 3);
-            this.chkShowBlankSplits.Location = new System.Drawing.Point(201, 180);
+            this.chkShowBlankSplits.Location = new System.Drawing.Point(201, 122);
             this.chkShowBlankSplits.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkShowBlankSplits.Name = "chkShowBlankSplits";
             this.chkShowBlankSplits.Size = new System.Drawing.Size(241, 17);
@@ -1020,16 +965,6 @@
             this.label11.Size = new System.Drawing.Size(188, 13);
             this.label11.TabIndex = 27;
             this.label11.Text = "Background Color:";
-            // 
-            // label14
-            // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 37);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(188, 13);
-            this.label14.TabIndex = 44;
-            this.label14.Text = "Timing Method:";
             // 
             // btnColor1
             // 
@@ -1072,17 +1007,93 @@
             this.cmbGradientType.Size = new System.Drawing.Size(187, 21);
             this.cmbGradientType.TabIndex = 2;
             // 
-            // chkHideIcons
+            // chkDisplayRows
             // 
-            this.chkHideIcons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkHideIcons.AutoSize = true;
-            this.chkHideIcons.Location = new System.Drawing.Point(295, 6);
-            this.chkHideIcons.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
-            this.chkHideIcons.Name = "chkHideIcons";
-            this.chkHideIcons.Size = new System.Drawing.Size(135, 17);
-            this.chkHideIcons.TabIndex = 24;
-            this.chkHideIcons.Text = "Hide Icons If All Blank";
-            this.chkHideIcons.UseVisualStyleBackColor = true;
+            this.chkDisplayRows.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkDisplayRows.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.chkDisplayRows, 3);
+            this.chkDisplayRows.Location = new System.Drawing.Point(201, 151);
+            this.chkDisplayRows.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
+            this.chkDisplayRows.Name = "chkDisplayRows";
+            this.chkDisplayRows.Size = new System.Drawing.Size(241, 17);
+            this.chkDisplayRows.TabIndex = 12;
+            this.chkDisplayRows.Text = "Display 2 Rows";
+            this.chkDisplayRows.UseVisualStyleBackColor = true;
+            // 
+            // groupColumns
+            // 
+            this.groupColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.groupColumns, 4);
+            this.groupColumns.Controls.Add(this.tableColumns);
+            this.groupColumns.Location = new System.Drawing.Point(3, 858);
+            this.groupColumns.Name = "groupColumns";
+            this.groupColumns.Size = new System.Drawing.Size(439, 48);
+            this.groupColumns.TabIndex = 21;
+            this.groupColumns.TabStop = false;
+            this.groupColumns.Text = "Columns";
+            // 
+            // tableColumns
+            // 
+            this.tableColumns.ColumnCount = 4;
+            this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.32794F));
+            this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 6.69746F));
+            this.tableColumns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableColumns.Controls.Add(this.chkColumnLabels, 0, 0);
+            this.tableColumns.Controls.Add(this.btnAddColumn, 3, 0);
+            this.tableColumns.Controls.Add(this.btnLabelColor, 2, 0);
+            this.tableColumns.Controls.Add(this.label12, 1, 0);
+            this.tableColumns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableColumns.Location = new System.Drawing.Point(3, 16);
+            this.tableColumns.Name = "tableColumns";
+            this.tableColumns.RowCount = 1;
+            this.tableColumns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableColumns.Size = new System.Drawing.Size(433, 29);
+            this.tableColumns.TabIndex = 0;
+            // 
+            // chkColumnLabels
+            // 
+            this.chkColumnLabels.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkColumnLabels.AutoSize = true;
+            this.chkColumnLabels.Location = new System.Drawing.Point(7, 6);
+            this.chkColumnLabels.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
+            this.chkColumnLabels.Name = "chkColumnLabels";
+            this.chkColumnLabels.Size = new System.Drawing.Size(134, 17);
+            this.chkColumnLabels.TabIndex = 0;
+            this.chkColumnLabels.Text = "Show Column Labels";
+            this.chkColumnLabels.UseVisualStyleBackColor = true;
+            // 
+            // btnAddColumn
+            // 
+            this.btnAddColumn.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnAddColumn.Location = new System.Drawing.Point(355, 3);
+            this.btnAddColumn.Name = "btnAddColumn";
+            this.btnAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.btnAddColumn.TabIndex = 1;
+            this.btnAddColumn.Text = "Add Column";
+            this.btnAddColumn.UseVisualStyleBackColor = true;
+            this.btnAddColumn.Click += new System.EventHandler(this.btnAddColumn_Click);
+            // 
+            // btnLabelColor
+            // 
+            this.btnLabelColor.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnLabelColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnLabelColor.Location = new System.Drawing.Point(261, 3);
+            this.btnLabelColor.Name = "btnLabelColor";
+            this.btnLabelColor.Size = new System.Drawing.Size(23, 23);
+            this.btnLabelColor.TabIndex = 2;
+            this.btnLabelColor.UseVisualStyleBackColor = false;
+            this.btnLabelColor.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(147, 8);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(108, 13);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Labels Color:";
             // 
             // SplitsSettings
             // 
@@ -1091,7 +1102,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "SplitsSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(459, 980);
+            this.Size = new System.Drawing.Size(459, 923);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).EndInit();
@@ -1105,7 +1116,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trkIconSize)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
@@ -1121,6 +1131,9 @@
             this.groupBox7.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
+            this.groupColumns.ResumeLayout(false);
+            this.tableColumns.ResumeLayout(false);
+            this.tableColumns.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1140,7 +1153,6 @@
         private System.Windows.Forms.TrackBar trkSize;
         private System.Windows.Forms.CheckBox chkThinSeparators;
         private System.Windows.Forms.CheckBox chkLastSplit;
-        private System.Windows.Forms.CheckBox chkShowTimes;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.RadioButton rdoSeconds;
@@ -1186,8 +1198,6 @@
         private System.Windows.Forms.CheckBox chkOverrideDeltaColor;
         private System.Windows.Forms.Button btnDeltaColor;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox cmbComparison;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnCurrentTimesColor;
         private System.Windows.Forms.Label label13;
@@ -1195,8 +1205,12 @@
         private System.Windows.Forms.Button btnAfterNamesColor;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox chkDisplayRows;
-        private System.Windows.Forms.ComboBox cmbTimingMethod;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox chkHideIcons;
+        private System.Windows.Forms.GroupBox groupColumns;
+        private System.Windows.Forms.TableLayoutPanel tableColumns;
+        private System.Windows.Forms.CheckBox chkColumnLabels;
+        private System.Windows.Forms.Button btnAddColumn;
+        private System.Windows.Forms.Button btnLabelColor;
+        private System.Windows.Forms.Label label12;
     }
 }
