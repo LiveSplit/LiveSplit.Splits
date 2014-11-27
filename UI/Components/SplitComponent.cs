@@ -90,7 +90,6 @@ namespace LiveSplit.UI.Components
             DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
             MinimumHeight = 31;
 
-            MeasureTimeLabel.Text = TimeFormatter.Format(new TimeSpan(24, 0, 0));
             NeedUpdateAll = true;
             IsActive = false;
 
@@ -105,7 +104,7 @@ namespace LiveSplit.UI.Components
 
             if (Settings.BackgroundGradient == ExtendedGradientType.Alternating)
                 g.FillRectangle(new SolidBrush(
-                    state.Run.IndexOf(Split) % 2 == 1 
+                    state.Run.IndexOf(Split) % 2 + (Settings.ShowColumnLabels ? 1 : 0) == 1 
                     ? Settings.BackgroundColor2 
                     : Settings.BackgroundColor
                     ), 0, 0, width, height);
@@ -252,9 +251,6 @@ namespace LiveSplit.UI.Components
                     {
                         var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
-                        if (!String.IsNullOrEmpty(label.Text))
-                            nameX = curX - label.ActualWidth;
-
                         var labelWidth = 0f;
                         if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
                             labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
@@ -262,14 +258,18 @@ namespace LiveSplit.UI.Components
                             labelWidth = MeasureDeltaLabel.ActualWidth;
                         else
                             labelWidth = MeasureTimeLabel.ActualWidth;
-                        curX -= labelWidth + 5;
                         label.Width = labelWidth + 20;
+                        curX -= labelWidth + 5;
                         label.X = curX - 15;
 
                         label.Font = state.LayoutSettings.TimesFont;
                         label.HasShadow = state.LayoutSettings.DropShadows;
                         label.IsMonospaced = true;
                         label.Draw(g);
+
+                        if (!String.IsNullOrEmpty(label.Text))
+                            nameX = curX + labelWidth + 5 - label.ActualWidth;
+
                     }
                     NameLabel.Width = (mode == LayoutMode.Horizontal ? width - 10 : nameX) - IconWidth;
                     NameLabel.Draw(g);
@@ -299,18 +299,18 @@ namespace LiveSplit.UI.Components
 
         public Control GetSettingsControl(LayoutMode mode)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void SetSettings(System.Xml.XmlNode settings)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
 
         public System.Xml.XmlNode GetSettings(System.Xml.XmlDocument document)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public string UpdateName

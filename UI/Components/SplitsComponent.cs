@@ -32,6 +32,8 @@ namespace LiveSplit.UI.Components
         private int visualSplitCount;
         private int settingsSplitCount;
 
+        protected bool PreviousShowLabels { get; set; }
+
         protected int ScrollOffset { get; set; }
         protected int LastSplitSeparatorIndex { get; set; }
 
@@ -113,6 +115,12 @@ namespace LiveSplit.UI.Components
 
             var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
 
+            if (Settings.ShowColumnLabels)
+            {
+                Components.Add(new LabelsComponent(Settings, ColumnsList));
+                Components.Add(new SeparatorComponent());
+            }
+
             for (var i = 0; i < totalSplits; ++i)
             {
                 if ((i == totalSplits - 1 && totalSplits > 1 && Settings.LockLastSplit && i > 0)
@@ -152,8 +160,10 @@ namespace LiveSplit.UI.Components
             var previousSplitCount = visualSplitCount;
             visualSplitCount = Math.Min(state.Run.Count, Settings.VisualSplitCount);
             if (previousSplitCount != visualSplitCount 
-                || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount))
+                || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount)
+                || Settings.ShowColumnLabels != PreviousShowLabels)
             {
+                PreviousShowLabels = Settings.ShowColumnLabels;
                 RebuildVisualSplits();
             }
             settingsSplitCount = Settings.VisualSplitCount;
@@ -199,7 +209,7 @@ namespace LiveSplit.UI.Components
                     {
                         if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = true;
-                        else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                        else if (Components[index - 1] is SplitComponent && ((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = false;
                     }
                     if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit && index == LastSplitSeparatorIndex)

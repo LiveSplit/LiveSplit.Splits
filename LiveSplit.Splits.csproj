@@ -69,6 +69,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="UI\ColumnData.cs" />
+    <Compile Include="UI\Components\LabelsComponent.cs" />
     <Compile Include="UI\Components\SplitComponent.cs" />
     <Compile Include="UI\Components\SplitsComponent.cs" />
     <Compile Include="UI\Components\SplitsComponentFactory.cs" />
