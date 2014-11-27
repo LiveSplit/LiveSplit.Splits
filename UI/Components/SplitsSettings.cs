@@ -69,6 +69,7 @@ namespace LiveSplit.UI.Components
         public Color DeltasColor { get; set; }
 
         public bool ShowColumnLabels { get; set; }
+        public Color LabelsColor { get; set; }
 
         public Color BeforeNamesColor { get; set; }
         public Color CurrentNamesColor { get; set; }
@@ -135,6 +136,7 @@ namespace LiveSplit.UI.Components
             DeltasColor = Color.FromArgb(255, 255, 255);
             Display2Rows = false;
             ShowColumnLabels = false;
+            LabelsColor = Color.FromArgb(255, 255, 255);
 
             dmnTotalSegments.DataBindings.Add("Value", this, "VisualSplitCount", false, DataSourceUpdateMode.OnPropertyChanged);
             dmnUpcomingSegments.DataBindings.Add("Value", this, "SplitPreviewCount", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -160,6 +162,7 @@ namespace LiveSplit.UI.Components
             chkOverrideDeltaColor.DataBindings.Add("Checked", this, "OverrideDeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnDeltaColor.DataBindings.Add("BackColor", this, "DeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             chkColumnLabels.DataBindings.Add("Checked", this, "ShowColumnLabels", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnLabelColor.DataBindings.Add("BackColor", this, "LabelsColor", false, DataSourceUpdateMode.OnPropertyChanged);
             this.Load += SplitsSettings_Load;
             chkThinSeparators.CheckedChanged += chkThinSeparators_CheckedChanged;
             chkLastSplit.CheckedChanged += chkLastSplit_CheckedChanged;
@@ -174,7 +177,7 @@ namespace LiveSplit.UI.Components
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor1.DataBindings.Add("BackColor", this, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor2.DataBindings.Add("BackColor", this, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
-
+            chkColumnLabels.CheckedChanged += chkColumnLabels_CheckedChanged;
             rdoSeconds.CheckedChanged += rdoSeconds_CheckedChanged;
             rdoTenths.CheckedChanged += rdoTenths_CheckedChanged;
 
@@ -187,6 +190,11 @@ namespace LiveSplit.UI.Components
             chkDisplayIcons.CheckedChanged += chkDisplayIcons_CheckedChanged;
 
             ColumnsList = new List<ColumnSettings>();
+        }
+
+        void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
+        {
+            btnLabelColor.Enabled = chkColumnLabels.Checked;
         }
 
         void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
@@ -363,6 +371,7 @@ namespace LiveSplit.UI.Components
             {
                 HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
                 ShowColumnLabels = Boolean.Parse(element["ShowColumnLabels"].InnerText);
+                LabelsColor = ParseColor(element["LabelsColor"]);
                 var columnsElement = element["Columns"];
                 ColumnsList.Clear();
                 foreach (var child in columnsElement.ChildNodes)
@@ -375,6 +384,7 @@ namespace LiveSplit.UI.Components
             {
                 HideIconsIfAllBlank = true;
                 ShowColumnLabels = false;
+                LabelsColor = Color.FromArgb(255, 255, 255);
                 ColumnsList.Clear();
                 var comparison = element["Comparison"].InnerText;
                 if (Boolean.Parse(element["ShowSplitTimes"].InnerText))
@@ -496,6 +506,7 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
             parent.AppendChild(ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
             parent.AppendChild(ToElement(document, "ShowColumnLabels", ShowColumnLabels));
+            parent.AppendChild(ToElement(document, LabelsColor, "LabelsColor"));
 
             var columnsElement = document.CreateElement("Columns");
             foreach (var columnData in ColumnsList.Select(x => x.Data))
@@ -562,7 +573,7 @@ namespace LiveSplit.UI.Components
         private void AddColumnToLayout(ColumnSettings column, int index)
         {
             tableColumns.Controls.Add(column, 0, index);
-            tableColumns.SetColumnSpan(column, 2);
+            tableColumns.SetColumnSpan(column, 4);
             column.ColumnRemoved -= column_ColumnRemoved;
             column.MovedUp -= column_MovedUp;
             column.MovedDown -= column_MovedDown;
