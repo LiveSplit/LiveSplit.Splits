@@ -87,7 +87,7 @@ namespace LiveSplit.UI.Components
 
         void txtName_TextChanged(object sender, EventArgs e)
         {
-            groupColumn.Text = txtName.Text;
+            groupColumn.Text = "Column: " + txtName.Text;
         }
 
         private String GetColumnType(ColumnType type)
