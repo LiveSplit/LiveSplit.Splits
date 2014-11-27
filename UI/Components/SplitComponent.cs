@@ -271,7 +271,7 @@ namespace LiveSplit.UI.Components
                         label.IsMonospaced = true;
                         label.Draw(g);
                     }
-                    NameLabel.Width = nameX - IconWidth;
+                    NameLabel.Width = (mode == LayoutMode.Horizontal ? width - 10 : nameX) - IconWidth;
                     NameLabel.Draw(g);
                 }
             }
