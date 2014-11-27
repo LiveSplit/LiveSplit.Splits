@@ -256,7 +256,7 @@ namespace LiveSplit.UI.Components
                             nameX = curX - label.ActualWidth;
 
                         var labelWidth = 0f;
-                        if (column.Type == ColumnType.DeltaandSplitTime || column.Type == ColumnType.SegmentDeltaandSegmentTime)
+                        if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
                             labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
                         else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
                             labelWidth = MeasureDeltaLabel.ActualWidth;
@@ -393,7 +393,7 @@ namespace LiveSplit.UI.Components
                     }
                 }
                 
-                if (type == ColumnType.DeltaandSplitTime || type == ColumnType.Delta)
+                if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
                 {
                     var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
                     var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, timingMethod);
@@ -401,7 +401,7 @@ namespace LiveSplit.UI.Components
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
 
-                    if (type == ColumnType.DeltaandSplitTime)
+                    if (type == ColumnType.DeltaorSplitTime)
                     {
                         if (deltaTime != null)
                             label.Text = DeltaTimeFormatter.Format(deltaTime);
@@ -413,7 +413,7 @@ namespace LiveSplit.UI.Components
                         label.Text = DeltaTimeFormatter.Format(deltaTime);   
                 }
 
-                else if (type == ColumnType.SegmentDeltaandSegmentTime || type == ColumnType.SegmentDelta)
+                else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
                 {
                     var segmentDelta = LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, false, false, comparison, timingMethod);
                     var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, 1, splitIndex, comparison, timingMethod);
@@ -421,7 +421,7 @@ namespace LiveSplit.UI.Components
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
 
-                    if (type == ColumnType.SegmentDeltaandSegmentTime)
+                    if (type == ColumnType.SegmentDeltaorSegmentTime)
                     {
                         if (segmentDelta != null)
                             label.Text = DeltaTimeFormatter.Format(segmentDelta);
@@ -435,17 +435,17 @@ namespace LiveSplit.UI.Components
             }
             else
             {
-                if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
+                if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime || type == ColumnType.DeltaorSplitTime || type == ColumnType.SegmentDeltaorSegmentTime)
                 {
                     if (Split == state.CurrentSplit)
                         label.ForeColor = Settings.OverrideTimesColor ? Settings.CurrentTimesColor : state.LayoutSettings.TextColor;
                     else
                         label.ForeColor = Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
 
-                    if (type == ColumnType.SplitTime)
+                    if (type == ColumnType.SplitTime || type == ColumnType.DeltaorSplitTime)
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
 
-                    else //SegmentTime
+                    else //SegmentTime or SegmentTimeorSegmentDeltaTime
                     {
                         var previousTime = splitIndex > 0 ? state.Run[splitIndex - 1].Comparisons[comparison][timingMethod] : TimeSpan.Zero;
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
@@ -454,12 +454,13 @@ namespace LiveSplit.UI.Components
 
                 //Live Delta
                 var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, false, comparison, timingMethod);
-                if (bestDelta != null && Split == state.CurrentSplit)
+                if (bestDelta != null && Split == state.CurrentSplit &&
+                    (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
                 {
-                    if (type == ColumnType.DeltaandSplitTime || type == ColumnType.Delta)
+                    if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
                         label.Text = DeltaTimeFormatter.Format(bestDelta);
 
-                    else if (type == ColumnType.SegmentDeltaandSegmentTime || type == ColumnType.SegmentDelta)
+                    else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
                         label.Text = DeltaTimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, true, false, comparison, timingMethod));
 
                     label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
@@ -473,7 +474,7 @@ namespace LiveSplit.UI.Components
         {
             if (ColumnsList != null)
             {
-                var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaandSplitTime || x.Type == ColumnType.SegmentDeltaandSegmentTime);
+                var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaorSplitTime || x.Type == ColumnType.SegmentDeltaorSegmentTime);
                 var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
                 var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
                 return mixedCount * Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth)

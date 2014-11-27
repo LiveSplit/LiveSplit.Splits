@@ -96,14 +96,14 @@ namespace LiveSplit.UI.Components
                 return "Split Time";
             else if (type == ColumnType.Delta)
                 return "Delta";
-            else if (type == ColumnType.DeltaandSplitTime)
-                return "Delta and Split Time";
+            else if (type == ColumnType.DeltaorSplitTime)
+                return "Delta or Split Time";
             else if (type == ColumnType.SegmentTime)
                 return "Segment Time";
             else if (type == ColumnType.SegmentDelta)
                 return "Segment Delta";
             else
-                return "Segment Delta and Segment Time";
+                return "Segment Delta or Segment Time";
         }
 
         private ColumnType ParseColumnType(String columnType)

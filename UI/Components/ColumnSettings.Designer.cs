@@ -133,10 +133,10 @@
             this.cmbColumnType.Items.AddRange(new object[] {
             "Delta",
             "Split Time",
-            "Delta and Split Time",
+            "Delta or Split Time",
             "Segment Delta",
             "Segment Time",
-            "Segment Delta and Segment Time"});
+            "Segment Delta or Segment Time"});
             this.cmbColumnType.Location = new System.Drawing.Point(93, 33);
             this.cmbColumnType.Name = "cmbColumnType";
             this.cmbColumnType.Size = new System.Drawing.Size(319, 21);

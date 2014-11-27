@@ -384,7 +384,7 @@ namespace LiveSplit.UI.Components
                 }
                 else
                 {
-                    ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.DeltaandSplitTime, comparison, "Current Timing Method") });
+                    ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.DeltaorSplitTime, comparison, "Current Timing Method") });
                 }
             }
             if (version >= new Version(1, 3))
