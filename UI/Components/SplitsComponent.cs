@@ -37,8 +37,9 @@ namespace LiveSplit.UI.Components
         protected int ScrollOffset { get; set; }
         protected int LastSplitSeparatorIndex { get; set; }
 
+        protected LiveSplitState CurrentState { get; set; }
         protected LiveSplitState OldState { get; set; }
-
+        protected LayoutMode OldLayoutMode { get; set; }
         protected Color OldShadowsColor { get; set; }
 
         protected IEnumerable<ColumnData> ColumnsList { get { return Settings.ColumnsList.Select(x => x.Data); } }
@@ -75,6 +76,7 @@ namespace LiveSplit.UI.Components
 
         public SplitsComponent(LiveSplitState state)
         {
+            CurrentState = state;
             Settings = new SplitsSettings(state);
             InternalComponent = new ComponentRendererComponent();
             ShadowImages = new Dictionary<Image, Image>();
@@ -112,7 +114,7 @@ namespace LiveSplit.UI.Components
 
             var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
 
-            if (Settings.ShowColumnLabels)
+            if (Settings.ShowColumnLabels && CurrentState.Layout.Mode == LayoutMode.Vertical)
             {
                 Components.Add(new LabelsComponent(Settings, ColumnsList));
                 Components.Add(new SeparatorComponent());
@@ -158,9 +160,11 @@ namespace LiveSplit.UI.Components
             visualSplitCount = Math.Min(state.Run.Count, Settings.VisualSplitCount);
             if (previousSplitCount != visualSplitCount 
                 || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount)
-                || Settings.ShowColumnLabels != PreviousShowLabels)
+                || Settings.ShowColumnLabels != PreviousShowLabels
+                || (Settings.ShowColumnLabels && state.Layout.Mode != OldLayoutMode))
             {
                 PreviousShowLabels = Settings.ShowColumnLabels;
+                OldLayoutMode = state.Layout.Mode;
                 RebuildVisualSplits();
             }
             settingsSplitCount = Settings.VisualSplitCount;

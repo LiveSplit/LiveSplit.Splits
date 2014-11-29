@@ -99,7 +99,7 @@
             this.chkColumnLabels = new System.Windows.Forms.CheckBox();
             this.btnAddColumn = new System.Windows.Forms.Button();
             this.btnLabelColor = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
+            this.lblLabelsColor = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
@@ -1042,7 +1042,7 @@
             this.tableColumns.Controls.Add(this.chkColumnLabels, 0, 0);
             this.tableColumns.Controls.Add(this.btnAddColumn, 3, 0);
             this.tableColumns.Controls.Add(this.btnLabelColor, 2, 0);
-            this.tableColumns.Controls.Add(this.label12, 1, 0);
+            this.tableColumns.Controls.Add(this.lblLabelsColor, 1, 0);
             this.tableColumns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableColumns.Location = new System.Drawing.Point(3, 16);
             this.tableColumns.Name = "tableColumns";
@@ -1085,15 +1085,15 @@
             this.btnLabelColor.UseVisualStyleBackColor = false;
             this.btnLabelColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
-            // label12
+            // lblLabelsColor
             // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(147, 8);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(108, 13);
-            this.label12.TabIndex = 3;
-            this.label12.Text = "Labels Color:";
+            this.lblLabelsColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblLabelsColor.AutoSize = true;
+            this.lblLabelsColor.Location = new System.Drawing.Point(147, 8);
+            this.lblLabelsColor.Name = "lblLabelsColor";
+            this.lblLabelsColor.Size = new System.Drawing.Size(108, 13);
+            this.lblLabelsColor.TabIndex = 3;
+            this.lblLabelsColor.Text = "Labels Color:";
             // 
             // SplitsSettings
             // 
@@ -1211,6 +1211,6 @@
         private System.Windows.Forms.CheckBox chkColumnLabels;
         private System.Windows.Forms.Button btnAddColumn;
         private System.Windows.Forms.Button btnLabelColor;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblLabelsColor;
     }
 }

@@ -162,7 +162,6 @@ namespace LiveSplit.UI.Components
             chkDropDecimals.DataBindings.Add("Checked", this, "DropDecimals", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideDeltaColor.DataBindings.Add("Checked", this, "OverrideDeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnDeltaColor.DataBindings.Add("BackColor", this, "DeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
-            chkColumnLabels.DataBindings.Add("Checked", this, "ShowColumnLabels", false, DataSourceUpdateMode.OnPropertyChanged);
             btnLabelColor.DataBindings.Add("BackColor", this, "LabelsColor", false, DataSourceUpdateMode.OnPropertyChanged);
             this.Load += SplitsSettings_Load;
             chkThinSeparators.CheckedChanged += chkThinSeparators_CheckedChanged;
@@ -197,7 +196,7 @@ namespace LiveSplit.UI.Components
 
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
         {
-            btnLabelColor.Enabled = chkColumnLabels.Checked;
+            btnLabelColor.Enabled = lblLabelsColor.Enabled = chkColumnLabels.Checked;
         }
 
         void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
@@ -316,6 +315,7 @@ namespace LiveSplit.UI.Components
             chkOverrideDeltaColor_CheckedChanged(null, null);
             chkOverrideTextColor_CheckedChanged(null, null);
             chkOverrideTimesColor_CheckedChanged(null, null);
+            chkColumnLabels_CheckedChanged(null, null);
             chkDisplayIcons_CheckedChanged(null, null);
             chkLockLastSplit.Enabled = chkShowBlankSplits.Checked;
 
@@ -338,6 +338,8 @@ namespace LiveSplit.UI.Components
                 chkDisplayRows.Enabled = false;
                 chkDisplayRows.DataBindings.Clear();
                 chkDisplayRows.Checked = true;
+                chkColumnLabels.DataBindings.Clear();
+                chkColumnLabels.Enabled = chkColumnLabels.Checked = false;
             }
             else
             {
@@ -350,6 +352,9 @@ namespace LiveSplit.UI.Components
                 chkDisplayRows.Enabled = true;
                 chkDisplayRows.DataBindings.Clear();
                 chkDisplayRows.DataBindings.Add("Checked", this, "Display2Rows", false, DataSourceUpdateMode.OnPropertyChanged);
+                chkColumnLabels.DataBindings.Clear();
+                chkColumnLabels.Enabled = true;
+                chkColumnLabels.DataBindings.Add("Checked", this, "ShowColumnLabels", false, DataSourceUpdateMode.OnPropertyChanged);
             }
         }
 
