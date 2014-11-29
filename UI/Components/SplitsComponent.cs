@@ -75,10 +75,7 @@ namespace LiveSplit.UI.Components
 
         public SplitsComponent(LiveSplitState state)
         {
-            Settings = new SplitsSettings()
-            {
-                CurrentState = state
-            };
+            Settings = new SplitsSettings(state);
             InternalComponent = new ComponentRendererComponent();
             ShadowImages = new Dictionary<Image, Image>();
             visualSplitCount = Settings.VisualSplitCount;

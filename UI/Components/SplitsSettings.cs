@@ -93,9 +93,11 @@ namespace LiveSplit.UI.Components
         public Size StartingSize { get; set; }
         public Size StartingTableLayoutSize { get; set; }
 
-        public SplitsSettings()
+        public SplitsSettings(LiveSplitState state)
         {
             InitializeComponent();
+
+            CurrentState = state;
 
             StartingSize = this.Size;
             StartingTableLayoutSize = tableColumns.Size;
@@ -111,11 +113,10 @@ namespace LiveSplit.UI.Components
             LockLastSplit = true;
             SeparatorLastSplit = true;
             SplitTimesAccuracy = TimeAccuracy.Seconds;
-            CurrentSplitTopColor = Color.FromArgb(0x43, 0xa2, 0xd9);
-            CurrentSplitBottomColor = Color.FromArgb(0x09, 0x4e, 0x76);
+            CurrentSplitTopColor = Color.FromArgb(51, 115, 244);
+            CurrentSplitBottomColor = Color.FromArgb(21, 53, 116);
             SplitWidth = 20;
-            SplitHeight = 6;
-            ScaledSplitHeight = 60;
+            SplitHeight = 3.6f;
             IconSize = 24f;
             BeforeNamesColor = Color.FromArgb(255, 255, 255);
             CurrentNamesColor = Color.FromArgb(255, 255, 255);
@@ -190,6 +191,8 @@ namespace LiveSplit.UI.Components
             chkDisplayIcons.CheckedChanged += chkDisplayIcons_CheckedChanged;
 
             ColumnsList = new List<ColumnSettings>();
+            ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, "Current Comparison", "Current Timing Method") });
+            ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("Time", ColumnType.SplitTime, "Current Comparison", "Current Timing Method") });
         }
 
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
