@@ -109,7 +109,6 @@ namespace LiveSplit.UI.Components
             {
                 label.SetActualWidth(g);
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
-                label.VerticalAlignment = StringAlignment.Center;
                 label.Y = 0;
                 label.Height = height;
             }
@@ -135,7 +134,6 @@ namespace LiveSplit.UI.Components
 
                         label.Font = state.LayoutSettings.TextFont;
                         label.HasShadow = state.LayoutSettings.DropShadows;
-                        label.IsMonospaced = true;
                         label.Draw(g);
                     }
                 }
@@ -214,7 +212,8 @@ namespace LiveSplit.UI.Components
                 {
                     LabelsList.Add(new SimpleLabel()
                         {
-                            HorizontalAlignment = StringAlignment.Far
+                            HorizontalAlignment = StringAlignment.Far,
+                            VerticalAlignment = StringAlignment.Center
                         });
                 }
             }
