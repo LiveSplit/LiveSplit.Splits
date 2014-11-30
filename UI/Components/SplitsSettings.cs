@@ -628,10 +628,9 @@ namespace LiveSplit.UI.Components
             tableColumns.RowStyles.Clear();
             tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 29f));
             tableColumns.Size = StartingTableLayoutSize;
-            foreach (var control in tableColumns.Controls)
+            foreach (var control in tableColumns.Controls.OfType<ColumnSettings>().ToList())
             {
-                if (control is ColumnSettings)
-                    tableColumns.Controls.Remove((Control)control);
+                tableColumns.Controls.Remove(control);
             }
             this.Size = StartingSize;
         }
