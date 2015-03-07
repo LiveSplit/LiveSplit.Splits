@@ -132,7 +132,7 @@ namespace LiveSplit.UI.Components
                         Components.Add(new ThinSeparatorComponent());
                 }
 
-                var splitComponent = new SplitComponent(Settings);
+                var splitComponent = new SplitComponent(Settings, ColumnsList);
                 Components.Add(splitComponent);
                 if (i < visualSplitCount - 1 + (Settings.LockLastSplit ? 0 : 1) || i == totalSplits - 1 + (Settings.LockLastSplit ? 0 : 1))
                     SplitComponents.Add(splitComponent);                   
@@ -349,14 +349,10 @@ namespace LiveSplit.UI.Components
                 foreach (var split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
                 {
                     SplitComponents[i].Split = split;
-                    SplitComponents[i].ColumnsList = ColumnsList;
                     i++;
                 }
                 if (Settings.AlwaysShowLastSplit)
-                {
                     SplitComponents[i].Split = state.Run.Last();
-                    SplitComponents[i].ColumnsList = ColumnsList;
-                }
             }
 
             if (invalidator != null)

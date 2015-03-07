@@ -75,7 +75,7 @@ namespace LiveSplit.UI.Components
             get { return null; }
         }
 
-        public SplitComponent(SplitsSettings settings)
+        public SplitComponent(SplitsSettings settings, IEnumerable<ColumnData> columnsList)
         {
             NoIconShadow = IconShadow.Generate(NoIconImage, Color.Black);
             NameLabel = new SimpleLabel()
@@ -86,6 +86,7 @@ namespace LiveSplit.UI.Components
             MeasureTimeLabel = new SimpleLabel();
             MeasureDeltaLabel = new SimpleLabel();
             Settings = settings;
+            ColumnsList = columnsList;
             TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
             DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
             MinimumHeight = 31;
