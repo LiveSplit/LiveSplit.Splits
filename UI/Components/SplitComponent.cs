@@ -105,8 +105,8 @@ namespace LiveSplit.UI.Components
 
             if (Settings.BackgroundGradient == ExtendedGradientType.Alternating)
                 g.FillRectangle(new SolidBrush(
-                    state.Run.IndexOf(Split) % 2 + (Settings.ShowColumnLabels ? 1 : 0) == 1 
-                    ? Settings.BackgroundColor2 
+                    state.Run.IndexOf(Split) % 2 + (Settings.ShowColumnLabels ? 1 : 0) == 1
+                    ? Settings.BackgroundColor2
                     : Settings.BackgroundColor
                     ), 0, 0, width, height);
 
@@ -123,10 +123,8 @@ namespace LiveSplit.UI.Components
 
             NameLabel.ShadowColor = state.LayoutSettings.ShadowsColor;
             foreach (var label in LabelsList)
-            {
-                label.SetActualWidth(g);
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
-            }
+
             MinimumWidth = CalculateLabelsWidth() + IconWidth + 10;
             MinimumHeight = 0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height);
 

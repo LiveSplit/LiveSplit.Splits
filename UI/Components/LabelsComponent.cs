@@ -107,36 +107,35 @@ namespace LiveSplit.UI.Components
 
             foreach (var label in LabelsList)
             {
-                label.SetActualWidth(g);
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
                 label.Y = 0;
                 label.Height = height;
             }
             MinimumWidth = 10f;
 
-                if (ColumnsList.Count() == LabelsList.Count)
+            if (ColumnsList.Count() == LabelsList.Count)
+            {
+                var curX = width - 7;
+                foreach (var label in LabelsList.Reverse())
                 {
-                    var curX = width - 7;
-                    foreach (var label in LabelsList.Reverse())
-                    {
-                        var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
+                    var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
-                        var labelWidth = 0f;
-                        if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
-                            labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
-                        else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
-                            labelWidth = MeasureDeltaLabel.ActualWidth;
-                        else
-                            labelWidth = MeasureTimeLabel.ActualWidth;
-                        curX -= labelWidth + 5;
-                        label.Width = labelWidth;
-                        label.X = curX + 5;
+                    var labelWidth = 0f;
+                    if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
+                        labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
+                    else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
+                        labelWidth = MeasureDeltaLabel.ActualWidth;
+                    else
+                        labelWidth = MeasureTimeLabel.ActualWidth;
+                    curX -= labelWidth + 5;
+                    label.Width = labelWidth;
+                    label.X = curX + 5;
 
-                        label.Font = state.LayoutSettings.TextFont;
-                        label.HasShadow = state.LayoutSettings.DropShadows;
-                        label.Draw(g);
-                    }
+                    label.Font = state.LayoutSettings.TextFont;
+                    label.HasShadow = state.LayoutSettings.DropShadows;
+                    label.Draw(g);
                 }
+            }
         }
 
         public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
