@@ -41,12 +41,7 @@ namespace LiveSplit.UI.Components
             Data = new ColumnData(columnName, ColumnType.Delta, "Current Comparison", "Current Timing Method");
 
             CurrentState = state;
-            ColumnsList = columnsList;
-
-            txtName.DataBindings.Add("Text", this, "ColumnName", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbColumnType.DataBindings.Add("SelectedItem", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
+            ColumnsList = columnsList; 
 
             cmbColumnType.SelectedIndexChanged += cmbColumnType_SelectedIndexChanged;
             cmbComparison.SelectedIndexChanged += cmbComparison_SelectedIndexChanged;
@@ -78,6 +73,15 @@ namespace LiveSplit.UI.Components
             cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
             if (!cmbComparison.Items.Contains(Comparison))
                 cmbComparison.Items.Add(Comparison);
+
+            txtName.DataBindings.Clear();
+            cmbColumnType.DataBindings.Clear();
+            cmbComparison.DataBindings.Clear();
+            cmbTimingMethod.DataBindings.Clear();
+            txtName.DataBindings.Add("Text", this, "ColumnName", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbColumnType.DataBindings.Add("SelectedItem", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
+            cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         public void UpdateEnabledButtons()
