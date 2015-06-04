@@ -339,6 +339,7 @@ namespace LiveSplit.UI.Components
                 RecreateLabels();
 
                 NameLabel.Text = Split.Name;
+                NameLabel.AlternateText = Split.Name.GetShortNames().ToList();
 
                 var splitIndex = state.Run.IndexOf(Split);
                 if (splitIndex < state.CurrentSplitIndex)
