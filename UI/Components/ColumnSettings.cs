@@ -19,7 +19,15 @@ namespace LiveSplit.UI.Components
     public partial class ColumnSettings : UserControl
     {
         public String ColumnName { get { return Data.Name; } set { Data.Name = value; } }
-        public String Type { get { return GetColumnType(Data.Type); } set { Data.Type = ParseColumnType(value); } }
+        public String Type
+        {
+            get { return GetColumnType(Data.Type); }
+            set
+            {
+                Data.Type = ParseColumnType(value);
+                UpdateComparisonItems();
+            }
+        }
         public String Comparison { get { return Data.Comparison; } set { Data.Comparison = value; } }
         public String TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
 
@@ -68,19 +76,13 @@ namespace LiveSplit.UI.Components
 
         void ColumnSettings_Load(object sender, EventArgs e)
         {
-            cmbComparison.Items.Clear();
-            cmbComparison.Items.Add("Current Comparison");
-            cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
-            if (!cmbComparison.Items.Contains(Comparison))
-                cmbComparison.Items.Add(Comparison);
+            UpdateComparisonItems();
 
             txtName.DataBindings.Clear();
             cmbColumnType.DataBindings.Clear();
-            cmbComparison.DataBindings.Clear();
             cmbTimingMethod.DataBindings.Clear();
             txtName.DataBindings.Add("Text", this, "ColumnName", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbColumnType.DataBindings.Add("SelectedItem", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
@@ -93,6 +95,27 @@ namespace LiveSplit.UI.Components
         void txtName_TextChanged(object sender, EventArgs e)
         {
             groupColumn.Text = "Column: " + txtName.Text;
+        }
+
+        private void UpdateComparisonItems()
+        {
+            cmbComparison.Items.Clear();
+            cmbComparison.Items.Add("Current Comparison");
+
+            if (Data.Type == ColumnType.Delta || Data.Type == ColumnType.DeltaorSplitTime || Data.Type == ColumnType.SplitTime)
+                cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != NoneComparisonGenerator.ComparisonName).ToArray());
+            else
+            {
+                cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
+                if (Comparison == BestSplitTimesComparisonGenerator.ComparisonName)
+                    Comparison = "Current Comparison";
+            }
+
+            if (!cmbComparison.Items.Contains(Comparison))
+                cmbComparison.Items.Add(Comparison);
+
+            cmbComparison.DataBindings.Clear();
+            cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private String GetColumnType(ColumnType type)
