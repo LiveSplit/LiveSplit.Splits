@@ -1069,7 +1069,7 @@
             this.btnAddColumn.Location = new System.Drawing.Point(355, 3);
             this.btnAddColumn.Name = "btnAddColumn";
             this.btnAddColumn.Size = new System.Drawing.Size(75, 23);
-            this.btnAddColumn.TabIndex = 1;
+            this.btnAddColumn.TabIndex = 2;
             this.btnAddColumn.Text = "Add Column";
             this.btnAddColumn.UseVisualStyleBackColor = true;
             this.btnAddColumn.Click += new System.EventHandler(this.btnAddColumn_Click);
@@ -1081,7 +1081,7 @@
             this.btnLabelColor.Location = new System.Drawing.Point(261, 3);
             this.btnLabelColor.Name = "btnLabelColor";
             this.btnLabelColor.Size = new System.Drawing.Size(23, 23);
-            this.btnLabelColor.TabIndex = 2;
+            this.btnLabelColor.TabIndex = 1;
             this.btnLabelColor.UseVisualStyleBackColor = false;
             this.btnLabelColor.Click += new System.EventHandler(this.ColorButtonClick);
             // 
