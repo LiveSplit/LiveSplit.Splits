@@ -71,6 +71,7 @@ namespace LiveSplit.UI.Components
         public bool ShowColumnLabels { get; set; }
         public Color LabelsColor { get; set; }
 
+        public bool AutomaticAbbreviations { get; set; }
         public Color BeforeNamesColor { get; set; }
         public Color CurrentNamesColor { get; set; }
         public Color AfterNamesColor { get; set; }
@@ -118,6 +119,7 @@ namespace LiveSplit.UI.Components
             SplitWidth = 20;
             SplitHeight = 3.6f;
             IconSize = 24f;
+            AutomaticAbbreviations = false;
             BeforeNamesColor = Color.FromArgb(255, 255, 255);
             CurrentNamesColor = Color.FromArgb(255, 255, 255);
             AfterNamesColor = Color.FromArgb(255, 255, 255);
@@ -143,6 +145,7 @@ namespace LiveSplit.UI.Components
             dmnUpcomingSegments.DataBindings.Add("Value", this, "SplitPreviewCount", false, DataSourceUpdateMode.OnPropertyChanged);
             btnTopColor.DataBindings.Add("BackColor", this, "CurrentSplitTopColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnBottomColor.DataBindings.Add("BackColor", this, "CurrentSplitBottomColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkAutomaticAbbreviations.DataBindings.Add("Checked", this, "AutomaticAbbreviations", false, DataSourceUpdateMode.OnPropertyChanged);
             btnBeforeNamesColor.DataBindings.Add("BackColor", this, "BeforeNamesColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnCurrentNamesColor.DataBindings.Add("BackColor", this, "CurrentNamesColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnAfterNamesColor.DataBindings.Add("BackColor", this, "AfterNamesColor", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -375,6 +378,14 @@ namespace LiveSplit.UI.Components
             AlwaysShowLastSplit = Boolean.Parse(element["AlwaysShowLastSplit"].InnerText);
             SplitWidth = Single.Parse(element["SplitWidth"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
             
+            if (version >= new Version(1, 6))
+            {
+                AutomaticAbbreviations = Boolean.Parse(element["AutomaticAbbreviations"].InnerText);
+            }
+            else
+            {
+                AutomaticAbbreviations = false;
+            }
             if (version >= new Version(1, 5))
             {
                 HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
@@ -479,7 +490,7 @@ namespace LiveSplit.UI.Components
         public XmlNode GetSettings(XmlDocument document)
         {
             var parent = document.CreateElement("Settings");
-            parent.AppendChild(ToElement(document, "Version", "1.5"));
+            parent.AppendChild(ToElement(document, "Version", "1.6"));
             parent.AppendChild(ToElement(document, CurrentSplitTopColor, "CurrentSplitTopColor"));
             parent.AppendChild(ToElement(document, CurrentSplitBottomColor, "CurrentSplitBottomColor"));
             parent.AppendChild(ToElement(document, "VisualSplitCount", VisualSplitCount));
@@ -489,6 +500,7 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(ToElement(document, "AlwaysShowLastSplit", AlwaysShowLastSplit));
             parent.AppendChild(ToElement(document, "SplitWidth", SplitWidth));
             parent.AppendChild(ToElement(document, "SplitTimesAccuracy", SplitTimesAccuracy));
+            parent.AppendChild(ToElement(document, "AutomaticAbbreviations", AutomaticAbbreviations));
             parent.AppendChild(ToElement(document, BeforeNamesColor, "BeforeNamesColor"));
             parent.AppendChild(ToElement(document, CurrentNamesColor, "CurrentNamesColor"));
             parent.AppendChild(ToElement(document, AfterNamesColor, "AfterNamesColor"));

@@ -338,8 +338,15 @@ namespace LiveSplit.UI.Components
             {
                 RecreateLabels();
 
+                if (Settings.AutomaticAbbreviations)
+                {
+                    if (NameLabel.Text != Split.Name || NameLabel.AlternateText == null || !NameLabel.AlternateText.Any())
+                        NameLabel.AlternateText = Split.Name.GetAbbreviations().ToList();
+                }
+                else if (NameLabel.AlternateText != null && NameLabel.AlternateText.Any())
+                    NameLabel.AlternateText.Clear();
+
                 NameLabel.Text = Split.Name;
-                NameLabel.AlternateText = Split.Name.GetAbbreviations().ToList();
 
                 var splitIndex = state.Run.IndexOf(Split);
                 if (splitIndex < state.CurrentSplitIndex)
