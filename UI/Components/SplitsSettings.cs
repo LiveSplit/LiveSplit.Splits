@@ -364,33 +364,43 @@ namespace LiveSplit.UI.Components
         public void SetSettings(XmlNode node)
         {
             var element = (XmlElement)node;
-            Version version;
-            if (element["Version"] != null)
-                version = Version.Parse(element["Version"].InnerText);
-            else
-                version = new Version(1, 0, 0, 0);
-            CurrentSplitTopColor = ParseColor(element["CurrentSplitTopColor"]);
-            CurrentSplitBottomColor = ParseColor(element["CurrentSplitBottomColor"]);
-            VisualSplitCount = Int32.Parse(element["VisualSplitCount"].InnerText);
-            SplitPreviewCount = Int32.Parse(element["SplitPreviewCount"].InnerText);
-            DisplayIcons = Boolean.Parse(element["DisplayIcons"].InnerText);
-            ShowThinSeparators = Boolean.Parse(element["ShowThinSeparators"].InnerText);
-            AlwaysShowLastSplit = Boolean.Parse(element["AlwaysShowLastSplit"].InnerText);
-            SplitWidth = Single.Parse(element["SplitWidth"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
-            
-            if (version >= new Version(1, 6))
-            {
-                AutomaticAbbreviations = Boolean.Parse(element["AutomaticAbbreviations"].InnerText);
-            }
-            else
-            {
-                AutomaticAbbreviations = false;
-            }
+            Version version = SettingsHelper.ParseVersion(element["Version"]);
+
+            CurrentSplitTopColor = SettingsHelper.ParseColor(element["CurrentSplitTopColor"]);
+            CurrentSplitBottomColor = SettingsHelper.ParseColor(element["CurrentSplitBottomColor"]);
+            VisualSplitCount = SettingsHelper.ParseInt(element["VisualSplitCount"]);
+            SplitPreviewCount = SettingsHelper.ParseInt(element["SplitPreviewCount"]);
+            DisplayIcons = SettingsHelper.ParseBool(element["DisplayIcons"]);
+            ShowThinSeparators = SettingsHelper.ParseBool(element["ShowThinSeparators"]);
+            AlwaysShowLastSplit = SettingsHelper.ParseBool(element["AlwaysShowLastSplit"]);
+            SplitWidth = SettingsHelper.ParseFloat(element["SplitWidth"]);
+            AutomaticAbbreviations = SettingsHelper.ParseBool(element["AutomaticAbbreviations"], false);
+            HideIconsIfAllBlank = SettingsHelper.ParseBool(element["HideIconsIfAllBlank"], true);
+            ShowColumnLabels = SettingsHelper.ParseBool(element["ShowColumnLabels"], false);
+            LabelsColor = SettingsHelper.ParseColor(element["LabelsColor"]);
+            OverrideTimesColor = SettingsHelper.ParseBool(element["OverrideTimesColor"], false);
+            BeforeTimesColor = SettingsHelper.ParseColor(element["BeforeTimesColor"], Color.FromArgb(255, 255, 255));
+            CurrentTimesColor = SettingsHelper.ParseColor(element["CurrentTimesColor"], Color.FromArgb(255, 255, 255));
+            AfterTimesColor = SettingsHelper.ParseColor(element["AfterTimesColor"], Color.FromArgb(255, 255, 255));
+            SplitHeight = SettingsHelper.ParseFloat(element["SplitHeight"], 6);
+            SplitGradientString = SettingsHelper.ParseString(element["CurrentSplitGradient"], GradientType.Vertical.ToString());
+            BackgroundColor = SettingsHelper.ParseColor(element["BackgroundColor"], Color.Transparent);
+            BackgroundColor2 = SettingsHelper.ParseColor(element["BackgroundColor2"], Color.Transparent);
+            GradientString = SettingsHelper.ParseString(element["BackgroundGradient"], ExtendedGradientType.Plain.ToString());
+            SeparatorLastSplit = SettingsHelper.ParseBool(element["SeparatorLastSplit"], true);
+            DropDecimals = SettingsHelper.ParseBool(element["DropDecimals"], true);
+            DeltasAccuracy = SettingsHelper.ParseEnum<TimeAccuracy>(element["DeltasAccuracy"], TimeAccuracy.Tenths);
+            OverrideDeltasColor = SettingsHelper.ParseBool(element["OverrideDeltasColor"], false);
+            DeltasColor = SettingsHelper.ParseColor(element["DeltasColor"], Color.FromArgb(255, 255, 255));
+            Display2Rows = SettingsHelper.ParseBool(element["Display2Rows"], false);
+            SplitTimesAccuracy = SettingsHelper.ParseEnum<TimeAccuracy>(element["SplitTimesAccuracy"], TimeAccuracy.Seconds);
+            ShowBlankSplits = SettingsHelper.ParseBool(element["ShowBlankSplits"], true);
+            LockLastSplit = SettingsHelper.ParseBool(element["LockLastSplit"], false);
+            IconSize = SettingsHelper.ParseFloat(element["IconSize"], 24f);
+            IconShadows = SettingsHelper.ParseBool(element["IconShadows"], true);
+
             if (version >= new Version(1, 5))
             {
-                HideIconsIfAllBlank = Boolean.Parse(element["HideIconsIfAllBlank"].InnerText);
-                ShowColumnLabels = Boolean.Parse(element["ShowColumnLabels"].InnerText);
-                LabelsColor = ParseColor(element["LabelsColor"]);
                 var columnsElement = element["Columns"];
                 ColumnsList.Clear();
                 foreach (var child in columnsElement.ChildNodes)
@@ -401,12 +411,9 @@ namespace LiveSplit.UI.Components
             }
             else
             {
-                HideIconsIfAllBlank = true;
-                ShowColumnLabels = false;
-                LabelsColor = Color.FromArgb(255, 255, 255);
                 ColumnsList.Clear();
-                var comparison = element["Comparison"].InnerText;
-                if (Boolean.Parse(element["ShowSplitTimes"].InnerText))
+                var comparison = SettingsHelper.ParseString(element["Comparison"]);
+                if (SettingsHelper.ParseBool(element["ShowSplitTimes"]))
                 {
                     ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, comparison, "Current Timing Method")});
                     ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("Time", ColumnType.SplitTime, comparison, "Current Timing Method")});
@@ -418,115 +425,65 @@ namespace LiveSplit.UI.Components
             }
             if (version >= new Version(1, 3))
             {
-                OverrideTimesColor = Boolean.Parse(element["OverrideTimesColor"].InnerText);
-                BeforeTimesColor = ParseColor(element["BeforeTimesColor"]);
-                CurrentTimesColor = ParseColor(element["CurrentTimesColor"]);
-                AfterTimesColor = ParseColor(element["AfterTimesColor"]);
-                BeforeNamesColor = ParseColor(element["BeforeNamesColor"]);
-                CurrentNamesColor = ParseColor(element["CurrentNamesColor"]);
-                AfterNamesColor = ParseColor(element["AfterNamesColor"]);
-                SplitHeight = Single.Parse(element["SplitHeight"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
-                SplitGradientString = element["CurrentSplitGradient"].InnerText;
-                BackgroundColor = ParseColor(element["BackgroundColor"]);
-                BackgroundColor2 = ParseColor(element["BackgroundColor2"]);
-                GradientString = element["BackgroundGradient"].InnerText;
-                SeparatorLastSplit = Boolean.Parse(element["SeparatorLastSplit"].InnerText);
-                DropDecimals = Boolean.Parse(element["DropDecimals"].InnerText);
-                DeltasAccuracy = ParseEnum<TimeAccuracy>(element["DeltasAccuracy"]);
-                OverrideDeltasColor = Boolean.Parse(element["OverrideDeltasColor"].InnerText);
-                DeltasColor = ParseColor(element["DeltasColor"]);
-                Display2Rows = Boolean.Parse(element["Display2Rows"].InnerText);
+                BeforeNamesColor = SettingsHelper.ParseColor(element["BeforeNamesColor"]);
+                CurrentNamesColor = SettingsHelper.ParseColor(element["CurrentNamesColor"]);
+                AfterNamesColor = SettingsHelper.ParseColor(element["AfterNamesColor"]);
+                OverrideTextColor = SettingsHelper.ParseBool(element["OverrideTextColor"]);
             }
             else
             {
                 if (version >= new Version(1, 2))
-                    BeforeNamesColor = CurrentNamesColor = AfterNamesColor = ParseColor(element["SplitNamesColor"]);
+                    BeforeNamesColor = CurrentNamesColor = AfterNamesColor = SettingsHelper.ParseColor(element["SplitNamesColor"]);
                 else
                 {
                     BeforeNamesColor = Color.FromArgb(255, 255, 255);
                     CurrentNamesColor = Color.FromArgb(255, 255, 255);
                     AfterNamesColor = Color.FromArgb(255, 255, 255);
                 }
-                BeforeTimesColor = Color.FromArgb(255, 255, 255);
-                CurrentTimesColor = Color.FromArgb(255, 255, 255);
-                AfterTimesColor = Color.FromArgb(255, 255, 255);
-                OverrideTimesColor = false;
-                SplitHeight = 6;
-                CurrentSplitGradient = GradientType.Vertical;
-                BackgroundColor = Color.Transparent;
-                BackgroundColor2 = Color.Transparent;
-                BackgroundGradient = ExtendedGradientType.Plain;
-                SeparatorLastSplit = true;
-                DropDecimals = true;
-                DeltasAccuracy = TimeAccuracy.Tenths;
-                OverrideDeltasColor = false;
-                DeltasColor = Color.FromArgb(255, 255, 255);
-                Display2Rows = false;
-            }              
-            if (version >= new Version(1, 2))
-            {
-                SplitTimesAccuracy = ParseEnum<TimeAccuracy>(element["SplitTimesAccuracy"]);
-                if (version >= new Version(1, 3))
-                    OverrideTextColor = Boolean.Parse(element["OverrideTextColor"].InnerText);
-                else
-                    OverrideTextColor = !Boolean.Parse(element["UseTextColor"].InnerText);
-                ShowBlankSplits = Boolean.Parse(element["ShowBlankSplits"].InnerText);
-                LockLastSplit = Boolean.Parse(element["LockLastSplit"].InnerText);
-                IconSize = Single.Parse(element["IconSize"].InnerText.Replace(',', '.'), CultureInfo.InvariantCulture);
-                IconShadows = Boolean.Parse(element["IconShadows"].InnerText);
-            }
-            else
-            {
-                SplitTimesAccuracy = TimeAccuracy.Seconds;
-                OverrideTextColor = false;
-                ShowBlankSplits = true;
-                LockLastSplit = false;
-                IconSize = 24f;
-                IconShadows = true;
-            }
-                
+                OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);  
+            }                       
         }
 
         public XmlNode GetSettings(XmlDocument document)
         {
             var parent = document.CreateElement("Settings");
-            parent.AppendChild(ToElement(document, "Version", "1.6"));
-            parent.AppendChild(ToElement(document, CurrentSplitTopColor, "CurrentSplitTopColor"));
-            parent.AppendChild(ToElement(document, CurrentSplitBottomColor, "CurrentSplitBottomColor"));
-            parent.AppendChild(ToElement(document, "VisualSplitCount", VisualSplitCount));
-            parent.AppendChild(ToElement(document, "SplitPreviewCount", SplitPreviewCount));
-            parent.AppendChild(ToElement(document, "DisplayIcons", DisplayIcons));
-            parent.AppendChild(ToElement(document, "ShowThinSeparators", ShowThinSeparators));
-            parent.AppendChild(ToElement(document, "AlwaysShowLastSplit", AlwaysShowLastSplit));
-            parent.AppendChild(ToElement(document, "SplitWidth", SplitWidth));
-            parent.AppendChild(ToElement(document, "SplitTimesAccuracy", SplitTimesAccuracy));
-            parent.AppendChild(ToElement(document, "AutomaticAbbreviations", AutomaticAbbreviations));
-            parent.AppendChild(ToElement(document, BeforeNamesColor, "BeforeNamesColor"));
-            parent.AppendChild(ToElement(document, CurrentNamesColor, "CurrentNamesColor"));
-            parent.AppendChild(ToElement(document, AfterNamesColor, "AfterNamesColor"));
-            parent.AppendChild(ToElement(document, "OverrideTextColor", OverrideTextColor));
-            parent.AppendChild(ToElement(document, BeforeTimesColor, "BeforeTimesColor"));
-            parent.AppendChild(ToElement(document, CurrentTimesColor, "CurrentTimesColor"));
-            parent.AppendChild(ToElement(document, AfterTimesColor, "AfterTimesColor"));
-            parent.AppendChild(ToElement(document, "OverrideTimesColor", OverrideTimesColor));
-            parent.AppendChild(ToElement(document, "ShowBlankSplits", ShowBlankSplits));
-            parent.AppendChild(ToElement(document, "LockLastSplit", LockLastSplit));
-            parent.AppendChild(ToElement(document, "IconSize", IconSize));
-            parent.AppendChild(ToElement(document, "IconShadows", IconShadows));
-            parent.AppendChild(ToElement(document, "SplitHeight", SplitHeight));
-            parent.AppendChild(ToElement(document, "CurrentSplitGradient", CurrentSplitGradient));
-            parent.AppendChild(ToElement(document, BackgroundColor, "BackgroundColor"));
-            parent.AppendChild(ToElement(document, BackgroundColor2, "BackgroundColor2"));
-            parent.AppendChild(ToElement(document, "BackgroundGradient", BackgroundGradient));
-            parent.AppendChild(ToElement(document, "SeparatorLastSplit", SeparatorLastSplit));
-            parent.AppendChild(ToElement(document, "DeltasAccuracy", DeltasAccuracy));
-            parent.AppendChild(ToElement(document, "DropDecimals", DropDecimals));
-            parent.AppendChild(ToElement(document, "OverrideDeltasColor", OverrideDeltasColor));
-            parent.AppendChild(ToElement(document, DeltasColor, "DeltasColor"));
-            parent.AppendChild(ToElement(document, "Display2Rows", Display2Rows));
-            parent.AppendChild(ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
-            parent.AppendChild(ToElement(document, "ShowColumnLabels", ShowColumnLabels));
-            parent.AppendChild(ToElement(document, LabelsColor, "LabelsColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, "Version", "1.6"));
+            parent.AppendChild(SettingsHelper.ToElement(document, CurrentSplitTopColor, "CurrentSplitTopColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, CurrentSplitBottomColor, "CurrentSplitBottomColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, "VisualSplitCount", VisualSplitCount));
+            parent.AppendChild(SettingsHelper.ToElement(document, "SplitPreviewCount", SplitPreviewCount));
+            parent.AppendChild(SettingsHelper.ToElement(document, "DisplayIcons", DisplayIcons));
+            parent.AppendChild(SettingsHelper.ToElement(document, "ShowThinSeparators", ShowThinSeparators));
+            parent.AppendChild(SettingsHelper.ToElement(document, "AlwaysShowLastSplit", AlwaysShowLastSplit));
+            parent.AppendChild(SettingsHelper.ToElement(document, "SplitWidth", SplitWidth));
+            parent.AppendChild(SettingsHelper.ToElement(document, "SplitTimesAccuracy", SplitTimesAccuracy));
+            parent.AppendChild(SettingsHelper.ToElement(document, "AutomaticAbbreviations", AutomaticAbbreviations));
+            parent.AppendChild(SettingsHelper.ToElement(document, BeforeNamesColor, "BeforeNamesColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, CurrentNamesColor, "CurrentNamesColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, AfterNamesColor, "AfterNamesColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, "OverrideTextColor", OverrideTextColor));
+            parent.AppendChild(SettingsHelper.ToElement(document, BeforeTimesColor, "BeforeTimesColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, CurrentTimesColor, "CurrentTimesColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, AfterTimesColor, "AfterTimesColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, "OverrideTimesColor", OverrideTimesColor));
+            parent.AppendChild(SettingsHelper.ToElement(document, "ShowBlankSplits", ShowBlankSplits));
+            parent.AppendChild(SettingsHelper.ToElement(document, "LockLastSplit", LockLastSplit));
+            parent.AppendChild(SettingsHelper.ToElement(document, "IconSize", IconSize));
+            parent.AppendChild(SettingsHelper.ToElement(document, "IconShadows", IconShadows));
+            parent.AppendChild(SettingsHelper.ToElement(document, "SplitHeight", SplitHeight));
+            parent.AppendChild(SettingsHelper.ToElement(document, "CurrentSplitGradient", CurrentSplitGradient));
+            parent.AppendChild(SettingsHelper.ToElement(document, BackgroundColor, "BackgroundColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, BackgroundColor2, "BackgroundColor2"));
+            parent.AppendChild(SettingsHelper.ToElement(document, "BackgroundGradient", BackgroundGradient));
+            parent.AppendChild(SettingsHelper.ToElement(document, "SeparatorLastSplit", SeparatorLastSplit));
+            parent.AppendChild(SettingsHelper.ToElement(document, "DeltasAccuracy", DeltasAccuracy));
+            parent.AppendChild(SettingsHelper.ToElement(document, "DropDecimals", DropDecimals));
+            parent.AppendChild(SettingsHelper.ToElement(document, "OverrideDeltasColor", OverrideDeltasColor));
+            parent.AppendChild(SettingsHelper.ToElement(document, DeltasColor, "DeltasColor"));
+            parent.AppendChild(SettingsHelper.ToElement(document, "Display2Rows", Display2Rows));
+            parent.AppendChild(SettingsHelper.ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
+            parent.AppendChild(SettingsHelper.ToElement(document, "ShowColumnLabels", ShowColumnLabels));
+            parent.AppendChild(SettingsHelper.ToElement(document, LabelsColor, "LabelsColor"));
 
             var columnsElement = document.CreateElement("Columns");
             foreach (var columnData in ColumnsList.Select(x => x.Data))
@@ -534,23 +491,6 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(columnsElement);
 
             return parent;
-        }
-
-        private Color ParseColor(XmlElement colorElement)
-        {
-            return Color.FromArgb(Int32.Parse(colorElement.InnerText, NumberStyles.HexNumber));
-        }
-
-        private XmlElement ToElement(XmlDocument document, Color color, string name)
-        {
-            var element = document.CreateElement(name);
-            element.InnerText = color.ToArgb().ToString("X8");
-            return element;
-        }
-
-        private T ParseEnum<T>(XmlElement element)
-        {
-            return (T)Enum.Parse(typeof(T), element.InnerText);
         }
 
         private void ColorButtonClick(object sender, EventArgs e)
@@ -561,20 +501,6 @@ namespace LiveSplit.UI.Components
             picker.SelectedColorChanged += (s, x) => button.BackColor = picker.SelectedColor;
             picker.ShowDialog(this);
             button.BackColor = picker.SelectedColor;
-        }
-
-        private XmlElement ToElement<T>(XmlDocument document, String name, T value)
-        {
-            var element = document.CreateElement(name);
-            element.InnerText = value.ToString();
-            return element;
-        }
-
-        private XmlElement ToElement(XmlDocument document, String name, float value)
-        {
-            var element = document.CreateElement(name);
-            element.InnerText = value.ToString(CultureInfo.InvariantCulture);
-            return element;
         }
 
         private void ResetColumns()
