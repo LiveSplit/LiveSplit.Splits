@@ -395,7 +395,7 @@ namespace LiveSplit.UI.Components
 
                     else //SegmentTime
                     {
-                        var segmentTime = LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, false, true, comparison, timingMethod);
+                        var segmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, comparison, timingMethod);
                         label.Text = TimeFormatter.Format(segmentTime);
                     }
                 }
@@ -403,7 +403,7 @@ namespace LiveSplit.UI.Components
                 if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
                 {
                     var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
-                    var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, 0, splitIndex, comparison, timingMethod);
+                    var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, splitIndex, true, true, comparison, timingMethod);
                     if (color == null)
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
@@ -422,8 +422,8 @@ namespace LiveSplit.UI.Components
 
                 else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
                 {
-                    var segmentDelta = LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, false, false, comparison, timingMethod);
-                    var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, 1, splitIndex, comparison, timingMethod);
+                    var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, comparison, timingMethod);
+                    var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod);
                     if (color == null)
                         color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
                     label.ForeColor = color.Value;
@@ -468,7 +468,7 @@ namespace LiveSplit.UI.Components
                         label.Text = DeltaTimeFormatter.Format(bestDelta);
 
                     else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
-                        label.Text = DeltaTimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegment(state, splitIndex, true, false, comparison, timingMethod));
+                        label.Text = DeltaTimeFormatter.Format(LiveSplitStateHelper.GetLiveSegmentDelta(state, splitIndex, comparison, timingMethod));
 
                     label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
                 }
