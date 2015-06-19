@@ -495,12 +495,7 @@ namespace LiveSplit.UI.Components
 
         private void ColorButtonClick(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-            var picker = new ColorPickerDialog();
-            picker.SelectedColor = picker.OldColor = button.BackColor;
-            picker.SelectedColorChanged += (s, x) => button.BackColor = picker.SelectedColor;
-            picker.ShowDialog(this);
-            button.BackColor = picker.SelectedColor;
+            SettingsHelper.ColorButtonClick((Button)sender, this);
         }
 
         private void ResetColumns()
