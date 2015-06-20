@@ -166,31 +166,11 @@ namespace LiveSplit.UI.Components
             chkOverrideDeltaColor.DataBindings.Add("Checked", this, "OverrideDeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnDeltaColor.DataBindings.Add("BackColor", this, "DeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnLabelColor.DataBindings.Add("BackColor", this, "LabelsColor", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.Load += SplitsSettings_Load;
-            chkThinSeparators.CheckedChanged += chkThinSeparators_CheckedChanged;
-            chkLastSplit.CheckedChanged += chkLastSplit_CheckedChanged;
-            chkShowBlankSplits.CheckedChanged += chkShowBlankSplits_CheckedChanged;
-            chkLockLastSplit.CheckedChanged += chkLockLastSplit_CheckedChanged;
-            chkSeparatorLastSplit.CheckedChanged += chkSeparatorLastSplit_CheckedChanged;
             trkIconSize.DataBindings.Add("Value", this, "IconSize", false, DataSourceUpdateMode.OnPropertyChanged);
             cmbSplitGradient.DataBindings.Add("SelectedItem", this, "SplitGradientString", false, DataSourceUpdateMode.OnPropertyChanged);
-            cmbSplitGradient.SelectedIndexChanged += cmbSplitGradient_SelectedIndexChanged;
-
-            cmbGradientType.SelectedIndexChanged += cmbGradientType_SelectedIndexChanged;
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor1.DataBindings.Add("BackColor", this, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor2.DataBindings.Add("BackColor", this, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
-            chkColumnLabels.CheckedChanged += chkColumnLabels_CheckedChanged;
-            rdoSeconds.CheckedChanged += rdoSeconds_CheckedChanged;
-            rdoTenths.CheckedChanged += rdoTenths_CheckedChanged;
-
-            rdoDeltaSeconds.CheckedChanged += rdoDeltaSeconds_CheckedChanged;
-            rdoDeltaTenths.CheckedChanged += rdoDeltaTenths_CheckedChanged;
-
-            chkOverrideTextColor.CheckedChanged += chkOverrideTextColor_CheckedChanged;
-            chkOverrideDeltaColor.CheckedChanged += chkOverrideDeltaColor_CheckedChanged;
-            chkOverrideTimesColor.CheckedChanged += chkOverrideTimesColor_CheckedChanged;
-            chkDisplayIcons.CheckedChanged += chkDisplayIcons_CheckedChanged;
 
             ColumnsList = new List<ColumnSettings>();
             ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, "Current Comparison", "Current Timing Method") });

@@ -123,6 +123,7 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(325, 20);
             this.txtName.TabIndex = 43;
+            this.txtName.TextChanged += new System.EventHandler(txtName_TextChanged);
             // 
             // cmbColumnType
             // 
@@ -141,6 +142,7 @@
             this.cmbColumnType.Name = "cmbColumnType";
             this.cmbColumnType.Size = new System.Drawing.Size(325, 21);
             this.cmbColumnType.TabIndex = 46;
+            this.cmbColumnType.SelectedIndexChanged += new System.EventHandler(cmbColumnType_SelectedIndexChanged);
             // 
             // cmbComparison
             // 
@@ -152,6 +154,7 @@
             this.cmbComparison.Name = "cmbComparison";
             this.cmbComparison.Size = new System.Drawing.Size(325, 21);
             this.cmbComparison.TabIndex = 47;
+            this.cmbComparison.SelectedIndexChanged += new System.EventHandler(cmbComparison_SelectedIndexChanged);
             // 
             // cmbTimingMethod
             // 
@@ -167,6 +170,7 @@
             this.cmbTimingMethod.Name = "cmbTimingMethod";
             this.cmbTimingMethod.Size = new System.Drawing.Size(325, 21);
             this.cmbTimingMethod.TabIndex = 48;
+            this.cmbTimingMethod.SelectedIndexChanged += new System.EventHandler(cmbTimingMethod_SelectedIndexChanged);
             // 
             // btnRemoveColumn
             // 
@@ -219,6 +223,7 @@
             this.Controls.Add(this.groupColumn);
             this.Name = "ColumnSettings";
             this.Size = new System.Drawing.Size(427, 165);
+            this.Load += new System.EventHandler(ColumnSettings_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupColumn.ResumeLayout(false);

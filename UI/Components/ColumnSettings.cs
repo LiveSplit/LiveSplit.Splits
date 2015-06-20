@@ -50,13 +50,6 @@ namespace LiveSplit.UI.Components
 
             CurrentState = state;
             ColumnsList = columnsList; 
-
-            cmbColumnType.SelectedIndexChanged += cmbColumnType_SelectedIndexChanged;
-            cmbComparison.SelectedIndexChanged += cmbComparison_SelectedIndexChanged;
-            cmbTimingMethod.SelectedIndexChanged += cmbTimingMethod_SelectedIndexChanged;
-
-            txtName.TextChanged += txtName_TextChanged;
-            this.Load += ColumnSettings_Load;
         }
 
         void cmbTimingMethod_SelectedIndexChanged(object sender, EventArgs e)
