@@ -122,8 +122,7 @@ namespace LiveSplit.UI.Components
 
             for (var i = 0; i < totalSplits; ++i)
             {
-                if ((i == totalSplits - 1 && totalSplits > 1 && Settings.LockLastSplit && i > 0)
-                    || (i == visualSplitCount - 1 && totalSplits > 1 && !Settings.LockLastSplit && i > 0))
+                if (i == totalSplits - 1 && i > 0)
                 {
                     LastSplitSeparatorIndex = Components.Count;
                     if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit)
@@ -134,10 +133,10 @@ namespace LiveSplit.UI.Components
 
                 var splitComponent = new SplitComponent(Settings, ColumnsList);
                 Components.Add(splitComponent);
-                if (i < visualSplitCount - 1 + (Settings.LockLastSplit ? 0 : 1) || i == totalSplits - 1 + (Settings.LockLastSplit ? 0 : 1))
+                if (i < visualSplitCount - 1 || i == (Settings.LockLastSplit ? totalSplits - 1 : visualSplitCount - 1))
                     SplitComponents.Add(splitComponent);                   
 
-                if (Settings.ShowThinSeparators && ((i < totalSplits - 2 && Settings.LockLastSplit) || (!Settings.LockLastSplit && i != visualSplitCount-2 && i < totalSplits-1)))
+                if (Settings.ShowThinSeparators && i < totalSplits - 2)
                     Components.Add(new ThinSeparatorComponent());
             }
         }
