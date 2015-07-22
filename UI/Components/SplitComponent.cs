@@ -460,7 +460,7 @@ namespace LiveSplit.UI.Components
                 }
 
                 //Live Delta
-                var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, false, comparison, timingMethod);
+                var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, true, comparison, timingMethod);
                 if (bestDelta != null && Split == state.CurrentSplit &&
                     (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
                 {
