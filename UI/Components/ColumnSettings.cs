@@ -102,7 +102,7 @@ namespace LiveSplit.UI.Components
             cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private String GetColumnType(ColumnType type)
+        private static String GetColumnType(ColumnType type)
         {
             if (type == ColumnType.SplitTime)
                 return "Split Time";
@@ -118,7 +118,7 @@ namespace LiveSplit.UI.Components
                 return "Segment Delta or Segment Time";
         }
 
-        private ColumnType ParseColumnType(String columnType)
+        private static ColumnType ParseColumnType(String columnType)
         {
             return (ColumnType)Enum.Parse(typeof(ColumnType), columnType.Replace(" ", String.Empty));
         }
