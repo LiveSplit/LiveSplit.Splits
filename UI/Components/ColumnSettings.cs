@@ -1,18 +1,9 @@
-﻿using Fetze.WinFormsColor;
-using LiveSplit.Model;
+﻿using LiveSplit.Model;
 using LiveSplit.Model.Comparisons;
-using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace LiveSplit.UI.Components
 {
@@ -111,7 +102,7 @@ namespace LiveSplit.UI.Components
             cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private String GetColumnType(ColumnType type)
+        private static String GetColumnType(ColumnType type)
         {
             if (type == ColumnType.SplitTime)
                 return "Split Time";
@@ -127,7 +118,7 @@ namespace LiveSplit.UI.Components
                 return "Segment Delta or Segment Time";
         }
 
-        private ColumnType ParseColumnType(String columnType)
+        private static ColumnType ParseColumnType(String columnType)
         {
             return (ColumnType)Enum.Parse(typeof(ColumnType), columnType.Replace(" ", String.Empty));
         }

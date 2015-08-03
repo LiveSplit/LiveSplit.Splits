@@ -1,8 +1,4 @@
-﻿using LiveSplit.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Xml;
 
 namespace LiveSplit.UI
@@ -47,7 +43,7 @@ namespace LiveSplit.UI
             return parent;
         }
 
-        private XmlElement ToElement<T>(XmlDocument document, String name, T value)
+        private static XmlElement ToElement<T>(XmlDocument document, String name, T value)
         {
             var element = document.CreateElement(name);
             element.InnerText = value.ToString();
