@@ -104,6 +104,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\ColumnSettings.ja-JP.resx">
+      <DependentUpon>ColumnSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\SplitsSettings.ja-JP.resx">
+      <DependentUpon>SplitsSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Components\SplitsSettings.resx">
       <DependentUpon>SplitsSettings.cs</DependentUpon>
     </EmbeddedResource>
