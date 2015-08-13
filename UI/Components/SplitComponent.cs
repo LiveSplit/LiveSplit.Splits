@@ -38,11 +38,7 @@ namespace LiveSplit.UI.Components
         public bool DisplayIcon { get; set; }
 
         public Image ShadowImage { get; set; }
-
         protected Image OldImage { get; set; }
-
-        public Image NoIconImage = Resources.DefaultSplitIcon.ToBitmap();
-        public Image NoIconShadow = IconShadow.Generate(Resources.DefaultSplitIcon.ToBitmap(), Color.Black);
 
         public float PaddingTop { get { return 0f; } }
         public float PaddingLeft { get { return 0f; } }
@@ -73,7 +69,6 @@ namespace LiveSplit.UI.Components
 
         public SplitComponent(SplitsSettings settings, IEnumerable<ColumnData> columnsList)
         {
-            NoIconShadow = IconShadow.Generate(NoIconImage, Color.Black);
             NameLabel = new SimpleLabel()
             {
                 HorizontalAlignment = StringAlignment.Near,
@@ -178,16 +173,10 @@ namespace LiveSplit.UI.Components
                     g.FillRectangle(currentSplitBrush, 0, 0, width, height);
                 }
 
-                if (DisplayIcon)
+                var icon = Split.Icon;
+                if (DisplayIcon && icon != null)
                 {
-                    var icon = Split.Icon ?? NoIconImage;
-                    var shadow = (Split.Icon != null) ? ShadowImage : NoIconShadow;
-
-                    /*if (DateTime.Now.Date.Month == 4 && DateTime.Now.Date.Day == 1)
-                    {
-                        icon = LiveSplit.Web.Share.TwitchEmoteResolver.Resolve("Kappa", true, false, false);
-                        shadow = null;
-                    }*/
+                    var shadow = ShadowImage;
 
                     if (OldImage != icon)
                     {

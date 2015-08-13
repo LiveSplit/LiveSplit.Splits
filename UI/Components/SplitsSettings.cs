@@ -48,7 +48,6 @@ namespace LiveSplit.UI.Components
 
         public bool DisplayIcons { get; set; }
         public bool IconShadows { get; set; }
-        public bool HideIconsIfAllBlank { get; set; }
         public bool ShowThinSeparators { get; set; }
         public bool AlwaysShowLastSplit { get; set; }
         public bool ShowBlankSplits { get; set; }
@@ -99,7 +98,6 @@ namespace LiveSplit.UI.Components
             VisualSplitCount = 8;
             SplitPreviewCount = 1;
             DisplayIcons = true;
-            HideIconsIfAllBlank = true;
             IconShadows = true;
             ShowThinSeparators = true;
             AlwaysShowLastSplit = true;
@@ -147,7 +145,6 @@ namespace LiveSplit.UI.Components
             btnAfterTimesColor.DataBindings.Add("BackColor", this, "AfterTimesColor", false, DataSourceUpdateMode.OnPropertyChanged);
             chkDisplayIcons.DataBindings.Add("Checked", this, "DisplayIcons", false, DataSourceUpdateMode.OnPropertyChanged);
             chkIconShadows.DataBindings.Add("Checked", this, "IconShadows", false, DataSourceUpdateMode.OnPropertyChanged);
-            chkHideIcons.DataBindings.Add("Checked", this, "HideIconsIfAllBlank", false, DataSourceUpdateMode.OnPropertyChanged);
             chkThinSeparators.DataBindings.Add("Checked", this, "ShowThinSeparators", false, DataSourceUpdateMode.OnPropertyChanged);
             chkLastSplit.DataBindings.Add("Checked", this, "AlwaysShowLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideTextColor.DataBindings.Add("Checked", this, "OverrideTextColor", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -177,7 +174,7 @@ namespace LiveSplit.UI.Components
 
         void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
         {
-            trkIconSize.Enabled = label5.Enabled = chkIconShadows.Enabled = chkHideIcons.Enabled = chkDisplayIcons.Checked;
+            trkIconSize.Enabled = label5.Enabled = chkIconShadows.Enabled = chkDisplayIcons.Checked;
         }
 
         void chkOverrideTimesColor_CheckedChanged(object sender, EventArgs e)
@@ -348,7 +345,6 @@ namespace LiveSplit.UI.Components
             AlwaysShowLastSplit = SettingsHelper.ParseBool(element["AlwaysShowLastSplit"]);
             SplitWidth = SettingsHelper.ParseFloat(element["SplitWidth"]);
             AutomaticAbbreviations = SettingsHelper.ParseBool(element["AutomaticAbbreviations"], false);
-            HideIconsIfAllBlank = SettingsHelper.ParseBool(element["HideIconsIfAllBlank"], true);
             ShowColumnLabels = SettingsHelper.ParseBool(element["ShowColumnLabels"], false);
             LabelsColor = SettingsHelper.ParseColor(element["LabelsColor"]);
             OverrideTimesColor = SettingsHelper.ParseBool(element["OverrideTimesColor"], false);
@@ -454,7 +450,6 @@ namespace LiveSplit.UI.Components
             parent.AppendChild(SettingsHelper.ToElement(document, "OverrideDeltasColor", OverrideDeltasColor));
             parent.AppendChild(SettingsHelper.ToElement(document, DeltasColor, "DeltasColor"));
             parent.AppendChild(SettingsHelper.ToElement(document, "Display2Rows", Display2Rows));
-            parent.AppendChild(SettingsHelper.ToElement(document, "HideIconsIfAllBlank", HideIconsIfAllBlank));
             parent.AppendChild(SettingsHelper.ToElement(document, "ShowColumnLabels", ShowColumnLabels));
             parent.AppendChild(SettingsHelper.ToElement(document, LabelsColor, "LabelsColor"));
 

@@ -185,7 +185,7 @@ namespace LiveSplit.UI.Components
             var iconsNotBlank = state.Run.Where(x => x.Icon != null).Count() > 0;
             foreach (var split in SplitComponents)
             {
-                split.DisplayIcon = (iconsNotBlank || !Settings.HideIconsIfAllBlank) && Settings.DisplayIcons;
+                split.DisplayIcon = iconsNotBlank && Settings.DisplayIcons;
 
                 if (split.Split != null && split.Split.Icon != null)
                     split.ShadowImage = ShadowImages[split.Split.Icon];
