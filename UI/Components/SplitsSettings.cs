@@ -416,49 +416,75 @@ namespace LiveSplit.UI.Components
         public XmlNode GetSettings(XmlDocument document)
         {
             var parent = document.CreateElement("Settings");
-            parent.AppendChild(SettingsHelper.ToElement(document, "Version", "1.6"));
-            parent.AppendChild(SettingsHelper.ToElement(document, CurrentSplitTopColor, "CurrentSplitTopColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, CurrentSplitBottomColor, "CurrentSplitBottomColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, "VisualSplitCount", VisualSplitCount));
-            parent.AppendChild(SettingsHelper.ToElement(document, "SplitPreviewCount", SplitPreviewCount));
-            parent.AppendChild(SettingsHelper.ToElement(document, "DisplayIcons", DisplayIcons));
-            parent.AppendChild(SettingsHelper.ToElement(document, "ShowThinSeparators", ShowThinSeparators));
-            parent.AppendChild(SettingsHelper.ToElement(document, "AlwaysShowLastSplit", AlwaysShowLastSplit));
-            parent.AppendChild(SettingsHelper.ToElement(document, "SplitWidth", SplitWidth));
-            parent.AppendChild(SettingsHelper.ToElement(document, "SplitTimesAccuracy", SplitTimesAccuracy));
-            parent.AppendChild(SettingsHelper.ToElement(document, "AutomaticAbbreviations", AutomaticAbbreviations));
-            parent.AppendChild(SettingsHelper.ToElement(document, BeforeNamesColor, "BeforeNamesColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, CurrentNamesColor, "CurrentNamesColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, AfterNamesColor, "AfterNamesColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, "OverrideTextColor", OverrideTextColor));
-            parent.AppendChild(SettingsHelper.ToElement(document, BeforeTimesColor, "BeforeTimesColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, CurrentTimesColor, "CurrentTimesColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, AfterTimesColor, "AfterTimesColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, "OverrideTimesColor", OverrideTimesColor));
-            parent.AppendChild(SettingsHelper.ToElement(document, "ShowBlankSplits", ShowBlankSplits));
-            parent.AppendChild(SettingsHelper.ToElement(document, "LockLastSplit", LockLastSplit));
-            parent.AppendChild(SettingsHelper.ToElement(document, "IconSize", IconSize));
-            parent.AppendChild(SettingsHelper.ToElement(document, "IconShadows", IconShadows));
-            parent.AppendChild(SettingsHelper.ToElement(document, "SplitHeight", SplitHeight));
-            parent.AppendChild(SettingsHelper.ToElement(document, "CurrentSplitGradient", CurrentSplitGradient));
-            parent.AppendChild(SettingsHelper.ToElement(document, BackgroundColor, "BackgroundColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, BackgroundColor2, "BackgroundColor2"));
-            parent.AppendChild(SettingsHelper.ToElement(document, "BackgroundGradient", BackgroundGradient));
-            parent.AppendChild(SettingsHelper.ToElement(document, "SeparatorLastSplit", SeparatorLastSplit));
-            parent.AppendChild(SettingsHelper.ToElement(document, "DeltasAccuracy", DeltasAccuracy));
-            parent.AppendChild(SettingsHelper.ToElement(document, "DropDecimals", DropDecimals));
-            parent.AppendChild(SettingsHelper.ToElement(document, "OverrideDeltasColor", OverrideDeltasColor));
-            parent.AppendChild(SettingsHelper.ToElement(document, DeltasColor, "DeltasColor"));
-            parent.AppendChild(SettingsHelper.ToElement(document, "Display2Rows", Display2Rows));
-            parent.AppendChild(SettingsHelper.ToElement(document, "ShowColumnLabels", ShowColumnLabels));
-            parent.AppendChild(SettingsHelper.ToElement(document, LabelsColor, "LabelsColor"));
-
-            var columnsElement = document.CreateElement("Columns");
-            foreach (var columnData in ColumnsList.Select(x => x.Data))
-                columnsElement.AppendChild(columnData.ToXml(document));
-            parent.AppendChild(columnsElement);
-
+            CreateSettingsNode(document, parent);
             return parent;
+        }
+
+        public int GetSettingsHashCode()
+        {
+            return CreateSettingsNode(null, null);
+        }
+
+        private int CreateSettingsNode(XmlDocument document, XmlElement parent)
+        {
+            var hashCode = SettingsHelper.CreateSetting(document, parent, "Version", "1.6") ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentSplitTopColor", CurrentSplitTopColor) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentSplitBottomColor", CurrentSplitBottomColor) ^
+            SettingsHelper.CreateSetting(document, parent, "VisualSplitCount", VisualSplitCount) ^
+            SettingsHelper.CreateSetting(document, parent, "SplitPreviewCount", SplitPreviewCount) ^
+            SettingsHelper.CreateSetting(document, parent, "DisplayIcons", DisplayIcons) ^
+            SettingsHelper.CreateSetting(document, parent, "ShowThinSeparators", ShowThinSeparators) ^
+            SettingsHelper.CreateSetting(document, parent, "AlwaysShowLastSplit", AlwaysShowLastSplit) ^
+            SettingsHelper.CreateSetting(document, parent, "SplitWidth", SplitWidth) ^
+            SettingsHelper.CreateSetting(document, parent, "SplitTimesAccuracy", SplitTimesAccuracy) ^
+            SettingsHelper.CreateSetting(document, parent, "AutomaticAbbreviations", AutomaticAbbreviations) ^
+            SettingsHelper.CreateSetting(document, parent, "BeforeNamesColor", BeforeNamesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentNamesColor", CurrentNamesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "AfterNamesColor", AfterNamesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "OverrideTextColor", OverrideTextColor) ^
+            SettingsHelper.CreateSetting(document, parent, "BeforeTimesColor", BeforeTimesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentTimesColor", CurrentTimesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "AfterTimesColor", AfterTimesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "OverrideTimesColor", OverrideTimesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "ShowBlankSplits", ShowBlankSplits) ^
+            SettingsHelper.CreateSetting(document, parent, "LockLastSplit", LockLastSplit) ^
+            SettingsHelper.CreateSetting(document, parent, "IconSize", IconSize) ^
+            SettingsHelper.CreateSetting(document, parent, "IconShadows", IconShadows) ^
+            SettingsHelper.CreateSetting(document, parent, "SplitHeight", SplitHeight) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentSplitGradient", CurrentSplitGradient) ^
+            SettingsHelper.CreateSetting(document, parent, "BackgroundColor", BackgroundColor) ^
+            SettingsHelper.CreateSetting(document, parent, "BackgroundColor2", BackgroundColor2) ^
+            SettingsHelper.CreateSetting(document, parent, "BackgroundGradient", BackgroundGradient) ^
+            SettingsHelper.CreateSetting(document, parent, "SeparatorLastSplit", SeparatorLastSplit) ^
+            SettingsHelper.CreateSetting(document, parent, "DeltasAccuracy", DeltasAccuracy) ^
+            SettingsHelper.CreateSetting(document, parent, "DropDecimals", DropDecimals) ^
+            SettingsHelper.CreateSetting(document, parent, "OverrideDeltasColor", OverrideDeltasColor) ^
+            SettingsHelper.CreateSetting(document, parent, "DeltasColor", DeltasColor) ^
+            SettingsHelper.CreateSetting(document, parent, "Display2Rows", Display2Rows) ^
+            SettingsHelper.CreateSetting(document, parent, "ShowColumnLabels", ShowColumnLabels) ^
+            SettingsHelper.CreateSetting(document, parent, "LabelsColor", LabelsColor);
+
+            XmlElement columnsElement = null;
+            if (document != null)
+            {
+                columnsElement = document.CreateElement("Columns");
+                parent.AppendChild(columnsElement);
+            }
+
+            var count = 1;
+            foreach (var columnData in ColumnsList.Select(x => x.Data))
+            {
+                XmlElement settings = null;
+                if (document != null)
+                {
+                    settings = document.CreateElement("Settings");
+                    columnsElement.AppendChild(settings);
+                }
+                hashCode ^= columnData.CreateElement(document, settings) * count;
+                count++;
+            }
+
+            return hashCode;
         }
 
         private void ColorButtonClick(object sender, EventArgs e)

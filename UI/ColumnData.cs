@@ -21,33 +21,19 @@ namespace LiveSplit.UI
         public static ColumnData FromXml(XmlNode node)
         {
             var element = (XmlElement)node;
-            Version version;
-            if (element["Version"] != null)
-                version = Version.Parse(element["Version"].InnerText);
-            else
-                version = new Version(1, 0, 0, 0);
             return new ColumnData(element["Name"].InnerText,
                 (ColumnType)Enum.Parse(typeof(ColumnType), element["Type"].InnerText),
                 element["Comparison"].InnerText,
                 element["TimingMethod"].InnerText);
         }
 
-        public XmlNode ToXml(XmlDocument document)
+        public int CreateElement(XmlDocument document, XmlElement element)
         {
-            var parent = document.CreateElement("Settings");
-            parent.AppendChild(ToElement(document, "Version", "1.5"));
-            parent.AppendChild(ToElement(document, "Name", Name));
-            parent.AppendChild(ToElement(document, "Type", Type));
-            parent.AppendChild(ToElement(document, "Comparison", Comparison));
-            parent.AppendChild(ToElement(document, "TimingMethod", TimingMethod));
-            return parent;
-        }
-
-        private static XmlElement ToElement<T>(XmlDocument document, String name, T value)
-        {
-            var element = document.CreateElement(name);
-            element.InnerText = value.ToString();
-            return element;
+            return SettingsHelper.CreateSetting(document, element, "Version", "1.5") ^
+            SettingsHelper.CreateSetting(document, element, "Name", Name) ^
+            SettingsHelper.CreateSetting(document, element, "Type", Type) ^
+            SettingsHelper.CreateSetting(document, element, "Comparison", Comparison) ^
+            SettingsHelper.CreateSetting(document, element, "TimingMethod", TimingMethod);
         }
     }
 }
