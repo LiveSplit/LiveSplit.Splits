@@ -388,10 +388,11 @@ namespace LiveSplit.UI.Components
                 if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
                 {
                     var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
-                    var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, splitIndex, true, true, comparison, timingMethod);
-                    if (color == null)
-                        color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
-                    label.ForeColor = color.Value;
+                    var brush = LiveSplitStateHelper.GetSplitBrush(state, deltaTime, splitIndex, true, true, comparison, timingMethod, label.Height);
+                    if (brush == null)
+                        brush = Settings.OverrideTimesColor ? new SolidBrush(Settings.BeforeTimesColor) : new SolidBrush(state.LayoutSettings.TextColor);
+
+                    label.Brush = brush;
 
                     if (type == ColumnType.DeltaorSplitTime)
                     {
@@ -520,6 +521,7 @@ namespace LiveSplit.UI.Components
                 {
                     Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;
                     Cache["Columns" + LabelsList.IndexOf(label) + "Color"] = label.ForeColor.ToArgb();
+                    Cache["Columns" + LabelsList.IndexOf(label) + "Brush"] = label.Brush;
                 }
 
                 if (invalidator != null && Cache.HasChanged || FrameCount > 1)
