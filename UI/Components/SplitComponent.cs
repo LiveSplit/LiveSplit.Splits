@@ -391,7 +391,6 @@ namespace LiveSplit.UI.Components
                     var brush = LiveSplitStateHelper.GetSplitBrush(state, deltaTime, splitIndex, true, true, comparison, timingMethod, label.Height);
                     if (brush == null)
                         brush = Settings.OverrideTimesColor ? new SolidBrush(Settings.BeforeTimesColor) : new SolidBrush(state.LayoutSettings.TextColor);
-
                     label.Brush = brush;
 
                     if (type == ColumnType.DeltaorSplitTime)
@@ -409,10 +408,10 @@ namespace LiveSplit.UI.Components
                 else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
                 {
                     var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, comparison, timingMethod);
-                    var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod);
-                    if (color == null)
-                        color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
-                    label.ForeColor = color.Value;
+                    var brush = LiveSplitStateHelper.GetSplitBrush(state, segmentDelta, splitIndex, false, true, comparison, timingMethod, label.Height);
+                    if (brush == null)
+                        brush = Settings.OverrideTimesColor ? new SolidBrush(Settings.BeforeTimesColor) : new SolidBrush(state.LayoutSettings.TextColor);
+                    label.Brush = brush;
 
                     if (type == ColumnType.SegmentDeltaorSegmentTime)
                     {
