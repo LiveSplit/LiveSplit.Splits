@@ -29,30 +29,20 @@ namespace LiveSplit.UI.Components
         public IEnumerable<ColumnData> ColumnsList { get; set; }
         public IList<SimpleLabel> LabelsList { get; set; }
 
-        public float PaddingTop { get { return 0f; } }
-        public float PaddingLeft { get { return 0f; } }
-        public float PaddingBottom { get { return 0f; } }
-        public float PaddingRight { get { return 0f; } }
+        public float PaddingTop => 0f;
+        public float PaddingLeft => 0f;
+        public float PaddingBottom => 0f;
+        public float PaddingRight => 0f;
 
-        public float VerticalHeight
-        {
-            get { return 25 + Settings.SplitHeight; }
-        }
+        public float VerticalHeight => 25 + Settings.SplitHeight;
 
         public float MinimumWidth { get; set; }
 
-        public float HorizontalWidth
-        {
-            get { return 10f; /* not available in horizontal mode */ }
-        }
+        public float HorizontalWidth => 10f; /* not available in horizontal mode */
 
         public float MinimumHeight { get; set; }
 
-        public IDictionary<string, Action> ContextMenuControls
-        {
-            get { return null; }
-        }
-
+        public IDictionary<string, Action> ContextMenuControls => null;
         public LabelsComponent(SplitsSettings settings, IEnumerable<ColumnData> columns)
         {
             Settings = settings;
@@ -141,11 +131,7 @@ namespace LiveSplit.UI.Components
             DrawGeneral(g, state, HorizontalWidth, height, LayoutMode.Horizontal);
         }
 
-        public string ComponentName
-        {
-            get { return "Labels"; }
-        }
-
+        public string ComponentName => "Labels";
 
         public Control GetSettingsControl(LayoutMode mode)
         {

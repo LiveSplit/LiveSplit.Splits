@@ -9,8 +9,8 @@ namespace LiveSplit.UI.Components
 {
     public partial class ColumnSettings : UserControl
     {
-        public String ColumnName { get { return Data.Name; } set { Data.Name = value; } }
-        public String Type
+        public string ColumnName { get { return Data.Name; } set { Data.Name = value; } }
+        public string Type
         {
             get { return GetColumnType(Data.Type); }
             set
@@ -19,21 +19,21 @@ namespace LiveSplit.UI.Components
                 UpdateComparisonItems();
             }
         }
-        public String Comparison { get { return Data.Comparison; } set { Data.Comparison = value; } }
-        public String TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
+        public string Comparison { get { return Data.Comparison; } set { Data.Comparison = value; } }
+        public string TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
 
         public ColumnData Data { get; set; }
         protected LiveSplitState CurrentState { get; set; }
         protected IList<ColumnSettings> ColumnsList { get; set; }
 
-        protected int ColumnIndex { get { return ColumnsList.IndexOf(this); } }
-        protected int TotalColumns { get { return ColumnsList.Count; } }
+        protected int ColumnIndex => ColumnsList.IndexOf(this);
+        protected int TotalColumns => ColumnsList.Count;
 
         public event EventHandler ColumnRemoved;
         public event EventHandler MovedUp;
         public event EventHandler MovedDown;
 
-        public ColumnSettings(LiveSplitState state, String columnName, IList<ColumnSettings> columnsList)
+        public ColumnSettings(LiveSplitState state, string columnName, IList<ColumnSettings> columnsList)
         {
             InitializeComponent();
 
@@ -78,7 +78,7 @@ namespace LiveSplit.UI.Components
 
         void txtName_TextChanged(object sender, EventArgs e)
         {
-            groupColumn.Text = "Column: " + txtName.Text;
+            groupColumn.Text = $"Column: { txtName.Text }";
         }
 
         private void UpdateComparisonItems()
@@ -102,7 +102,7 @@ namespace LiveSplit.UI.Components
             cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private static String GetColumnType(ColumnType type)
+        private static string GetColumnType(ColumnType type)
         {
             if (type == ColumnType.SplitTime)
                 return "Split Time";
@@ -118,27 +118,24 @@ namespace LiveSplit.UI.Components
                 return "Segment Delta or Segment Time";
         }
 
-        private static ColumnType ParseColumnType(String columnType)
+        private static ColumnType ParseColumnType(string columnType)
         {
-            return (ColumnType)Enum.Parse(typeof(ColumnType), columnType.Replace(" ", String.Empty));
+            return (ColumnType)Enum.Parse(typeof(ColumnType), columnType.Replace(" ", string.Empty));
         }
 
         private void btnRemoveColumn_Click(object sender, EventArgs e)
         {
-            if (ColumnRemoved != null)
-                ColumnRemoved(this, null);
+            ColumnRemoved?.Invoke(this, null);
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
-            if (MovedUp != null)
-                MovedUp(this, null);
+            MovedUp?.Invoke(this, null);
         }
 
         private void btnMoveDown_Click(object sender, EventArgs e)
         {
-            if (MovedDown != null)
-                MovedDown(this, null);
+            MovedDown?.Invoke(this, null);
         }
 
         public void SelectControl()

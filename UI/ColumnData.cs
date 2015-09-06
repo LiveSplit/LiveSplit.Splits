@@ -5,12 +5,12 @@ namespace LiveSplit.UI
 {
     public class ColumnData
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
         public ColumnType Type { get; set; }
-        public String Comparison { get; set; }
-        public String TimingMethod { get; set; }
+        public string Comparison { get; set; }
+        public string TimingMethod { get; set; }
 
-        public ColumnData(String name, ColumnType type, String comparison, String method)
+        public ColumnData(string name, ColumnType type, string comparison, string method)
         {
             Name = name;
             Type = type;

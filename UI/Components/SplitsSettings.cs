@@ -38,7 +38,7 @@ namespace LiveSplit.UI.Components
         public Color BackgroundColor2 { get; set; }
 
         public ExtendedGradientType BackgroundGradient { get; set; }
-        public String GradientString
+        public string GradientString
         {
             get { return BackgroundGradient.ToString(); }
             set { BackgroundGradient = (ExtendedGradientType)Enum.Parse(typeof(ExtendedGradientType), value); }
@@ -75,7 +75,7 @@ namespace LiveSplit.UI.Components
 
         public TimeAccuracy SplitTimesAccuracy { get; set; }
         public GradientType CurrentSplitGradient { get; set; }
-        public String SplitGradientString { get { return CurrentSplitGradient.ToString(); } 
+        public string SplitGradientString { get { return CurrentSplitGradient.ToString(); } 
             set { CurrentSplitGradient = (GradientType)Enum.Parse(typeof(GradientType), value); } }
 
         public event EventHandler SplitLayoutChanged;
@@ -92,7 +92,7 @@ namespace LiveSplit.UI.Components
 
             CurrentState = state;
 
-            StartingSize = this.Size;
+            StartingSize = Size;
             StartingTableLayoutSize = tableColumns.Size;
 
             VisualSplitCount = 8;
@@ -559,16 +559,16 @@ namespace LiveSplit.UI.Components
             {
                 tableColumns.Controls.Remove(control);
             }
-            this.Size = StartingSize;
+            Size = StartingSize;
         }
 
         private void UpdateLayoutForColumn()
         {
             tableColumns.RowCount++;
             tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 179f));
-            tableColumns.Size = new Size(this.tableColumns.Size.Width, this.tableColumns.Size.Height + 179);
-            Size = new Size(this.Size.Width, this.Size.Height + 179);
-            groupColumns.Size = new Size(this.groupColumns.Size.Width, this.groupColumns.Size.Height + 179);
+            tableColumns.Size = new Size(tableColumns.Size.Width, tableColumns.Size.Height + 179);
+            Size = new Size(Size.Width, Size.Height + 179);
+            groupColumns.Size = new Size(groupColumns.Size.Width, groupColumns.Size.Height + 179);
         }
 
         private void btnAddColumn_Click(object sender, EventArgs e)
