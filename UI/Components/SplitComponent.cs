@@ -159,18 +159,25 @@ namespace LiveSplit.UI.Components
                     }
                 }
 
-                if (IsActive)
+                // Conditions are a bit clumsy but I couldn't think of a better solution
+                if (IsActive || Settings.ProgressiveBackground && getSplitIndex(state) < state.CurrentSplitIndex)
                 {
-                    var currentSplitBrush = new LinearGradientBrush(
-                        new PointF(0, 0),
-                        Settings.CurrentSplitGradient == GradientType.Horizontal
-                        ? new PointF(width, 0)
-                        : new PointF(0, height),
-                        Settings.CurrentSplitTopColor,
-                        Settings.CurrentSplitGradient == GradientType.Plain
-                        ? Settings.CurrentSplitTopColor
-                        : Settings.CurrentSplitBottomColor);
-                    g.FillRectangle(currentSplitBrush, 0, 0, width, height);
+                    LinearGradientBrush currentSplitBrush;
+                    if (!Settings.ProgressiveBackground)
+                    {
+                        currentSplitBrush = new LinearGradientBrush(
+                            new PointF(0, 0),
+                            Settings.CurrentSplitGradient == GradientType.Horizontal
+                            ? new PointF(width, 0)
+                            : new PointF(0, height),
+                            Settings.CurrentSplitTopColor,
+                            Settings.CurrentSplitGradient == GradientType.Plain
+                            ? Settings.CurrentSplitTopColor
+                            : Settings.CurrentSplitBottomColor);
+                        g.FillRectangle(currentSplitBrush, 0, 0, width, height);
+                    }
+                    else drawProgressionBar(g, state, width, height);
+                    
                 }
 
                 var icon = Split.Icon;
@@ -260,6 +267,94 @@ namespace LiveSplit.UI.Components
                 }
             }
             else DisplayIcon = Settings.DisplayIcons;
+        }
+
+        private float getWidthToFill(LiveSplitState state, float width)
+        {
+            if (Split.PersonalBestSplitTime[state.CurrentTimingMethod] == null) return IsActive ? width : 0; // If segment time is empty, background is filled if the split is active, and will stay empty after splitting
+            double segmentTime = getSegmentTime(state, getSplitIndex(state)).Value.TotalMilliseconds;
+            double PBTime = Split.PersonalBestSplitTime[state.CurrentTimingMethod].Value.TotalMilliseconds;
+            float ret = ((float)segmentTime / (float)PBTime) * width;
+            return ret;
+        }
+
+        public TimeSpan? getSegmentTime(Model.LiveSplitState state, int index)
+        {
+            TimeSpan? lastSplit = TimeSpan.Zero;
+            if (index > 0)
+            {
+                if (state.Run[index - 1].SplitTime[state.CurrentTimingMethod] != null)
+                    lastSplit = state.Run[index - 1].SplitTime[state.CurrentTimingMethod].Value;
+                else
+                    lastSplit = null;
+            }
+            if (state.CurrentPhase == TimerPhase.NotRunning)
+                return state.Run.Offset;
+            if (index == state.CurrentSplitIndex)
+                return state.CurrentTime[state.CurrentTimingMethod] - lastSplit;
+            else
+                return state.Run[index].SplitTime[state.CurrentTimingMethod] - lastSplit;
+        }
+
+        public int getSplitIndex(LiveSplitState state)
+        {
+            for (int i = 0; i < state.Run.Count; i++)
+            {
+                if (state.Run[i] == Split) return i;
+            }
+            return 0;
+        }
+
+        public void drawProgressionBar(Graphics g, LiveSplitState state, float width, float height)
+        {
+            var progressiveWidth = getWidthToFill(state, width);
+            if (progressiveWidth < width)
+            {
+                // Split is progressing, fill the progression bar with the normal colour
+                var currentSplitBrush = new LinearGradientBrush(
+                    new PointF(0, 0),
+                    Settings.CurrentSplitGradient == GradientType.Horizontal
+                    ? new PointF(width, 0)
+                    : new PointF(0, height),
+                    Settings.CurrentSplitTopColor,
+                    Settings.CurrentSplitGradient == GradientType.Plain
+                    ? Settings.CurrentSplitTopColor
+                    : Settings.CurrentSplitBottomColor);
+                g.FillRectangle(currentSplitBrush, 0, 0, progressiveWidth, height);
+            }
+            else
+            {
+                // Losing time against PB split, bar is completely filled with normal colour, and the "behind" colour starts to fill
+                var currentSplitBrush = new LinearGradientBrush(
+                    new PointF(0, 0),
+                    Settings.CurrentSplitGradient == GradientType.Horizontal
+                    ? new PointF(width, 0)
+                    : new PointF(0, height),
+                    Settings.CurrentSplitTopColor,
+                    Settings.CurrentSplitGradient == GradientType.Plain
+                    ? Settings.CurrentSplitTopColor
+                    : Settings.CurrentSplitBottomColor);
+                g.FillRectangle(currentSplitBrush, 0, 0, width, height);
+                currentSplitBrush = new LinearGradientBrush(
+                    new PointF(0, 0),
+                    Settings.CurrentSplitGradient == GradientType.Horizontal
+                    ? new PointF(width, 0)
+                    : new PointF(0, height),
+                    Settings.ProgBgBehind,
+                    Settings.ProgBgBehind);
+                g.FillRectangle(currentSplitBrush, 0, 0, (int)((1-width/progressiveWidth)*width), height);
+            }
+            if (getSplitIndex(state) < state.CurrentSplitIndex && getSegmentTime(state, getSplitIndex(state)) <= state.Run[getSplitIndex(state)].BestSegmentTime[state.CurrentTimingMethod])
+            {
+                var currentSplitBrush = new LinearGradientBrush(
+                    new PointF(0, 0),
+                    Settings.CurrentSplitGradient == GradientType.Horizontal
+                    ? new PointF(width, 0)
+                    : new PointF(0, height),
+                    Settings.ProgBgBestSegment,
+                    Settings.ProgBgBestSegment);
+                g.FillRectangle(currentSplitBrush, 0, 0, progressiveWidth, height);
+            }
         }
 
         public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
@@ -522,7 +617,7 @@ namespace LiveSplit.UI.Components
                     Cache["Columns" + LabelsList.IndexOf(label) + "Color"] = label.ForeColor.ToArgb();
                 }
 
-                if (invalidator != null && Cache.HasChanged || FrameCount > 1)
+                if (invalidator != null && (IsActive && Settings.ProgressiveBackground || Cache.HasChanged) || FrameCount > 1)
                 {
                     invalidator.Invalidate(0, 0, width, height);
                 }

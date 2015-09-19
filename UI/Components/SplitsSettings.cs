@@ -57,6 +57,10 @@ namespace LiveSplit.UI.Components
         public bool DropDecimals { get; set; }
         public TimeAccuracy DeltasAccuracy { get; set; }
 
+        public bool ProgressiveBackground { get; set; }
+        public Color ProgBgBestSegment { get; set; }
+        public Color ProgBgBehind { get; set; }
+
         public bool OverrideDeltasColor { get; set; }
         public Color DeltasColor { get; set; }
 
@@ -131,6 +135,9 @@ namespace LiveSplit.UI.Components
             Display2Rows = false;
             ShowColumnLabels = false;
             LabelsColor = Color.FromArgb(255, 255, 255);
+            ProgressiveBackground = false;
+            ProgBgBehind = Color.FromArgb(222, 41, 22);
+            ProgBgBestSegment = Color.FromArgb(216, 175, 31);
 
             dmnTotalSegments.DataBindings.Add("Value", this, "VisualSplitCount", false, DataSourceUpdateMode.OnPropertyChanged);
             dmnUpcomingSegments.DataBindings.Add("Value", this, "SplitPreviewCount", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -161,6 +168,9 @@ namespace LiveSplit.UI.Components
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor1.DataBindings.Add("BackColor", this, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor2.DataBindings.Add("BackColor", this, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkProgressiveBg.DataBindings.Add("Checked", this, "ProgressiveBackground", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnProgBgBehindSplit.DataBindings.Add("BackColor", this, "ProgBgBehind", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnProgBgBestSegment.DataBindings.Add("BackColor", this, "ProgBgBestSegment", false, DataSourceUpdateMode.OnPropertyChanged);
 
             ColumnsList = new List<ColumnSettings>();
             ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, "Current Comparison", "Current Timing Method") });
@@ -581,6 +591,16 @@ namespace LiveSplit.UI.Components
 
             foreach (var column in ColumnsList)
                 column.UpdateEnabledButtons();
+        }
+
+        private void tableLayoutPanel11_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void chkProgressiveBg_CheckedChanged(object sender, EventArgs e)
+        {
+            label15.Enabled = label12.Enabled = btnProgBgBehindSplit.Enabled = btnProgBgBestSegment.Enabled = chkProgressiveBg.Checked;
         }
 
     }
