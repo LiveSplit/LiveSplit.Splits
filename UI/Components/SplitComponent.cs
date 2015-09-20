@@ -272,10 +272,29 @@ namespace LiveSplit.UI.Components
         private float getWidthToFill(LiveSplitState state, float width)
         {
             if (Split.PersonalBestSplitTime[state.CurrentTimingMethod] == null) return IsActive ? width : 0; // If segment time is empty, background is filled if the split is active, and will stay empty after splitting
-            double segmentTime = getSegmentTime(state, getSplitIndex(state)).Value.TotalMilliseconds;
-            double PBTime = Split.PersonalBestSplitTime[state.CurrentTimingMethod].Value.TotalMilliseconds;
+            double segmentTime = LiveSplitStateHelper.GetLiveSegmentTime(state,getSplitIndex(state),state.CurrentComparison,state.CurrentTimingMethod).Value.TotalMilliseconds;
+            int index = getSplitIndex(state);
+            double PBTime;
+            if (index < 1) PBTime = Split.PersonalBestSplitTime[state.CurrentTimingMethod].Value.TotalMilliseconds;
+            else
+            {
+                int lastNonNull = getPreviousNonNullTime(state, index);
+                if (lastNonNull < 0)
+                    PBTime = Split.PersonalBestSplitTime[state.CurrentTimingMethod].Value.TotalMilliseconds;
+                else
+                    PBTime = Split.PersonalBestSplitTime[state.CurrentTimingMethod].Value.TotalMilliseconds - state.Run[lastNonNull].PersonalBestSplitTime[state.CurrentTimingMethod].Value.TotalMilliseconds;
+            }
             float ret = ((float)segmentTime / (float)PBTime) * width;
             return ret;
+        }
+
+        public int getPreviousNonNullTime(LiveSplitState state, int index)
+        {
+            for (int i = index - 1; i > 0; i--)
+            {
+                if (state.Run[i].PersonalBestSplitTime[state.CurrentTimingMethod].HasValue) return i;
+            }
+            return -1;
         }
 
         public TimeSpan? getSegmentTime(Model.LiveSplitState state, int index)
@@ -308,6 +327,8 @@ namespace LiveSplit.UI.Components
         public void drawProgressionBar(Graphics g, LiveSplitState state, float width, float height)
         {
             var progressiveWidth = getWidthToFill(state, width);
+            float miniHeight = 0;
+            if (getSplitIndex(state) < state.CurrentSplitIndex) miniHeight = 3 * height / 4;
             if (progressiveWidth < width)
             {
                 // Split is progressing, fill the progression bar with the normal colour
@@ -320,7 +341,7 @@ namespace LiveSplit.UI.Components
                     Settings.CurrentSplitGradient == GradientType.Plain
                     ? Settings.CurrentSplitTopColor
                     : Settings.CurrentSplitBottomColor);
-                g.FillRectangle(currentSplitBrush, 0, 0, progressiveWidth, height);
+                g.FillRectangle(currentSplitBrush, 0, miniHeight, progressiveWidth, height);
             }
             else
             {
@@ -334,7 +355,7 @@ namespace LiveSplit.UI.Components
                     Settings.CurrentSplitGradient == GradientType.Plain
                     ? Settings.CurrentSplitTopColor
                     : Settings.CurrentSplitBottomColor);
-                g.FillRectangle(currentSplitBrush, 0, 0, width, height);
+                g.FillRectangle(currentSplitBrush, 0, miniHeight, progressiveWidth, height);
                 currentSplitBrush = new LinearGradientBrush(
                     new PointF(0, 0),
                     Settings.CurrentSplitGradient == GradientType.Horizontal
@@ -342,7 +363,7 @@ namespace LiveSplit.UI.Components
                     : new PointF(0, height),
                     Settings.ProgBgBehind,
                     Settings.ProgBgBehind);
-                g.FillRectangle(currentSplitBrush, 0, 0, (int)((1-width/progressiveWidth)*width), height);
+                g.FillRectangle(currentSplitBrush, 0, miniHeight, (int)((1 - width / progressiveWidth) * width), height - miniHeight);
             }
             if (getSplitIndex(state) < state.CurrentSplitIndex && getSegmentTime(state, getSplitIndex(state)) <= state.Run[getSplitIndex(state)].BestSegmentTime[state.CurrentTimingMethod])
             {
@@ -353,7 +374,7 @@ namespace LiveSplit.UI.Components
                     : new PointF(0, height),
                     Settings.ProgBgBestSegment,
                     Settings.ProgBgBestSegment);
-                g.FillRectangle(currentSplitBrush, 0, 0, progressiveWidth, height);
+                g.FillRectangle(currentSplitBrush, 0, miniHeight, progressiveWidth, height);
             }
         }
 
