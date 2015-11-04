@@ -357,7 +357,37 @@ namespace LiveSplit.UI.Components
             var type = data.Type;
 
             var splitIndex = state.Run.IndexOf(Split);
-            if (splitIndex < state.CurrentSplitIndex)
+
+            // Segment Possible Time Save
+            if (type == ColumnType.SegmentTimeSave)
+            {
+                var prevTime = TimeSpan.Zero;
+                TimeSpan? bestSegments = state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+
+                while (splitIndex > 0 && bestSegments != null)
+                {
+                    var splitTime = state.Run[splitIndex - 1].Comparisons[comparison][state.CurrentTimingMethod];
+                    if (splitTime != null)
+                    {
+                        prevTime = splitTime.Value;
+                        break;
+                    }
+                    else
+                    {
+                        splitIndex--;
+                        bestSegments += state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+                    }
+                }
+
+                var time = Split.Comparisons[comparison][state.CurrentTimingMethod] - prevTime - bestSegments;
+
+                if (time < TimeSpan.Zero)
+                    time = TimeSpan.Zero;
+
+                label.ForeColor = state.LayoutSettings.TextColor;
+                label.Text = DeltaTimeFormatter.Format(time);
+            }
+            else if (splitIndex < state.CurrentSplitIndex)
             {
                 if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
                 {

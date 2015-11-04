@@ -137,7 +137,8 @@
             "Delta or Split Time",
             "Segment Delta",
             "Segment Time",
-            "Segment Delta or Segment Time"});
+            "Segment Delta or Segment Time",
+            "Segment Time Save"});
             this.cmbColumnType.Location = new System.Drawing.Point(93, 33);
             this.cmbColumnType.Name = "cmbColumnType";
             this.cmbColumnType.Size = new System.Drawing.Size(325, 21);

@@ -114,6 +114,8 @@ namespace LiveSplit.UI.Components
                 return "Segment Time";
             else if (type == ColumnType.SegmentDelta)
                 return "Segment Delta";
+            else if (type == ColumnType.SegmentTimeSave)
+                return "Segment Possible Time Save";
             else
                 return "Segment Delta or Segment Time";
         }
