@@ -487,8 +487,14 @@ namespace LiveSplit.UI.Components
                         }
                     }
 
-                    // it doesn't seem like this live-updates.. hm.
-                    var time = Split.Comparisons[comparison][state.CurrentTimingMethod] - prevTime - bestSegments;
+                    var time = Split.Comparisons[comparison][timingMethod] - prevTime - bestSegments;
+
+                    if (splitIndex == state.CurrentSplitIndex)
+                    {
+                        var segmentDelta = TimeSpan.Zero - LiveSplitStateHelper.GetLiveSegmentDelta(state, splitIndex, comparison, timingMethod);
+                        if (segmentDelta < time)
+                            time = segmentDelta;
+                    }
 
                     if (time < TimeSpan.Zero)
                         time = TimeSpan.Zero;
