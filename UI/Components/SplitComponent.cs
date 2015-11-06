@@ -419,7 +419,7 @@ namespace LiveSplit.UI.Components
                 else if (type == ColumnType.SegmentTimeSave)
                 {
                     TimeSpan? previousTime = splitIndex > 0 ? state.Run[splitIndex - 1].Comparisons[comparison][timingMethod] : TimeSpan.Zero;
-                    TimeSpan? time = state.Run[splitIndex].Comparisons[comparison][state.CurrentTimingMethod] - previousTime; //state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+                    TimeSpan? time = state.Run[splitIndex].Comparisons[comparison][timingMethod] - previousTime; //state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
                     TimeSpan? time2 = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, comparison, timingMethod);
 
                     label.ForeColor = state.LayoutSettings.PausedColor; // should we reuse a color? hm..
@@ -470,11 +470,11 @@ namespace LiveSplit.UI.Components
                 if (type == ColumnType.SegmentTimeSave)
                 {
                     var prevTime = TimeSpan.Zero;
-                    TimeSpan? bestSegments = state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+                    TimeSpan? bestSegments = state.Run[splitIndex].BestSegmentTime[timingMethod];
 
                     while (splitIndex > 0 && bestSegments != null)
                     {
-                        var splitTime = state.Run[splitIndex - 1].Comparisons[comparison][state.CurrentTimingMethod];
+                        var splitTime = state.Run[splitIndex - 1].Comparisons[comparison][timingMethod];
                         if (splitTime != null)
                         {
                             prevTime = splitTime.Value;
@@ -483,7 +483,7 @@ namespace LiveSplit.UI.Components
                         else
                         {
                             splitIndex--; // variable mangling
-                            bestSegments += state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+                            bestSegments += state.Run[splitIndex].BestSegmentTime[timingMethod];
                         }
                     }
 
