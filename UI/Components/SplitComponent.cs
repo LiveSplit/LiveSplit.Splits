@@ -358,36 +358,7 @@ namespace LiveSplit.UI.Components
 
             var splitIndex = state.Run.IndexOf(Split);
 
-            // Segment Possible Time Save
-            if (type == ColumnType.SegmentTimeSave)
-            {
-                var prevTime = TimeSpan.Zero;
-                TimeSpan? bestSegments = state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
-
-                while (splitIndex > 0 && bestSegments != null)
-                {
-                    var splitTime = state.Run[splitIndex - 1].Comparisons[comparison][state.CurrentTimingMethod];
-                    if (splitTime != null)
-                    {
-                        prevTime = splitTime.Value;
-                        break;
-                    }
-                    else
-                    {
-                        splitIndex--;
-                        bestSegments += state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
-                    }
-                }
-
-                var time = Split.Comparisons[comparison][state.CurrentTimingMethod] - prevTime - bestSegments;
-
-                if (time < TimeSpan.Zero)
-                    time = TimeSpan.Zero;
-
-                label.ForeColor = state.LayoutSettings.TextColor;
-                label.Text = DeltaTimeFormatter.Format(time);
-            }
-            else if (splitIndex < state.CurrentSplitIndex)
+            if (splitIndex < state.CurrentSplitIndex)
             {
                 if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
                 {
@@ -443,7 +414,17 @@ namespace LiveSplit.UI.Components
                     {
                         label.Text = DeltaTimeFormatter.Format(segmentDelta);
                     }
-                }               
+                }
+
+                else if (type == ColumnType.SegmentTimeSave)
+                {
+                    TimeSpan? previousTime = splitIndex > 0 ? state.Run[splitIndex - 1].Comparisons[comparison][timingMethod] : TimeSpan.Zero;
+                    TimeSpan? time = state.Run[splitIndex].Comparisons[comparison][state.CurrentTimingMethod] - previousTime; //state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+                    TimeSpan? time2 = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, comparison, timingMethod);
+
+                    label.ForeColor = state.LayoutSettings.PausedColor; // should we reuse a color? hm..
+                    label.Text = DeltaTimeFormatter.Format(time2 - time);
+                }
             }
             else
             {
@@ -484,6 +465,38 @@ namespace LiveSplit.UI.Components
                 else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
                 {
                     label.Text = "";
+                }
+
+                if (type == ColumnType.SegmentTimeSave)
+                {
+                    var prevTime = TimeSpan.Zero;
+                    TimeSpan? bestSegments = state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+
+                    while (splitIndex > 0 && bestSegments != null)
+                    {
+                        var splitTime = state.Run[splitIndex - 1].Comparisons[comparison][state.CurrentTimingMethod];
+                        if (splitTime != null)
+                        {
+                            prevTime = splitTime.Value;
+                            break;
+                        }
+                        else
+                        {
+                            splitIndex--; // variable mangling
+                            bestSegments += state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
+                        }
+                    }
+
+                    // it doesn't seem like this live-updates.. hm.
+                    var time = Split.Comparisons[comparison][state.CurrentTimingMethod] - prevTime - bestSegments;
+
+                    if (time < TimeSpan.Zero)
+                        time = TimeSpan.Zero;
+                    if (time.HasValue)
+                        time = time.Value.Negate();
+
+                    label.ForeColor = state.LayoutSettings.TextColor;
+                    label.Text = DeltaTimeFormatter.Format(time);
                 }
             }
         }
