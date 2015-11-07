@@ -496,8 +496,6 @@ namespace LiveSplit.UI.Components
                             time = segmentDelta;
                     }
 
-                    if (time < TimeSpan.Zero)
-                        time = TimeSpan.Zero;
                     if (time.HasValue)
                         time = time.Value.Negate();
 
