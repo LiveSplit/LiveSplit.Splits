@@ -416,7 +416,7 @@ namespace LiveSplit.UI.Components
                     }
                 }
 
-                else if (type == ColumnType.SegmentTimeSave)
+                else if (type == ColumnType.SegmentPossibleTimeSave)
                 {
                     TimeSpan? previousTime = splitIndex > 0 ? state.Run[splitIndex - 1].Comparisons[comparison][timingMethod] : TimeSpan.Zero;
                     TimeSpan? time = state.Run[splitIndex].Comparisons[comparison][timingMethod] - previousTime; //state.Run[splitIndex].BestSegmentTime[state.CurrentTimingMethod];
@@ -467,7 +467,7 @@ namespace LiveSplit.UI.Components
                     label.Text = "";
                 }
 
-                if (type == ColumnType.SegmentTimeSave)
+                if (type == ColumnType.SegmentPossibleTimeSave)
                 {
                     var prevTime = TimeSpan.Zero;
                     TimeSpan? bestSegments = state.Run[splitIndex].BestSegmentTime[timingMethod];
