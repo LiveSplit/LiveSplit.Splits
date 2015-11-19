@@ -369,7 +369,7 @@ namespace LiveSplit.UI.Components
                     }
                     else //SegmentTime
                     {
-                        var segmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, comparison, timingMethod);
+                        var segmentTime = LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, timingMethod);
                         label.Text = TimeFormatter.Format(segmentTime);
                     }
                 }
