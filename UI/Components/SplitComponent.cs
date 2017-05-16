@@ -436,15 +436,16 @@ namespace LiveSplit.UI.Components
                 }
 
                 //Live Delta
-                var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, true, comparison, timingMethod);
+                var splitDelta = type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta;
+                var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, splitDelta, comparison, timingMethod);
                 if (bestDelta != null && Split == state.CurrentSplit &&
                     (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
                 {
-                    if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
+                    if (splitDelta) //DeltaorSplitTime or Delta
                     {
                         label.Text = DeltaTimeFormatter.Format(bestDelta);
                     }
-                    else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
+                    else //SegmentDeltaorSegmentTime or SegmentDelta
                     {
                         label.Text = DeltaTimeFormatter.Format(LiveSplitStateHelper.GetLiveSegmentDelta(state, splitIndex, comparison, timingMethod));
                     }
