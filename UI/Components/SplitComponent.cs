@@ -32,7 +32,7 @@ namespace LiveSplit.UI.Components
         protected ITimeFormatter TimeFormatter { get; set; }
         protected ITimeFormatter DeltaTimeFormatter { get; set; }
 
-        protected int IconWidth => DisplayIcon ? (int)(Settings.IconSize+7.5f) : 0;
+        protected int IconWidth => DisplayIcon ? (int)(Settings.IconSize + 7.5f) : 0;
 
         public bool DisplayIcon { get; set; }
 
@@ -47,9 +47,10 @@ namespace LiveSplit.UI.Components
         public IEnumerable<ColumnData> ColumnsList { get; set; }
         public IList<SimpleLabel> LabelsList { get; set; }
 
-        public float VerticalHeight => 25 + Settings.SplitHeight;
+        public float VerticalHeight { get; set; }
 
-        public float MinimumWidth { get; set; }
+        public float MinimumWidth
+            => CalculateLabelsWidth() + IconWidth + 10;
 
         public float HorizontalWidth
             => Settings.SplitWidth + CalculateLabelsWidth() + IconWidth;
@@ -71,7 +72,8 @@ namespace LiveSplit.UI.Components
             ColumnsList = columnsList;
             TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
             DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
-            MinimumHeight = 31;
+            MinimumHeight = 25;
+            VerticalHeight = 31;
 
             NeedUpdateAll = true;
             IsActive = false;
@@ -106,9 +108,6 @@ namespace LiveSplit.UI.Components
             NameLabel.ShadowColor = state.LayoutSettings.ShadowsColor;
             foreach (var label in LabelsList)
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
-
-            MinimumWidth = CalculateLabelsWidth() + IconWidth + 10;
-            MinimumHeight = 0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height);
 
             if (Settings.SplitTimesAccuracy != CurrentAccuracy)
             {
@@ -256,13 +255,20 @@ namespace LiveSplit.UI.Components
         public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
         {
             if (Settings.Display2Rows)
+            {
+                VerticalHeight = Settings.SplitHeight + 0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height);
                 DrawGeneral(g, state, width, VerticalHeight, LayoutMode.Horizontal);
+            }
             else
+            {
+                VerticalHeight = Settings.SplitHeight + 25;
                 DrawGeneral(g, state, width, VerticalHeight, LayoutMode.Vertical);
+            }
         }
 
         public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region clipRegion)
         {
+            MinimumHeight = 0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height);
             DrawGeneral(g, state, HorizontalWidth, height, LayoutMode.Horizontal);
         }
 
@@ -373,7 +379,7 @@ namespace LiveSplit.UI.Components
                         label.Text = TimeFormatter.Format(segmentTime);
                     }
                 }
-                
+
                 if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
                 {
                     var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
@@ -391,7 +397,7 @@ namespace LiveSplit.UI.Components
                     }
 
                     else if (type == ColumnType.Delta)
-                        label.Text = DeltaTimeFormatter.Format(deltaTime);   
+                        label.Text = DeltaTimeFormatter.Format(deltaTime);
                 }
 
                 else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
@@ -413,7 +419,7 @@ namespace LiveSplit.UI.Components
                     {
                         label.Text = DeltaTimeFormatter.Format(segmentDelta);
                     }
-                }               
+                }
             }
             else
             {
@@ -481,9 +487,9 @@ namespace LiveSplit.UI.Components
                 foreach (var column in ColumnsList)
                 {
                     LabelsList.Add(new SimpleLabel
-                        {
-                            HorizontalAlignment = StringAlignment.Far
-                        });
+                    {
+                        HorizontalAlignment = StringAlignment.Far
+                    });
                 }
             }
         }
