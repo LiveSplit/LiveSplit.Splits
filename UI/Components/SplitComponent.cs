@@ -106,8 +106,12 @@ namespace LiveSplit.UI.Components
             MeasureDeltaLabel.SetActualWidth(g);
 
             NameLabel.ShadowColor = state.LayoutSettings.ShadowsColor;
+            NameLabel.OutlineColor = state.LayoutSettings.TextOutlineColor;
             foreach (var label in LabelsList)
+            {
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
+                label.OutlineColor = state.LayoutSettings.TextOutlineColor;
+            }
 
             if (Settings.SplitTimesAccuracy != CurrentAccuracy)
             {

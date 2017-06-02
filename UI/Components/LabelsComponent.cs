@@ -91,6 +91,7 @@ namespace LiveSplit.UI.Components
             foreach (var label in LabelsList)
             {
                 label.ShadowColor = state.LayoutSettings.ShadowsColor;
+                label.OutlineColor = state.LayoutSettings.TextOutlineColor;
                 label.Y = 0;
                 label.Height = height;
             }
