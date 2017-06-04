@@ -260,9 +260,9 @@ namespace LiveSplit.UI.Components
         void DrawBackground(Graphics g, float width, float height)
         {
             if (Settings.BackgroundGradient != ExtendedGradientType.Alternating
-                && (Settings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()
+                && (Settings.BackgroundColor.A > 0
                 || Settings.BackgroundGradient != ExtendedGradientType.Plain
-                && Settings.BackgroundColor2.ToArgb() != Color.Transparent.ToArgb()))
+                && Settings.BackgroundColor2.A > 0))
             {
                 var gradientBrush = new LinearGradientBrush(
                             new PointF(0, 0),
