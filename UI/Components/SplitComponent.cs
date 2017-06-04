@@ -417,7 +417,7 @@ namespace LiveSplit.UI.Components
                         if (segmentDelta != null)
                             label.Text = DeltaTimeFormatter.Format(segmentDelta);
                         else
-                            label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
+                            label.Text = TimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, timingMethod));
                     }
                     else if (type == ColumnType.SegmentDelta)
                     {
@@ -440,7 +440,13 @@ namespace LiveSplit.UI.Components
                     }
                     else //SegmentTime or SegmentTimeorSegmentDeltaTime
                     {
-                        var previousTime = splitIndex > 0 ? state.Run[splitIndex - 1].Comparisons[comparison][timingMethod] : TimeSpan.Zero;
+                        var previousTime = TimeSpan.Zero;
+                        for (var index = splitIndex - 1; index >= 0; index --)
+                        {
+                            var comparisonTime = state.Run[index].Comparisons[comparison][timingMethod];
+                            if (comparisonTime != null)
+                                previousTime = comparisonTime.Value;
+                        }
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
                     }
                 }
