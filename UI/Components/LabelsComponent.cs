@@ -207,7 +207,7 @@ namespace LiveSplit.UI.Components
                 foreach (var label in LabelsList)
                     Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;
 
-                if (invalidator != null && Cache.HasChanged || FrameCount > 1)
+                if (invalidator != null && (Cache.HasChanged || FrameCount > 1))
                 {
                     invalidator.Invalidate(0, 0, width, height);
                 }
