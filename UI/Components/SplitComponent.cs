@@ -482,9 +482,9 @@ namespace LiveSplit.UI.Components
                 var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaorSplitTime || x.Type == ColumnType.SegmentDeltaorSegmentTime);
                 var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
                 var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
-                return mixedCount * Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth)
-                    + deltaCount * MeasureDeltaLabel.ActualWidth
-                    + timeCount * MeasureTimeLabel.ActualWidth;
+                return mixedCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5)
+                    + deltaCount * (MeasureDeltaLabel.ActualWidth + 5)
+                    + timeCount * (MeasureTimeLabel.ActualWidth + 5);
             }
             return 0f;
         }
