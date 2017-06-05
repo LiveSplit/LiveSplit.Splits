@@ -346,7 +346,7 @@ namespace LiveSplit.UI.Components
             SplitWidth = SettingsHelper.ParseFloat(element["SplitWidth"]);
             AutomaticAbbreviations = SettingsHelper.ParseBool(element["AutomaticAbbreviations"], false);
             ShowColumnLabels = SettingsHelper.ParseBool(element["ShowColumnLabels"], false);
-            LabelsColor = SettingsHelper.ParseColor(element["LabelsColor"]);
+            LabelsColor = SettingsHelper.ParseColor(element["LabelsColor"], Color.FromArgb(255, 255, 255));
             OverrideTimesColor = SettingsHelper.ParseBool(element["OverrideTimesColor"], false);
             BeforeTimesColor = SettingsHelper.ParseColor(element["BeforeTimesColor"], Color.FromArgb(255, 255, 255));
             CurrentTimesColor = SettingsHelper.ParseColor(element["CurrentTimesColor"], Color.FromArgb(255, 255, 255));
@@ -358,11 +358,11 @@ namespace LiveSplit.UI.Components
             GradientString = SettingsHelper.ParseString(element["BackgroundGradient"], ExtendedGradientType.Plain.ToString());
             SeparatorLastSplit = SettingsHelper.ParseBool(element["SeparatorLastSplit"], true);
             DropDecimals = SettingsHelper.ParseBool(element["DropDecimals"], true);
-            DeltasAccuracy = SettingsHelper.ParseEnum<TimeAccuracy>(element["DeltasAccuracy"], TimeAccuracy.Tenths);
+            DeltasAccuracy = SettingsHelper.ParseEnum(element["DeltasAccuracy"], TimeAccuracy.Tenths);
             OverrideDeltasColor = SettingsHelper.ParseBool(element["OverrideDeltasColor"], false);
             DeltasColor = SettingsHelper.ParseColor(element["DeltasColor"], Color.FromArgb(255, 255, 255));
             Display2Rows = SettingsHelper.ParseBool(element["Display2Rows"], false);
-            SplitTimesAccuracy = SettingsHelper.ParseEnum<TimeAccuracy>(element["SplitTimesAccuracy"], TimeAccuracy.Seconds);
+            SplitTimesAccuracy = SettingsHelper.ParseEnum(element["SplitTimesAccuracy"], TimeAccuracy.Seconds);
             ShowBlankSplits = SettingsHelper.ParseBool(element["ShowBlankSplits"], true);
             LockLastSplit = SettingsHelper.ParseBool(element["LockLastSplit"], false);
             IconSize = SettingsHelper.ParseFloat(element["IconSize"], 24f);
