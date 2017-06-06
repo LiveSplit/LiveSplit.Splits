@@ -445,7 +445,10 @@ namespace LiveSplit.UI.Components
                         {
                             var comparisonTime = state.Run[index].Comparisons[comparison][timingMethod];
                             if (comparisonTime != null)
+                            {
                                 previousTime = comparisonTime.Value;
+                                break;
+                            }
                         }
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
                     }
