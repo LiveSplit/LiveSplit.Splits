@@ -60,6 +60,7 @@ namespace LiveSplit.UI.Components
         public bool OverrideDeltasColor { get; set; }
         public Color DeltasColor { get; set; }
 
+        public string SplitsLabel { get; set; }
         public bool ShowColumnLabels { get; set; }
         public Color LabelsColor { get; set; }
 
@@ -75,7 +76,7 @@ namespace LiveSplit.UI.Components
 
         public TimeAccuracy SplitTimesAccuracy { get; set; }
         public GradientType CurrentSplitGradient { get; set; }
-        public string SplitGradientString { get { return CurrentSplitGradient.ToString(); } 
+        public string SplitGradientString { get { return CurrentSplitGradient.ToString(); }
             set { CurrentSplitGradient = (GradientType)Enum.Parse(typeof(GradientType), value); } }
 
         public event EventHandler SplitLayoutChanged;
@@ -161,10 +162,16 @@ namespace LiveSplit.UI.Components
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor1.DataBindings.Add("BackColor", this, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor2.DataBindings.Add("BackColor", this, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtSplitsLabel.DataBindings.Add("Text", this, "SplitsLabel", false, DataSourceUpdateMode.OnPropertyChanged);
 
             ColumnsList = new List<ColumnSettings>();
             ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, "Current Comparison", "Current Timing Method") });
             ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("Time", ColumnType.SplitTime, "Current Comparison", "Current Timing Method") });
+        }
+
+        void txtSplitsLabel_Changed(object sender, EventArgs e)
+        {
+            SplitsLabel = txtSplitsLabel.Text;
         }
 
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
@@ -367,6 +374,7 @@ namespace LiveSplit.UI.Components
             LockLastSplit = SettingsHelper.ParseBool(element["LockLastSplit"], false);
             IconSize = SettingsHelper.ParseFloat(element["IconSize"], 24f);
             IconShadows = SettingsHelper.ParseBool(element["IconShadows"], true);
+            SplitsLabel = SettingsHelper.ParseString(element["SplitsLabel"], "Splits");
 
             if (version >= new Version(1, 5))
             {
@@ -409,8 +417,8 @@ namespace LiveSplit.UI.Components
                     CurrentNamesColor = Color.FromArgb(255, 255, 255);
                     AfterNamesColor = Color.FromArgb(255, 255, 255);
                 }
-                OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);  
-            }                       
+                OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);
+            }
         }
 
         public XmlNode GetSettings(XmlDocument document)
@@ -463,6 +471,7 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "Display2Rows", Display2Rows) ^
             SettingsHelper.CreateSetting(document, parent, "ShowColumnLabels", ShowColumnLabels) ^
             SettingsHelper.CreateSetting(document, parent, "LabelsColor", LabelsColor);
+            SettingsHelper.CreateSetting(document, parent, "SplitsLabel", SplitsLabel);
 
             XmlElement columnsElement = null;
             if (document != null)
@@ -495,7 +504,7 @@ namespace LiveSplit.UI.Components
         private void ResetColumns()
         {
             ClearLayout();
-            var index = 1;
+            var index = 2;
             foreach (var column in ColumnsList)
             {
                 UpdateLayoutForColumn();
@@ -551,8 +560,9 @@ namespace LiveSplit.UI.Components
 
         private void ClearLayout()
         {
-            tableColumns.RowCount = 1;
+            tableColumns.RowCount = 2;
             tableColumns.RowStyles.Clear();
+            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 29f));
             tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 29f));
             tableColumns.Size = StartingTableLayoutSize;
             foreach (var control in tableColumns.Controls.OfType<ColumnSettings>().ToList())

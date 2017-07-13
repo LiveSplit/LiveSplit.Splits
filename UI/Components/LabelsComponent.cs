@@ -55,7 +55,9 @@ namespace LiveSplit.UI.Components
 
             Cache = new GraphicsCache();
             LabelsList = new List<SimpleLabel>();
-            ColumnsList = columns;
+
+            IEnumerable<ColumnData> splitsLabel = new ColumnData[] { new ColumnData(Settings.SplitsLabel, ColumnType.SplitsLabel, null, null) };
+            ColumnsList = splitsLabel.Concat(columns);
         }
 
         private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)
@@ -111,10 +113,20 @@ namespace LiveSplit.UI.Components
                         labelWidth = MeasureDeltaLabel.ActualWidth;
                     else
                         labelWidth = MeasureTimeLabel.ActualWidth;
-                    curX -= labelWidth + 5;
-                    label.Width = labelWidth;
-                    label.X = curX + 5;
 
+                    if (column.Type == ColumnType.SplitsLabel)
+                    {
+                        label.Width = curX;
+                        label.HorizontalAlignment = StringAlignment.Near;
+                        curX = 0;
+                    }
+                    else
+                    {
+                        curX -= labelWidth + 5;
+                        label.Width = labelWidth;
+                    }
+
+                    label.X = curX + 5;
                     label.Font = state.LayoutSettings.TextFont;
                     label.HasShadow = state.LayoutSettings.DropShadows;
                     label.Draw(g);
@@ -177,7 +189,10 @@ namespace LiveSplit.UI.Components
             foreach (var label in LabelsList)
             {
                 var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
-                label.Text = column.Name;
+                if (column.Type == ColumnType.SplitsLabel)
+                    label.Text = Settings.SplitsLabel;
+                else
+                    label.Text = column.Name;
                 label.ForeColor = Settings.LabelsColor;
             }
         }
