@@ -1110,7 +1110,6 @@
             this.txtSplitsLabel.Name = "txtSplitsLabel";
             this.txtSplitsLabel.Size = new System.Drawing.Size(283, 20);
             this.txtSplitsLabel.TabIndex = 4;
-            this.txtSplitsLabel.TextChanged += new System.EventHandler(this.txtSplitsLabel_Changed);
             // 
             // lblSplitsLabel
             // 

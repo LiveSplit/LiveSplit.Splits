@@ -169,11 +169,6 @@ namespace LiveSplit.UI.Components
             ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("Time", ColumnType.SplitTime, "Current Comparison", "Current Timing Method") });
         }
 
-        void txtSplitsLabel_Changed(object sender, EventArgs e)
-        {
-            SplitsLabel = txtSplitsLabel.Text;
-        }
-
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
         {
             btnLabelColor.Enabled = lblLabelsColor.Enabled = chkColumnLabels.Checked;
