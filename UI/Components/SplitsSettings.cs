@@ -132,6 +132,7 @@ namespace LiveSplit.UI.Components
             Display2Rows = false;
             ShowColumnLabels = false;
             LabelsColor = Color.FromArgb(255, 255, 255);
+            SplitsLabel = "Splits";
 
             dmnTotalSegments.DataBindings.Add("Value", this, "VisualSplitCount", false, DataSourceUpdateMode.OnPropertyChanged);
             dmnUpcomingSegments.DataBindings.Add("Value", this, "SplitPreviewCount", false, DataSourceUpdateMode.OnPropertyChanged);
