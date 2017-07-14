@@ -465,7 +465,7 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "DeltasColor", DeltasColor) ^
             SettingsHelper.CreateSetting(document, parent, "Display2Rows", Display2Rows) ^
             SettingsHelper.CreateSetting(document, parent, "ShowColumnLabels", ShowColumnLabels) ^
-            SettingsHelper.CreateSetting(document, parent, "LabelsColor", LabelsColor);
+            SettingsHelper.CreateSetting(document, parent, "LabelsColor", LabelsColor) ^
             SettingsHelper.CreateSetting(document, parent, "SplitsLabel", SplitsLabel);
 
             XmlElement columnsElement = null;
