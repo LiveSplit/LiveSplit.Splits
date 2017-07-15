@@ -583,7 +583,7 @@ namespace LiveSplit.UI.Components
 
             var columnControl = new ColumnSettings(CurrentState, "#" + (ColumnsList.Count + 1), ColumnsList);
             ColumnsList.Add(columnControl);
-            AddColumnToLayout(columnControl, ColumnsList.Count);
+            AddColumnToLayout(columnControl, ColumnsList.Count + 1);
 
             foreach (var column in ColumnsList)
                 column.UpdateEnabledButtons();
