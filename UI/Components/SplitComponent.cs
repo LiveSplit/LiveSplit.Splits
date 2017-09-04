@@ -460,15 +460,7 @@ namespace LiveSplit.UI.Components
                 if (bestDelta != null && Split == state.CurrentSplit &&
                     (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
                 {
-                    if (splitDelta) //DeltaorSplitTime or Delta
-                    {
-                        label.Text = DeltaTimeFormatter.Format(bestDelta);
-                    }
-                    else //SegmentDeltaorSegmentTime or SegmentDelta
-                    {
-                        label.Text = DeltaTimeFormatter.Format(LiveSplitStateHelper.GetLiveSegmentDelta(state, splitIndex, comparison, timingMethod));
-                    }
-
+                    label.Text = DeltaTimeFormatter.Format(bestDelta);
                     label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
                 }
                 else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
