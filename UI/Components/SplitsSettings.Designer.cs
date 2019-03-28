@@ -102,6 +102,7 @@
             this.btnAfterNamesColor = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.chkAutomaticAbbreviations = new System.Windows.Forms.CheckBox();
+            this.chkLiveDelta = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
@@ -159,8 +160,8 @@
             this.tableLayoutPanel1.Controls.Add(this.btnColor2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.cmbGradientType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.chkDisplayRows, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.groupColumns, 0, 12);
             this.tableLayoutPanel1.Controls.Add(this.groupBox9, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.groupColumns, 0, 12);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(7, 7);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -175,10 +176,11 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 187F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 216F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 215F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 966);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(445, 995);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // cmbSplitGradient
@@ -405,7 +407,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox4, 4);
             this.groupBox4.Controls.Add(this.tableLayoutPanel5);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 699);
+            this.groupBox4.Location = new System.Drawing.Point(3, 728);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(439, 209);
             this.groupBox4.TabIndex = 20;
@@ -654,7 +656,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(3, 512);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(439, 181);
+            this.groupBox6.Size = new System.Drawing.Size(439, 210);
             this.groupBox6.TabIndex = 19;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Deltas";
@@ -669,17 +671,16 @@
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 2;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 79F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 108F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(433, 162);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(433, 191);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.tableLayoutPanel9);
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox8.Location = new System.Drawing.Point(3, 82);
+            this.groupBox8.Location = new System.Drawing.Point(3, 111);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(427, 77);
             this.groupBox8.TabIndex = 1;
@@ -744,7 +745,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(427, 73);
+            this.groupBox7.Size = new System.Drawing.Size(427, 102);
             this.groupBox7.TabIndex = 0;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Accuracy";
@@ -752,27 +753,29 @@
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 3;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaSeconds, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaSeconds, 0, 2);
             this.tableLayoutPanel8.Controls.Add(this.chkDropDecimals, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaTenths, 1, 1);
-            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaHundredths, 2, 1);
+            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaTenths, 1, 2);
+            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaHundredths, 2, 2);
+            this.tableLayoutPanel8.Controls.Add(this.chkLiveDelta, 0, 1);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
+            this.tableLayoutPanel8.RowCount = 3;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(421, 54);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(421, 83);
             this.tableLayoutPanel8.TabIndex = 0;
             // 
             // rdoDeltaSeconds
             // 
             this.rdoDeltaSeconds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoDeltaSeconds.AutoSize = true;
-            this.rdoDeltaSeconds.Location = new System.Drawing.Point(3, 33);
+            this.rdoDeltaSeconds.Location = new System.Drawing.Point(3, 62);
             this.rdoDeltaSeconds.Name = "rdoDeltaSeconds";
             this.rdoDeltaSeconds.Size = new System.Drawing.Size(134, 17);
             this.rdoDeltaSeconds.TabIndex = 0;
@@ -798,7 +801,7 @@
             // 
             this.rdoDeltaTenths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoDeltaTenths.AutoSize = true;
-            this.rdoDeltaTenths.Location = new System.Drawing.Point(143, 33);
+            this.rdoDeltaTenths.Location = new System.Drawing.Point(143, 62);
             this.rdoDeltaTenths.Name = "rdoDeltaTenths";
             this.rdoDeltaTenths.Size = new System.Drawing.Size(134, 17);
             this.rdoDeltaTenths.TabIndex = 1;
@@ -811,7 +814,7 @@
             // 
             this.rdoDeltaHundredths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoDeltaHundredths.AutoSize = true;
-            this.rdoDeltaHundredths.Location = new System.Drawing.Point(283, 33);
+            this.rdoDeltaHundredths.Location = new System.Drawing.Point(283, 62);
             this.rdoDeltaHundredths.Name = "rdoDeltaHundredths";
             this.rdoDeltaHundredths.Size = new System.Drawing.Size(135, 17);
             this.rdoDeltaHundredths.TabIndex = 2;
@@ -916,7 +919,7 @@
             this.groupColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.groupColumns, 4);
             this.groupColumns.Controls.Add(this.tableColumns);
-            this.groupColumns.Location = new System.Drawing.Point(3, 914);
+            this.groupColumns.Location = new System.Drawing.Point(3, 943);
             this.groupColumns.Name = "groupColumns";
             this.groupColumns.Size = new System.Drawing.Size(439, 48);
             this.groupColumns.TabIndex = 21;
@@ -1140,6 +1143,19 @@
             this.chkAutomaticAbbreviations.Text = "Automatically Abbreviate Names If Necessary";
             this.chkAutomaticAbbreviations.UseVisualStyleBackColor = true;
             // 
+            // chkLiveDelta
+            // 
+            this.chkLiveDelta.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkLiveDelta.AutoSize = true;
+            this.tableLayoutPanel8.SetColumnSpan(this.chkLiveDelta, 2);
+            this.chkLiveDelta.Location = new System.Drawing.Point(7, 35);
+            this.chkLiveDelta.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
+            this.chkLiveDelta.Name = "chkLiveDelta";
+            this.chkLiveDelta.Size = new System.Drawing.Size(270, 17);
+            this.chkLiveDelta.TabIndex = 5;
+            this.chkLiveDelta.Text = "Always Show Live Delta";
+            this.chkLiveDelta.UseVisualStyleBackColor = true;
+            // 
             // SplitsSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1147,7 +1163,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "SplitsSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(459, 980);
+            this.Size = new System.Drawing.Size(459, 1009);
             this.Load += new System.EventHandler(this.SplitsSettings_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -1263,5 +1279,6 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.CheckBox chkAutomaticAbbreviations;
+        private System.Windows.Forms.CheckBox chkLiveDelta;
     }
 }

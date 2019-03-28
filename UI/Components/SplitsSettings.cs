@@ -55,6 +55,7 @@ namespace LiveSplit.UI.Components
         public bool SeparatorLastSplit { get; set; }
 
         public bool DropDecimals { get; set; }
+        public bool LiveDelta { get; set; }
         public TimeAccuracy DeltasAccuracy { get; set; }
 
         public bool OverrideDeltasColor { get; set; }
@@ -125,6 +126,7 @@ namespace LiveSplit.UI.Components
             BackgroundColor2 = Color.FromArgb(1, 255, 255, 255);
             BackgroundGradient = ExtendedGradientType.Alternating;
             DropDecimals = true;
+            LiveDelta = false;
             DeltasAccuracy = TimeAccuracy.Tenths;
             OverrideDeltasColor = false;
             DeltasColor = Color.FromArgb(255, 255, 255);
@@ -153,6 +155,7 @@ namespace LiveSplit.UI.Components
             chkLockLastSplit.DataBindings.Add("Checked", this, "LockLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
             chkSeparatorLastSplit.DataBindings.Add("Checked", this, "SeparatorLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
             chkDropDecimals.DataBindings.Add("Checked", this, "DropDecimals", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkLiveDelta.DataBindings.Add("Checked", this, "LiveDelta", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideDeltaColor.DataBindings.Add("Checked", this, "OverrideDeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnDeltaColor.DataBindings.Add("BackColor", this, "DeltasColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnLabelColor.DataBindings.Add("BackColor", this, "LabelsColor", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -358,6 +361,7 @@ namespace LiveSplit.UI.Components
             GradientString = SettingsHelper.ParseString(element["BackgroundGradient"], ExtendedGradientType.Plain.ToString());
             SeparatorLastSplit = SettingsHelper.ParseBool(element["SeparatorLastSplit"], true);
             DropDecimals = SettingsHelper.ParseBool(element["DropDecimals"], true);
+            LiveDelta = SettingsHelper.ParseBool(element["LiveDelta"], true);
             DeltasAccuracy = SettingsHelper.ParseEnum(element["DeltasAccuracy"], TimeAccuracy.Tenths);
             OverrideDeltasColor = SettingsHelper.ParseBool(element["OverrideDeltasColor"], false);
             DeltasColor = SettingsHelper.ParseColor(element["DeltasColor"], Color.FromArgb(255, 255, 255));
@@ -427,7 +431,7 @@ namespace LiveSplit.UI.Components
 
         private int CreateSettingsNode(XmlDocument document, XmlElement parent)
         {
-            var hashCode = SettingsHelper.CreateSetting(document, parent, "Version", "1.6") ^
+            var hashCode = SettingsHelper.CreateSetting(document, parent, "Version", "1.7") ^
             SettingsHelper.CreateSetting(document, parent, "CurrentSplitTopColor", CurrentSplitTopColor) ^
             SettingsHelper.CreateSetting(document, parent, "CurrentSplitBottomColor", CurrentSplitBottomColor) ^
             SettingsHelper.CreateSetting(document, parent, "VisualSplitCount", VisualSplitCount) ^
@@ -458,6 +462,7 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "SeparatorLastSplit", SeparatorLastSplit) ^
             SettingsHelper.CreateSetting(document, parent, "DeltasAccuracy", DeltasAccuracy) ^
             SettingsHelper.CreateSetting(document, parent, "DropDecimals", DropDecimals) ^
+            SettingsHelper.CreateSetting(document, parent, "LiveDelta", LiveDelta) ^
             SettingsHelper.CreateSetting(document, parent, "OverrideDeltasColor", OverrideDeltasColor) ^
             SettingsHelper.CreateSetting(document, parent, "DeltasColor", DeltasColor) ^
             SettingsHelper.CreateSetting(document, parent, "Display2Rows", Display2Rows) ^
