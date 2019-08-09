@@ -2,7 +2,7 @@
 
 namespace LiveSplit.TimeFormatters
 {
-    class RegularSplitTimeFormatter : ITimeFormatter
+    public class RegularSplitTimeFormatter : ITimeFormatter
     {
         public TimeAccuracy Accuracy { get; set; }
 
