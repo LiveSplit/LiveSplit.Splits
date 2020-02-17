@@ -369,11 +369,12 @@ namespace LiveSplit.UI.Components
             var splitIndex = state.Run.IndexOf(Split);
             if (splitIndex < state.CurrentSplitIndex)
             {
-                if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime)
+                // Formatting for each completed segment.
+                if (type == ColumnType.SplitTime || type == ColumnType.CompletedSplits || type == ColumnType.SegmentTime)
                 {
                     label.ForeColor = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
 
-                    if (type == ColumnType.SplitTime)
+                    if (type == ColumnType.SplitTime || type == ColumnType.CompletedSplits)
                     {
                         label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
                     }
@@ -404,7 +405,7 @@ namespace LiveSplit.UI.Components
                         label.Text = DeltaTimeFormatter.Format(deltaTime);
                 }
 
-                else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
+                if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
                 {
                     var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, comparison, timingMethod);
                     var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod);
@@ -427,6 +428,7 @@ namespace LiveSplit.UI.Components
             }
             else
             {
+                // Formatting for each active or upcoming segment.
                 if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime || type == ColumnType.DeltaorSplitTime || type == ColumnType.SegmentDeltaorSegmentTime)
                 {
                     if (Split == state.CurrentSplit)
@@ -441,7 +443,7 @@ namespace LiveSplit.UI.Components
                     else //SegmentTime or SegmentTimeorSegmentDeltaTime
                     {
                         var previousTime = TimeSpan.Zero;
-                        for (var index = splitIndex - 1; index >= 0; index --)
+                        for (var index = splitIndex - 1; index >= 0; index--)
                         {
                             var comparisonTime = state.Run[index].Comparisons[comparison][timingMethod];
                             if (comparisonTime != null)
@@ -463,7 +465,7 @@ namespace LiveSplit.UI.Components
                     label.Text = DeltaTimeFormatter.Format(bestDelta);
                     label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
                 }
-                else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
+                else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta || type == ColumnType.CompletedSplits)
                 {
                     label.Text = "";
                 }

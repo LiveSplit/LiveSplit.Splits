@@ -106,6 +106,8 @@ namespace LiveSplit.UI.Components
         {
             if (type == ColumnType.SplitTime)
                 return "Split Time";
+            else if (type == ColumnType.CompletedSplits)
+                return "Completed Splits";
             else if (type == ColumnType.Delta)
                 return "Delta";
             else if (type == ColumnType.DeltaorSplitTime)

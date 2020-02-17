@@ -1,4 +1,6 @@
-﻿namespace LiveSplit.UI.Components
+﻿using System.Linq;
+
+namespace LiveSplit.UI.Components
 {
     partial class ColumnSettings
     {
@@ -127,17 +129,12 @@
             // 
             // cmbColumnType
             // 
+            System.Collections.IEnumerable colNames = from ColumnType type in System.Enum.GetValues(typeof(ColumnType)) select ColumnSettings.GetColumnType(type);
             this.cmbColumnType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.cmbColumnType, 3);
             this.cmbColumnType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbColumnType.FormattingEnabled = true;
-            this.cmbColumnType.Items.AddRange(new object[] {
-            "Delta",
-            "Split Time",
-            "Delta or Split Time",
-            "Segment Delta",
-            "Segment Time",
-            "Segment Delta or Segment Time"});
+            this.cmbColumnType.Items.AddRange(colNames.Cast<object>().ToArray());
             this.cmbColumnType.Location = new System.Drawing.Point(93, 33);
             this.cmbColumnType.Name = "cmbColumnType";
             this.cmbColumnType.Size = new System.Drawing.Size(325, 21);
