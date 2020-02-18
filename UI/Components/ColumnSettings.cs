@@ -37,6 +37,10 @@ namespace LiveSplit.UI.Components
         {
             InitializeComponent();
 
+            System.Collections.IEnumerable colNames =
+                from ColumnType type in System.Enum.GetValues(typeof(ColumnType)) select GetColumnType(type);
+            this.cmbColumnType.Items.AddRange(colNames.Cast<object>().ToArray());
+
             Data = new ColumnData(columnName, ColumnType.Delta, "Current Comparison", "Current Timing Method");
 
             CurrentState = state;
@@ -108,6 +112,8 @@ namespace LiveSplit.UI.Components
                 return "Split Time";
             else if (type == ColumnType.CompletedSplits)
                 return "Completed Splits";
+            else if (type == ColumnType.ReferenceSplits)
+                return "Reference Splits";
             else if (type == ColumnType.Delta)
                 return "Delta";
             else if (type == ColumnType.DeltaorSplitTime)

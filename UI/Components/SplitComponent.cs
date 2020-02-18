@@ -366,6 +366,13 @@ namespace LiveSplit.UI.Components
 
             var type = data.Type;
 
+            if (type == ColumnType.ReferenceSplits)
+            {
+                label.ForeColor = state.LayoutSettings.TextColor;
+                label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
+                return;
+            }
+
             var splitIndex = state.Run.IndexOf(Split);
             if (splitIndex < state.CurrentSplitIndex)
             {
