@@ -91,7 +91,7 @@ namespace LiveSplit.UI.Components
 
             var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
 
-            if (Settings.ShowColumnLabels && CurrentState.Layout.Mode == LayoutMode.Vertical)
+            if (Settings.ShowColumnLabels && CurrentState.Layout?.Mode == LayoutMode.Vertical)
             {
                 Components.Add(new LabelsComponent(Settings, ColumnsList));
                 Components.Add(new SeparatorComponent());
