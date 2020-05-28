@@ -456,7 +456,7 @@ namespace LiveSplit.UI.Components
 
                 //Live Delta
                 var splitDelta = type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta;
-                var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, splitDelta, comparison, timingMethod);
+                var bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, splitDelta, comparison, timingMethod, Settings.LiveDelta);
                 if (bestDelta != null && Split == state.CurrentSplit &&
                     (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
                 {
