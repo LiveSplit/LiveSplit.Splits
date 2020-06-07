@@ -114,8 +114,10 @@ namespace LiveSplit.UI.Components
                 return "Segment Time";
             else if (type == ColumnType.SegmentDelta)
                 return "Segment Delta";
-            else
+            else if (type == ColumnType.SegmentDeltaorSegmentTime)
                 return "Segment Delta or Segment Time";
+            else
+                return "Best Time";
         }
 
         private static ColumnType ParseColumnType(string columnType)
