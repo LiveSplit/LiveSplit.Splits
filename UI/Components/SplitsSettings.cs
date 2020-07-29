@@ -85,6 +85,7 @@ namespace LiveSplit.UI.Components
         public IList<ColumnSettings> ColumnsList { get; set; }
         public Size StartingSize { get; set; }
         public Size StartingTableLayoutSize { get; set; }
+        public int StartingColumnSettingHeight { get; set; }
 
         public SplitsSettings(LiveSplitState state)
         {
@@ -165,6 +166,8 @@ namespace LiveSplit.UI.Components
             ColumnsList = new List<ColumnSettings>();
             ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, "Current Comparison", "Current Timing Method") });
             ColumnsList.Add(new ColumnSettings(CurrentState, "Time", ColumnsList) { Data = new ColumnData("Time", ColumnType.SplitTime, "Current Comparison", "Current Timing Method") });
+            
+            StartingColumnSettingHeight = ColumnsList[0].Height;
         }
 
         void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
@@ -553,7 +556,7 @@ namespace LiveSplit.UI.Components
         {
             tableColumns.RowCount = 1;
             tableColumns.RowStyles.Clear();
-            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 29f));
+            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, StartingTableLayoutSize.Height));
             tableColumns.Size = StartingTableLayoutSize;
             foreach (var control in tableColumns.Controls.OfType<ColumnSettings>().ToList())
             {
@@ -565,10 +568,10 @@ namespace LiveSplit.UI.Components
         private void UpdateLayoutForColumn()
         {
             tableColumns.RowCount++;
-            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 179f));
-            tableColumns.Size = new Size(tableColumns.Size.Width, tableColumns.Size.Height + 179);
-            Size = new Size(Size.Width, Size.Height + 179);
-            groupColumns.Size = new Size(groupColumns.Size.Width, groupColumns.Size.Height + 179);
+            tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, StartingColumnSettingHeight));
+            tableColumns.Size = new Size(tableColumns.Size.Width, tableColumns.Size.Height + StartingColumnSettingHeight);
+            Size = new Size(Size.Width, Size.Height + StartingColumnSettingHeight);
+            groupColumns.Size = new Size(groupColumns.Size.Width, groupColumns.Size.Height + StartingColumnSettingHeight);
         }
 
         private void btnAddColumn_Click(object sender, EventArgs e)
