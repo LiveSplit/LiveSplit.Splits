@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using LiveSplit.Model.Comparisons;
 
 namespace LiveSplit.UI.Components
 {
@@ -178,6 +179,10 @@ namespace LiveSplit.UI.Components
             {
                 var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
                 label.Text = column.Name;
+                if(column.Name.Equals("Current Comparison"))
+                {
+                    label.Text = CompositeComparisons.GetShortComparisonName(state.CurrentComparison);
+                }
                 label.ForeColor = Settings.LabelsColor;
             }
         }
