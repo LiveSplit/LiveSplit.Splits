@@ -336,6 +336,7 @@ namespace LiveSplit.UI.Components
 
         public void Dispose()
         {
+            CurrentState.ComparisonRenamed -= state_ComparisonRenamed;
             InternalComponent.Dispose();
 
             foreach (SplitComponent splitComponent in SplitComponents)
