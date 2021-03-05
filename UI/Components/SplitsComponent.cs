@@ -336,6 +336,12 @@ namespace LiveSplit.UI.Components
 
         public void Dispose()
         {
+            foreach (IComponent component in Components)
+            {
+                component.Dispose();
+            }
+
+            Components.Clear();
             Settings.SplitLayoutChanged -= Settings_SplitLayoutChanged;
             Settings.Dispose();
         }
