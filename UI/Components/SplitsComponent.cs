@@ -185,9 +185,8 @@ namespace LiveSplit.UI.Components
 
             foreach (var component in Components)
             {
-                if (component is SeparatorComponent)
+                if (component is SeparatorComponent separator)
                 {
-                    var separator = (SeparatorComponent)component;
                     var index = Components.IndexOf(separator);
                     if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
                     {
