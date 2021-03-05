@@ -214,9 +214,8 @@ namespace LiveSplit.UI.Components
                         }
                     }
                 }
-                else if (component is ThinSeparatorComponent)
+                else if (component is ThinSeparatorComponent separator)
                 {
-                    var separator = (ThinSeparatorComponent)component;
                     var index = Components.IndexOf(separator);
                     if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
                     {
