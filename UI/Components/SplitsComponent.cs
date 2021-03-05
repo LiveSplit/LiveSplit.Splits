@@ -154,7 +154,14 @@ namespace LiveSplit.UI.Components
             skipCount += ScrollOffset;
 
             if (OldShadowsColor != state.LayoutSettings.ShadowsColor)
+            {
+                foreach (Image shadowImage in ShadowImages.Values)
+                {
+                    shadowImage.Dispose();
+                }
+
                 ShadowImages.Clear();
+            }
 
             foreach (var split in state.Run)
             {
@@ -336,6 +343,12 @@ namespace LiveSplit.UI.Components
 
         public void Dispose()
         {
+            foreach (Image shadowImage in ShadowImages.Values)
+            {
+                shadowImage.Dispose();
+            }
+
+            ShadowImages.Clear();
             CurrentState.ComparisonRenamed -= state_ComparisonRenamed;
             InternalComponent.Dispose();
 
