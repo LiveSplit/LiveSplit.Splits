@@ -342,6 +342,13 @@ namespace LiveSplit.UI.Components
             }
 
             Components.Clear();
+
+            foreach (SplitComponent splitComponent in SplitComponents)
+            {
+                splitComponent.Dispose();
+            }
+
+            SplitComponents.Clear();
             Settings.SplitLayoutChanged -= Settings_SplitLayoutChanged;
             Settings.Dispose();
         }
