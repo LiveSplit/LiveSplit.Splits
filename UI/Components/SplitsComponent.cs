@@ -336,6 +336,7 @@ namespace LiveSplit.UI.Components
 
         public void Dispose()
         {
+            Settings.Dispose();
         }
 
         public int GetSettingsHashCode() => Settings.GetSettingsHashCode();
