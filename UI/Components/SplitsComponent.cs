@@ -193,7 +193,7 @@ namespace LiveSplit.UI.Components
                     {
                         if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                             separator.LockToBottom = true;
-                        else if (Components[index - 1] is SplitComponent && ((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                        else if (Components[index - 1] is SplitComponent splitComponent && splitComponent.Split == state.CurrentSplit)
                             separator.LockToBottom = false;
                     }
                     if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit && index == LastSplitSeparatorIndex)
