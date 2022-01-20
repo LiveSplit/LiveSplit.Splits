@@ -179,13 +179,7 @@ namespace LiveSplit.UI.Components
             {
                 var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
                 if (String.IsNullOrEmpty(column.Name))
-                {
-                    string comparison = column.Comparison == "Current Comparison" ? state.CurrentComparison : column.Comparison;
-                    if (comparison.StartsWith("[Race] "))
-                        label.Text = comparison.Substring(7);
-                    else
-                        label.Text = CompositeComparisons.GetShortComparisonName(comparison);
-                }
+                    label.Text = CompositeComparisons.GetShortComparisonName(column.Comparison == "Current Comparison" ? state.CurrentComparison : column.Comparison);
                 else
                     label.Text = column.Name;
                 label.ForeColor = Settings.LabelsColor;
