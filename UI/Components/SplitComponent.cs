@@ -468,6 +468,12 @@ namespace LiveSplit.UI.Components
                     label.Text = "";
                 }
             }
+
+            if (type == ColumnType.BestTime)
+            {
+                label.ForeColor = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
+                label.Text = TimeFormatter.Format(Split.Comparisons[Run.PersonalBestComparisonName][timingMethod]);
+            }
         }
 
         protected float CalculateLabelsWidth()
@@ -476,7 +482,7 @@ namespace LiveSplit.UI.Components
             {
                 var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaorSplitTime || x.Type == ColumnType.SegmentDeltaorSegmentTime);
                 var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
-                var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
+                var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime || x.Type == ColumnType.BestTime);
                 return mixedCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5)
                     + deltaCount * (MeasureDeltaLabel.ActualWidth + 5)
                     + timeCount * (MeasureTimeLabel.ActualWidth + 5);
