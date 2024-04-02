@@ -1,39 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <OutputType>Library</OutputType>
+    <OutDir>..\..\bin\$(Configuration)\Components</OutDir>
     <RootNamespace>LiveSplit</RootNamespace>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net4.6.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\bin\Debug\Components\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\bin\Release\Components\</OutputPath>
-    <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Candidate|AnyCPU'">
-    <OutputPath>..\..\bin\Release Candidate\Components\</OutputPath>
-    <DefineConstants>TRACE;RELEASE_CANDIDATE</DefineConstants>
-    <Optimize>true</Optimize>
-    <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Update="UI\Components\SplitsSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="UI\Components\ColumnSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\LiveSplit.Core\LiveSplit.Core.csproj" />
     <ProjectReference Include="..\..\UpdateManager\UpdateManager.csproj" />
   </ItemGroup>
+
 </Project>
