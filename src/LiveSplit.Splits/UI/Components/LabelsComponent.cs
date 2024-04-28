@@ -51,7 +51,7 @@ namespace LiveSplit.UI.Components
 
             MeasureTimeLabel = new SimpleLabel();
             MeasureDeltaLabel = new SimpleLabel();
-            TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
+            TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
             DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
 
             Cache = new GraphicsCache();
@@ -79,7 +79,7 @@ namespace LiveSplit.UI.Components
 
             if (Settings.SplitTimesAccuracy != CurrentAccuracy)
             {
-                TimeFormatter = new RegularSplitTimeFormatter(Settings.SplitTimesAccuracy);
+                TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
                 CurrentAccuracy = Settings.SplitTimesAccuracy;
             }
             if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
