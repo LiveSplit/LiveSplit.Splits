@@ -102,6 +102,8 @@
             this.btnAfterNamesColor = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.chkAutomaticAbbreviations = new System.Windows.Forms.CheckBox();
+            this.rdoDeltaMilliseconds = new System.Windows.Forms.RadioButton();
+            this.rdoMilliseconds = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dmnTotalSegments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dmnUpcomingSegments)).BeginInit();
@@ -557,10 +559,12 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.rdoMilliseconds, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.rdoSeconds, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.rdoTenths, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.rdoHundredths, 2, 0);
@@ -578,7 +582,7 @@
             this.rdoSeconds.AutoSize = true;
             this.rdoSeconds.Location = new System.Drawing.Point(3, 3);
             this.rdoSeconds.Name = "rdoSeconds";
-            this.rdoSeconds.Size = new System.Drawing.Size(134, 17);
+            this.rdoSeconds.Size = new System.Drawing.Size(99, 17);
             this.rdoSeconds.TabIndex = 0;
             this.rdoSeconds.TabStop = true;
             this.rdoSeconds.Text = "Seconds";
@@ -589,9 +593,9 @@
             // 
             this.rdoTenths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoTenths.AutoSize = true;
-            this.rdoTenths.Location = new System.Drawing.Point(143, 3);
+            this.rdoTenths.Location = new System.Drawing.Point(108, 3);
             this.rdoTenths.Name = "rdoTenths";
-            this.rdoTenths.Size = new System.Drawing.Size(134, 17);
+            this.rdoTenths.Size = new System.Drawing.Size(99, 17);
             this.rdoTenths.TabIndex = 1;
             this.rdoTenths.TabStop = true;
             this.rdoTenths.Text = "Tenths";
@@ -602,13 +606,14 @@
             // 
             this.rdoHundredths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoHundredths.AutoSize = true;
-            this.rdoHundredths.Location = new System.Drawing.Point(283, 3);
+            this.rdoHundredths.Location = new System.Drawing.Point(213, 3);
             this.rdoHundredths.Name = "rdoHundredths";
-            this.rdoHundredths.Size = new System.Drawing.Size(135, 17);
+            this.rdoHundredths.Size = new System.Drawing.Size(99, 17);
             this.rdoHundredths.TabIndex = 2;
             this.rdoHundredths.TabStop = true;
             this.rdoHundredths.Text = "Hundredths";
             this.rdoHundredths.UseVisualStyleBackColor = true;
+            this.rdoHundredths.CheckedChanged += new System.EventHandler(this.rdoHundredths_CheckedChanged);
             // 
             // lblSplitSize
             // 
@@ -751,10 +756,12 @@
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.ColumnCount = 3;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel8.ColumnCount = 4;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel8.Controls.Add(this.rdoDeltaMilliseconds, 3, 1);
             this.tableLayoutPanel8.Controls.Add(this.rdoDeltaSeconds, 0, 1);
             this.tableLayoutPanel8.Controls.Add(this.chkDropDecimals, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.rdoDeltaTenths, 1, 1);
@@ -774,7 +781,7 @@
             this.rdoDeltaSeconds.AutoSize = true;
             this.rdoDeltaSeconds.Location = new System.Drawing.Point(3, 33);
             this.rdoDeltaSeconds.Name = "rdoDeltaSeconds";
-            this.rdoDeltaSeconds.Size = new System.Drawing.Size(134, 17);
+            this.rdoDeltaSeconds.Size = new System.Drawing.Size(99, 17);
             this.rdoDeltaSeconds.TabIndex = 0;
             this.rdoDeltaSeconds.TabStop = true;
             this.rdoDeltaSeconds.Text = "Seconds";
@@ -789,7 +796,7 @@
             this.chkDropDecimals.Location = new System.Drawing.Point(7, 6);
             this.chkDropDecimals.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkDropDecimals.Name = "chkDropDecimals";
-            this.chkDropDecimals.Size = new System.Drawing.Size(411, 17);
+            this.chkDropDecimals.Size = new System.Drawing.Size(305, 17);
             this.chkDropDecimals.TabIndex = 0;
             this.chkDropDecimals.Text = "Drop Decimals When More Than 1 Minute";
             this.chkDropDecimals.UseVisualStyleBackColor = true;
@@ -798,9 +805,9 @@
             // 
             this.rdoDeltaTenths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoDeltaTenths.AutoSize = true;
-            this.rdoDeltaTenths.Location = new System.Drawing.Point(143, 33);
+            this.rdoDeltaTenths.Location = new System.Drawing.Point(108, 33);
             this.rdoDeltaTenths.Name = "rdoDeltaTenths";
-            this.rdoDeltaTenths.Size = new System.Drawing.Size(134, 17);
+            this.rdoDeltaTenths.Size = new System.Drawing.Size(99, 17);
             this.rdoDeltaTenths.TabIndex = 1;
             this.rdoDeltaTenths.TabStop = true;
             this.rdoDeltaTenths.Text = "Tenths";
@@ -811,13 +818,14 @@
             // 
             this.rdoDeltaHundredths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.rdoDeltaHundredths.AutoSize = true;
-            this.rdoDeltaHundredths.Location = new System.Drawing.Point(283, 33);
+            this.rdoDeltaHundredths.Location = new System.Drawing.Point(213, 33);
             this.rdoDeltaHundredths.Name = "rdoDeltaHundredths";
-            this.rdoDeltaHundredths.Size = new System.Drawing.Size(135, 17);
+            this.rdoDeltaHundredths.Size = new System.Drawing.Size(99, 17);
             this.rdoDeltaHundredths.TabIndex = 2;
             this.rdoDeltaHundredths.TabStop = true;
             this.rdoDeltaHundredths.Text = "Hundredths";
             this.rdoDeltaHundredths.UseVisualStyleBackColor = true;
+            this.rdoDeltaHundredths.CheckedChanged += new System.EventHandler(this.rdoDeltaHundredths_CheckedChanged);
             // 
             // chkLockLastSplit
             // 
@@ -1140,6 +1148,30 @@
             this.chkAutomaticAbbreviations.Text = "Automatically Abbreviate Names If Necessary";
             this.chkAutomaticAbbreviations.UseVisualStyleBackColor = true;
             // 
+            // rdoDeltaMilliseconds
+            // 
+            this.rdoDeltaMilliseconds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.rdoDeltaMilliseconds.AutoSize = true;
+            this.rdoDeltaMilliseconds.Location = new System.Drawing.Point(318, 33);
+            this.rdoDeltaMilliseconds.Name = "rdoDeltaMilliseconds";
+            this.rdoDeltaMilliseconds.Size = new System.Drawing.Size(100, 17);
+            this.rdoDeltaMilliseconds.TabIndex = 3;
+            this.rdoDeltaMilliseconds.TabStop = true;
+            this.rdoDeltaMilliseconds.Text = "Milliseconds";
+            this.rdoDeltaMilliseconds.UseVisualStyleBackColor = true;
+            // 
+            // rdoMilliseconds
+            // 
+            this.rdoMilliseconds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.rdoMilliseconds.AutoSize = true;
+            this.rdoMilliseconds.Location = new System.Drawing.Point(318, 3);
+            this.rdoMilliseconds.Name = "rdoMilliseconds";
+            this.rdoMilliseconds.Size = new System.Drawing.Size(100, 17);
+            this.rdoMilliseconds.TabIndex = 3;
+            this.rdoMilliseconds.TabStop = true;
+            this.rdoMilliseconds.Text = "Milliseconds";
+            this.rdoMilliseconds.UseVisualStyleBackColor = true;
+            // 
             // SplitsSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1263,5 +1295,7 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.CheckBox chkAutomaticAbbreviations;
+        private System.Windows.Forms.RadioButton rdoDeltaMilliseconds;
+        private System.Windows.Forms.RadioButton rdoMilliseconds;
     }
 }

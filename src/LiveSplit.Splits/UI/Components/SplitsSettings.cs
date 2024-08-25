@@ -197,6 +197,11 @@ namespace LiveSplit.UI.Components
             = btnCurrentNamesColor.Enabled = btnAfterNamesColor.Enabled = chkOverrideTextColor.Checked;
         }
 
+        void rdoDeltaHundredths_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDeltaAccuracy();
+        }
+
         void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
         {
             UpdateDeltaAccuracy();
@@ -241,6 +246,11 @@ namespace LiveSplit.UI.Components
             SplitLayoutChanged(this, null);
         }
 
+        void rdoHundredths_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAccuracy();
+        }
+
         void rdoTenths_CheckedChanged(object sender, EventArgs e)
         {
             UpdateAccuracy();
@@ -257,8 +267,10 @@ namespace LiveSplit.UI.Components
                 SplitTimesAccuracy = TimeAccuracy.Seconds;
             else if (rdoTenths.Checked)
                 SplitTimesAccuracy = TimeAccuracy.Tenths;
-            else
+            else if (rdoHundredths.Checked)
                 SplitTimesAccuracy = TimeAccuracy.Hundredths;
+            else
+                SplitTimesAccuracy = TimeAccuracy.Milliseconds;
         }
 
         void UpdateDeltaAccuracy()
@@ -267,8 +279,10 @@ namespace LiveSplit.UI.Components
                 DeltasAccuracy = TimeAccuracy.Seconds;
             else if (rdoDeltaTenths.Checked)
                 DeltasAccuracy = TimeAccuracy.Tenths;
-            else
+            else if (rdoDeltaHundredths.Checked)
                 DeltasAccuracy = TimeAccuracy.Hundredths;
+            else
+                DeltasAccuracy = TimeAccuracy.Milliseconds;
         }
 
         void chkLastSplit_CheckedChanged(object sender, EventArgs e)
@@ -585,6 +599,5 @@ namespace LiveSplit.UI.Components
             foreach (var column in ColumnsList)
                 column.UpdateEnabledButtons();
         }
-
     }
 }
