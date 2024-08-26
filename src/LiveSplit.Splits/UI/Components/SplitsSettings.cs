@@ -312,10 +312,12 @@ namespace LiveSplit.UI.Components
             rdoSeconds.Checked = SplitTimesAccuracy == TimeAccuracy.Seconds;
             rdoTenths.Checked = SplitTimesAccuracy == TimeAccuracy.Tenths;
             rdoHundredths.Checked = SplitTimesAccuracy == TimeAccuracy.Hundredths;
+            rdoMilliseconds.Checked = SplitTimesAccuracy == TimeAccuracy.Milliseconds;
 
             rdoDeltaSeconds.Checked = DeltasAccuracy == TimeAccuracy.Seconds;
             rdoDeltaTenths.Checked = DeltasAccuracy == TimeAccuracy.Tenths;
             rdoDeltaHundredths.Checked = DeltasAccuracy == TimeAccuracy.Hundredths;
+            rdoDeltaMilliseconds.Checked = DeltasAccuracy == TimeAccuracy.Milliseconds;
 
             if (Mode == LayoutMode.Horizontal)
             {
