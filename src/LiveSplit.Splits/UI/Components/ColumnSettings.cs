@@ -88,16 +88,22 @@ public partial class ColumnSettings : UserControl
         cmbComparison.Items.Add("Current Comparison");
 
         if (Data.Type == ColumnType.Delta || Data.Type == ColumnType.DeltaorSplitTime || Data.Type == ColumnType.SplitTime)
+        {
             cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != NoneComparisonGenerator.ComparisonName).ToArray());
+        }
         else
         {
             cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
             if (Comparison == BestSplitTimesComparisonGenerator.ComparisonName)
+            {
                 Comparison = "Current Comparison";
+            }
         }
 
         if (!cmbComparison.Items.Contains(Comparison))
+        {
             cmbComparison.Items.Add(Comparison);
+        }
 
         cmbComparison.DataBindings.Clear();
         cmbComparison.DataBindings.Add("SelectedItem", this, "Comparison", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -106,17 +112,29 @@ public partial class ColumnSettings : UserControl
     private static string GetColumnType(ColumnType type)
     {
         if (type == ColumnType.SplitTime)
+        {
             return "Split Time";
+        }
         else if (type == ColumnType.Delta)
+        {
             return "Delta";
+        }
         else if (type == ColumnType.DeltaorSplitTime)
+        {
             return "Delta or Split Time";
+        }
         else if (type == ColumnType.SegmentTime)
+        {
             return "Segment Time";
+        }
         else if (type == ColumnType.SegmentDelta)
+        {
             return "Segment Delta";
+        }
         else
+        {
             return "Segment Delta or Segment Time";
+        }
     }
 
     private static ColumnType ParseColumnType(string columnType)

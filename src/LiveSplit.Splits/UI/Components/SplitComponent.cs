@@ -86,14 +86,18 @@ public class SplitComponent : IComponent
     private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)
     {
         if (NeedUpdateAll)
+        {
             UpdateAll(state);
+        }
 
         if (Settings.BackgroundGradient == ExtendedGradientType.Alternating)
+        {
             g.FillRectangle(new SolidBrush(
-                state.Run.IndexOf(Split) % 2 + (Settings.ShowColumnLabels ? 1 : 0) == 1
+                (state.Run.IndexOf(Split) % 2) + (Settings.ShowColumnLabels ? 1 : 0) == 1
                 ? Settings.BackgroundColor2
                 : Settings.BackgroundColor
                 ), 0, 0, width, height);
+        }
 
         MeasureTimeLabel.Text = TimeFormatter.Format(new TimeSpan(24, 0, 0));
         MeasureDeltaLabel.Text = DeltaTimeFormatter.Format(new TimeSpan(0, 9, 0, 0));
@@ -119,6 +123,7 @@ public class SplitComponent : IComponent
             TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
             CurrentAccuracy = Settings.SplitTimesAccuracy;
         }
+
         if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
         {
             DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
@@ -202,8 +207,8 @@ public class SplitComponent : IComponent
                 {
                     g.DrawImage(
                         shadow,
-                        7 + (Settings.IconSize * (5 / 4f) - shadowWidth) / 2 - 0.7f,
-                        (height - Settings.IconSize) / 2.0f + (Settings.IconSize * (5 / 4f) - shadowHeight) / 2 - 0.7f,
+                        7 + (((Settings.IconSize * (5 / 4f)) - shadowWidth) / 2) - 0.7f,
+                        ((height - Settings.IconSize) / 2.0f) + (((Settings.IconSize * (5 / 4f)) - shadowHeight) / 2) - 0.7f,
                         shadowWidth,
                         shadowHeight);
                 }
@@ -212,8 +217,8 @@ public class SplitComponent : IComponent
 
                 g.DrawImage(
                     icon,
-                    7 + (Settings.IconSize - drawWidth) / 2,
-                    (height - Settings.IconSize) / 2.0f + (Settings.IconSize - drawHeight) / 2,
+                    7 + ((Settings.IconSize - drawWidth) / 2),
+                    ((height - Settings.IconSize) / 2.0f) + ((Settings.IconSize - drawHeight) / 2),
                     drawWidth,
                     drawHeight);
             }
@@ -232,11 +237,18 @@ public class SplitComponent : IComponent
 
                     var labelWidth = 0f;
                     if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
+                    {
                         labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
+                    }
                     else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
+                    {
                         labelWidth = MeasureDeltaLabel.ActualWidth;
+                    }
                     else
+                    {
                         labelWidth = MeasureTimeLabel.ActualWidth;
+                    }
+
                     label.Width = labelWidth + 20;
                     curX -= labelWidth + 5;
                     label.X = curX - 15;
@@ -247,21 +259,26 @@ public class SplitComponent : IComponent
                     label.Draw(g);
 
                     if (!string.IsNullOrEmpty(label.Text))
+                    {
                         nameX = curX + labelWidth + 5 - label.ActualWidth;
-
+                    }
                 }
+
                 NameLabel.Width = (mode == LayoutMode.Horizontal ? width - 10 : nameX) - IconWidth;
                 NameLabel.Draw(g);
             }
         }
-        else DisplayIcon = Settings.DisplayIcons;
+        else
+        {
+            DisplayIcon = Settings.DisplayIcons;
+        }
     }
 
     public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
     {
         if (Settings.Display2Rows)
         {
-            VerticalHeight = Settings.SplitHeight + 0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height);
+            VerticalHeight = Settings.SplitHeight + (0.85f * (g.MeasureString("A", state.LayoutSettings.TimesFont).Height + g.MeasureString("A", state.LayoutSettings.TextFont).Height));
             DrawGeneral(g, state, width, VerticalHeight, LayoutMode.Horizontal);
         }
         else
@@ -279,7 +296,6 @@ public class SplitComponent : IComponent
 
     public string ComponentName => "Split";
 
-
     public Control GetSettingsControl(LayoutMode mode)
     {
         throw new NotSupportedException();
@@ -289,7 +305,6 @@ public class SplitComponent : IComponent
     {
         throw new NotSupportedException();
     }
-
 
     public System.Xml.XmlNode GetSettings(System.Xml.XmlDocument document)
     {
@@ -313,10 +328,14 @@ public class SplitComponent : IComponent
             if (Settings.AutomaticAbbreviations)
             {
                 if (NameLabel.Text != Split.Name || NameLabel.AlternateText == null || !NameLabel.AlternateText.Any())
+                {
                     NameLabel.AlternateText = Split.Name.GetAbbreviations().ToList();
+                }
             }
             else if (NameLabel.AlternateText != null && NameLabel.AlternateText.Any())
+            {
                 NameLabel.AlternateText.Clear();
+            }
 
             NameLabel.Text = Split.Name;
 
@@ -328,9 +347,13 @@ public class SplitComponent : IComponent
             else
             {
                 if (Split == state.CurrentSplit)
+                {
                     NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.CurrentNamesColor : state.LayoutSettings.TextColor;
+                }
                 else
+                {
                     NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
+                }
             }
 
             foreach (var label in LabelsList)
@@ -345,13 +368,19 @@ public class SplitComponent : IComponent
     {
         var comparison = data.Comparison == "Current Comparison" ? state.CurrentComparison : data.Comparison;
         if (!state.Run.Comparisons.Contains(comparison))
+        {
             comparison = state.CurrentComparison;
+        }
 
         var timingMethod = state.CurrentTimingMethod;
         if (data.TimingMethod == "Real Time")
+        {
             timingMethod = TimingMethod.RealTime;
+        }
         else if (data.TimingMethod == "Game Time")
+        {
             timingMethod = TimingMethod.GameTime;
+        }
 
         var type = data.Type;
 
@@ -378,19 +407,28 @@ public class SplitComponent : IComponent
                 var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
                 var color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, splitIndex, true, true, comparison, timingMethod);
                 if (color == null)
+                {
                     color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
+                }
+
                 label.ForeColor = color.Value;
 
                 if (type == ColumnType.DeltaorSplitTime)
                 {
                     if (deltaTime != null)
+                    {
                         label.Text = DeltaTimeFormatter.Format(deltaTime);
+                    }
                     else
+                    {
                         label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
+                    }
                 }
 
                 else if (type == ColumnType.Delta)
+                {
                     label.Text = DeltaTimeFormatter.Format(deltaTime);
+                }
             }
 
             else if (type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta)
@@ -398,15 +436,22 @@ public class SplitComponent : IComponent
                 var segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, comparison, timingMethod);
                 var color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod);
                 if (color == null)
+                {
                     color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
+                }
+
                 label.ForeColor = color.Value;
 
                 if (type == ColumnType.SegmentDeltaorSegmentTime)
                 {
                     if (segmentDelta != null)
+                    {
                         label.Text = DeltaTimeFormatter.Format(segmentDelta);
+                    }
                     else
+                    {
                         label.Text = TimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, timingMethod));
+                    }
                 }
                 else if (type == ColumnType.SegmentDelta)
                 {
@@ -419,9 +464,13 @@ public class SplitComponent : IComponent
             if (type == ColumnType.SplitTime || type == ColumnType.SegmentTime || type == ColumnType.DeltaorSplitTime || type == ColumnType.SegmentDeltaorSegmentTime)
             {
                 if (Split == state.CurrentSplit)
+                {
                     label.ForeColor = Settings.OverrideTimesColor ? Settings.CurrentTimesColor : state.LayoutSettings.TextColor;
+                }
                 else
+                {
                     label.ForeColor = Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
+                }
 
                 if (type == ColumnType.SplitTime || type == ColumnType.DeltaorSplitTime)
                 {
@@ -439,6 +488,7 @@ public class SplitComponent : IComponent
                             break;
                         }
                     }
+
                     label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
                 }
             }
@@ -466,10 +516,11 @@ public class SplitComponent : IComponent
             var mixedCount = ColumnsList.Count(x => x.Type == ColumnType.DeltaorSplitTime || x.Type == ColumnType.SegmentDeltaorSegmentTime);
             var deltaCount = ColumnsList.Count(x => x.Type == ColumnType.Delta || x.Type == ColumnType.SegmentDelta);
             var timeCount = ColumnsList.Count(x => x.Type == ColumnType.SplitTime || x.Type == ColumnType.SegmentTime);
-            return mixedCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5)
-                + deltaCount * (MeasureDeltaLabel.ActualWidth + 5)
-                + timeCount * (MeasureTimeLabel.ActualWidth + 5);
+            return (mixedCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5))
+                + (deltaCount * (MeasureDeltaLabel.ActualWidth + 5))
+                + (timeCount * (MeasureTimeLabel.ActualWidth + 5));
         }
+
         return 0f;
     }
 
@@ -504,10 +555,15 @@ public class SplitComponent : IComponent
             if (Cache.HasChanged)
             {
                 if (Split.Icon == null)
+                {
                     FrameCount = 0;
+                }
                 else
+                {
                     FrameCount = Split.Icon.GetFrameCount(new FrameDimension(Split.Icon.FrameDimensionsList[0]));
+                }
             }
+
             Cache["DisplayIcon"] = DisplayIcon;
             Cache["SplitName"] = NameLabel.Text;
             Cache["IsActive"] = IsActive;

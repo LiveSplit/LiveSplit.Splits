@@ -104,18 +104,26 @@ public class SplitsComponent : IComponent
             {
                 LastSplitSeparatorIndex = Components.Count;
                 if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit)
+                {
                     Components.Add(new SeparatorComponent());
+                }
                 else if (Settings.ShowThinSeparators)
+                {
                     Components.Add(new ThinSeparatorComponent());
+                }
             }
 
             var splitComponent = new SplitComponent(Settings, ColumnsList);
             Components.Add(splitComponent);
             if (i < visualSplitCount - 1 || i == (Settings.LockLastSplit ? totalSplits - 1 : visualSplitCount - 1))
+            {
                 SplitComponents.Add(splitComponent);
+            }
 
             if (Settings.ShowThinSeparators && i < totalSplits - 2)
+            {
                 Components.Add(new ThinSeparatorComponent());
+            }
         }
     }
 
@@ -144,6 +152,7 @@ public class SplitsComponent : IComponent
             OldLayoutMode = state.Layout.Mode;
             RebuildVisualSplits();
         }
+
         settingsSplitCount = Settings.VisualSplitCount;
 
         var skipCount = Math.Min(
@@ -155,7 +164,9 @@ public class SplitsComponent : IComponent
         skipCount += ScrollOffset;
 
         if (OldShadowsColor != state.LayoutSettings.ShadowsColor)
+        {
             ShadowImages.Clear();
+        }
 
         foreach (var split in state.Run)
         {
@@ -171,10 +182,15 @@ public class SplitsComponent : IComponent
             split.DisplayIcon = iconsNotBlank && Settings.DisplayIcons;
 
             if (split.Split != null && split.Split.Icon != null)
+            {
                 split.ShadowImage = ShadowImages[split.Split.Icon];
+            }
             else
+            {
                 split.ShadowImage = null;
+            }
         }
+
         OldShadowsColor = state.LayoutSettings.ShadowsColor;
 
         foreach (var component in Components)
@@ -186,18 +202,27 @@ public class SplitsComponent : IComponent
                 if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
                 {
                     if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
+                    {
                         separator.LockToBottom = true;
+                    }
                     else if (Components[index - 1] is SplitComponent && ((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                    {
                         separator.LockToBottom = false;
+                    }
                 }
+
                 if (Settings.AlwaysShowLastSplit && Settings.SeparatorLastSplit && index == LastSplitSeparatorIndex)
                 {
                     if (skipCount >= state.Run.Count - visualSplitCount)
                     {
                         if (Settings.ShowThinSeparators)
+                        {
                             separator.DisplayedSize = 1f;
+                        }
                         else
+                        {
                             separator.DisplayedSize = 0f;
+                        }
 
                         separator.UseSeparatorColor = false;
                     }
@@ -215,9 +240,13 @@ public class SplitsComponent : IComponent
                 if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
                 {
                     if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
+                    {
                         separator.LockToBottom = true;
+                    }
                     else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                    {
                         separator.LockToBottom = false;
+                    }
                 }
             }
         }
@@ -262,8 +291,8 @@ public class SplitsComponent : IComponent
     {
         if (Settings.BackgroundGradient != ExtendedGradientType.Alternating
             && (Settings.BackgroundColor.A > 0
-            || Settings.BackgroundGradient != ExtendedGradientType.Plain
-            && Settings.BackgroundColor2.A > 0))
+            || (Settings.BackgroundGradient != ExtendedGradientType.Plain
+            && Settings.BackgroundColor2.A > 0)))
         {
             var gradientBrush = new LinearGradientBrush(
                         new PointF(0, 0),
@@ -327,12 +356,17 @@ public class SplitsComponent : IComponent
                 SplitComponents[i].Split = split;
                 i++;
             }
+
             if (Settings.AlwaysShowLastSplit)
+            {
                 SplitComponents[i].Split = state.Run.Last();
+            }
         }
 
         if (invalidator != null)
+        {
             InternalComponent.Update(invalidator, state, width, height, mode);
+        }
     }
 
     public void Dispose()

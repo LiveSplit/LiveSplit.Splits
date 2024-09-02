@@ -21,7 +21,10 @@ public partial class SplitsSettings : UserControl
             _VisualSplitCount = value;
             var max = Math.Max(0, _VisualSplitCount - (AlwaysShowLastSplit ? 2 : 1));
             if (dmnUpcomingSegments.Value > max)
+            {
                 dmnUpcomingSegments.Value = max;
+            }
+
             dmnUpcomingSegments.Maximum = max;
         }
     }
@@ -268,25 +271,41 @@ public partial class SplitsSettings : UserControl
     private void UpdateAccuracy()
     {
         if (rdoSeconds.Checked)
+        {
             SplitTimesAccuracy = TimeAccuracy.Seconds;
+        }
         else if (rdoTenths.Checked)
+        {
             SplitTimesAccuracy = TimeAccuracy.Tenths;
+        }
         else if (rdoHundredths.Checked)
+        {
             SplitTimesAccuracy = TimeAccuracy.Hundredths;
+        }
         else
+        {
             SplitTimesAccuracy = TimeAccuracy.Milliseconds;
+        }
     }
 
     private void UpdateDeltaAccuracy()
     {
         if (rdoDeltaSeconds.Checked)
+        {
             DeltasAccuracy = TimeAccuracy.Seconds;
+        }
         else if (rdoDeltaTenths.Checked)
+        {
             DeltasAccuracy = TimeAccuracy.Tenths;
+        }
         else if (rdoDeltaHundredths.Checked)
+        {
             DeltasAccuracy = TimeAccuracy.Hundredths;
+        }
         else
+        {
             DeltasAccuracy = TimeAccuracy.Milliseconds;
+        }
     }
 
     private void chkLastSplit_CheckedChanged(object sender, EventArgs e)
@@ -415,6 +434,7 @@ public partial class SplitsSettings : UserControl
                 ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.DeltaorSplitTime, comparison, "Current Timing Method") });
             }
         }
+
         if (version >= new Version(1, 3))
         {
             BeforeNamesColor = SettingsHelper.ParseColor(element["BeforeNamesColor"]);
@@ -425,13 +445,16 @@ public partial class SplitsSettings : UserControl
         else
         {
             if (version >= new Version(1, 2))
+            {
                 BeforeNamesColor = CurrentNamesColor = AfterNamesColor = SettingsHelper.ParseColor(element["SplitNamesColor"]);
+            }
             else
             {
                 BeforeNamesColor = Color.FromArgb(255, 255, 255);
                 CurrentNamesColor = Color.FromArgb(255, 255, 255);
                 AfterNamesColor = Color.FromArgb(255, 255, 255);
             }
+
             OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);
         }
     }
@@ -503,6 +526,7 @@ public partial class SplitsSettings : UserControl
                 settings = document.CreateElement("Settings");
                 columnsElement.AppendChild(settings);
             }
+
             hashCode ^= columnData.CreateElement(document, settings) * count;
             count++;
         }
@@ -567,9 +591,13 @@ public partial class SplitsSettings : UserControl
         ColumnsList.Remove(column);
         ResetColumns();
         if (ColumnsList.Count > 0)
+        {
             ColumnsList.Last().SelectControl();
+        }
         else
+        {
             chkColumnLabels.Select();
+        }
     }
 
     private void ClearLayout()
@@ -582,6 +610,7 @@ public partial class SplitsSettings : UserControl
         {
             tableColumns.Controls.Remove(control);
         }
+
         Size = StartingSize;
     }
 
@@ -603,6 +632,8 @@ public partial class SplitsSettings : UserControl
         AddColumnToLayout(columnControl, ColumnsList.Count);
 
         foreach (var column in ColumnsList)
+        {
             column.UpdateEnabledButtons();
+        }
     }
 }
