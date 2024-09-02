@@ -177,7 +177,7 @@ public class LabelsComponent : IComponent
         foreach (var label in LabelsList)
         {
             var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
-            if (String.IsNullOrEmpty(column.Name))
+            if (string.IsNullOrEmpty(column.Name))
             {
                 label.Text = CompositeComparisons.GetShortComparisonName(column.Comparison == "Current Comparison" ? state.CurrentComparison : column.Comparison);
             }
