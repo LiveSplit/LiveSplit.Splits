@@ -1,27 +1,27 @@
-﻿using LiveSplit.Model;
+﻿using System;
+
+using LiveSplit.Model;
 using LiveSplit.UI.Components;
-using System;
 
 [assembly: ComponentFactory(typeof(SplitsComponentFactory))]
 
-namespace LiveSplit.UI.Components
+namespace LiveSplit.UI.Components;
+
+public class SplitsComponentFactory : IComponentFactory
 {
-    public class SplitsComponentFactory : IComponentFactory
-    {
-        public string ComponentName => "Splits";
+    public string ComponentName => "Splits";
 
-        public string Description => "Displays a list of split times and deltas in relation to a comparison.";
+    public string Description => "Displays a list of split times and deltas in relation to a comparison.";
 
-        public ComponentCategory Category => ComponentCategory.List;
+    public ComponentCategory Category => ComponentCategory.List;
 
-        public IComponent Create(LiveSplitState state) => new SplitsComponent(state);
+    public IComponent Create(LiveSplitState state) => new SplitsComponent(state);
 
-        public string UpdateName => ComponentName;
+    public string UpdateName => ComponentName;
 
-        public string XMLURL => "http://livesplit.org/update/Components/update.LiveSplit.Splits.xml";
+    public string XMLURL => "http://livesplit.org/update/Components/update.LiveSplit.Splits.xml";
 
-        public string UpdateURL => "http://livesplit.org/update/";
+    public string UpdateURL => "http://livesplit.org/update/";
 
-        public Version Version => Version.Parse("1.8.29");
-    }
+    public Version Version => Version.Parse("1.8.29");
 }
