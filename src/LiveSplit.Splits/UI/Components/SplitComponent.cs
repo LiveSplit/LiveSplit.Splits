@@ -80,7 +80,7 @@ public class SplitComponent : IComponent
         IsActive = false;
 
         Cache = new GraphicsCache();
-        LabelsList = new List<SimpleLabel>();
+        LabelsList = [];
     }
 
     private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)

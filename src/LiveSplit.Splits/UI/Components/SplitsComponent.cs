@@ -57,7 +57,7 @@ public class SplitsComponent : IComponent
         CurrentState = state;
         Settings = new SplitsSettings(state);
         InternalComponent = new ComponentRendererComponent();
-        ShadowImages = new Dictionary<Image, Image>();
+        ShadowImages = [];
         visualSplitCount = Settings.VisualSplitCount;
         settingsSplitCount = Settings.VisualSplitCount;
         Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
@@ -86,8 +86,8 @@ public class SplitsComponent : IComponent
 
     private void RebuildVisualSplits()
     {
-        Components = new List<IComponent>();
-        SplitComponents = new List<SplitComponent>();
+        Components = [];
+        SplitComponents = [];
         InternalComponent.VisibleComponents = Components;
 
         var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;

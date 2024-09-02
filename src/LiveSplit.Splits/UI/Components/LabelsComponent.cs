@@ -56,7 +56,7 @@ public class LabelsComponent : IComponent
         DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
 
         Cache = new GraphicsCache();
-        LabelsList = new List<SimpleLabel>();
+        LabelsList = [];
         ColumnsList = columns;
     }
 
