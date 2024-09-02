@@ -111,11 +111,11 @@ public class LabelsComponent : IComponent
                 var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
                 var labelWidth = 0f;
-                if (column.Type == ColumnType.DeltaorSplitTime || column.Type == ColumnType.SegmentDeltaorSegmentTime)
+                if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
                 {
                     labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
                 }
-                else if (column.Type == ColumnType.Delta || column.Type == ColumnType.SegmentDelta)
+                else if (column.Type is ColumnType.Delta or ColumnType.SegmentDelta)
                 {
                     labelWidth = MeasureDeltaLabel.ActualWidth;
                 }

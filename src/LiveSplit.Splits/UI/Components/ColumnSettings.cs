@@ -87,13 +87,13 @@ public partial class ColumnSettings : UserControl
         cmbComparison.Items.Clear();
         cmbComparison.Items.Add("Current Comparison");
 
-        if (Data.Type == ColumnType.Delta || Data.Type == ColumnType.DeltaorSplitTime || Data.Type == ColumnType.SplitTime)
+        if (Data.Type is ColumnType.Delta or ColumnType.DeltaorSplitTime or ColumnType.SplitTime)
         {
             cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != NoneComparisonGenerator.ComparisonName).ToArray());
         }
         else
         {
-            cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x != BestSplitTimesComparisonGenerator.ComparisonName && x != NoneComparisonGenerator.ComparisonName).ToArray());
+            cmbComparison.Items.AddRange(CurrentState.Run.Comparisons.Where(x => x is not BestSplitTimesComparisonGenerator.ComparisonName and not NoneComparisonGenerator.ComparisonName).ToArray());
             if (Comparison == BestSplitTimesComparisonGenerator.ComparisonName)
             {
                 Comparison = "Current Comparison";

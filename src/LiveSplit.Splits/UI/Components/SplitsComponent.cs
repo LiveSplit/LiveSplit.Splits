@@ -195,17 +195,16 @@ public class SplitsComponent : IComponent
 
         foreach (var component in Components)
         {
-            if (component is SeparatorComponent)
+            if (component is SeparatorComponent separator)
             {
-                var separator = (SeparatorComponent)component;
                 var index = Components.IndexOf(separator);
-                if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
+                if (state.CurrentPhase is TimerPhase.Running or TimerPhase.Paused)
                 {
                     if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                     {
                         separator.LockToBottom = true;
                     }
-                    else if (Components[index - 1] is SplitComponent && ((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
+                    else if (Components[index - 1] is SplitComponent splits && splits.Split == state.CurrentSplit)
                     {
                         separator.LockToBottom = false;
                     }
@@ -233,19 +232,18 @@ public class SplitsComponent : IComponent
                     }
                 }
             }
-            else if (component is ThinSeparatorComponent)
+            else if (component is ThinSeparatorComponent thinSeparator)
             {
-                var separator = (ThinSeparatorComponent)component;
-                var index = Components.IndexOf(separator);
-                if (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused)
+                var index = Components.IndexOf(thinSeparator);
+                if (state.CurrentPhase is TimerPhase.Running or TimerPhase.Paused)
                 {
                     if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
                     {
-                        separator.LockToBottom = true;
+                        thinSeparator.LockToBottom = true;
                     }
                     else if (((SplitComponent)Components[index - 1]).Split == state.CurrentSplit)
                     {
-                        separator.LockToBottom = false;
+                        thinSeparator.LockToBottom = false;
                     }
                 }
             }
