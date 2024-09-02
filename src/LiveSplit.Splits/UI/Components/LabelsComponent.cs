@@ -93,7 +93,7 @@ public class LabelsComponent : IComponent
             CurrentDropDecimals = Settings.DropDecimals;
         }
 
-        foreach (var label in LabelsList)
+        foreach (SimpleLabel label in LabelsList)
         {
             label.ShadowColor = state.LayoutSettings.ShadowsColor;
             label.OutlineColor = state.LayoutSettings.TextOutlineColor;
@@ -105,12 +105,12 @@ public class LabelsComponent : IComponent
 
         if (ColumnsList.Count() == LabelsList.Count)
         {
-            var curX = width - 7;
-            foreach (var label in LabelsList.Reverse())
+            float curX = width - 7;
+            foreach (SimpleLabel label in LabelsList.Reverse())
             {
-                var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
+                ColumnData column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
 
-                var labelWidth = 0f;
+                float labelWidth = 0f;
                 if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
                 {
                     labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
@@ -174,9 +174,9 @@ public class LabelsComponent : IComponent
     {
         RecreateLabels();
 
-        foreach (var label in LabelsList)
+        foreach (SimpleLabel label in LabelsList)
         {
-            var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
+            ColumnData column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
             if (string.IsNullOrEmpty(column.Name))
             {
                 label.Text = CompositeComparisons.GetShortComparisonName(column.Comparison == "Current Comparison" ? state.CurrentComparison : column.Comparison);
@@ -195,7 +195,7 @@ public class LabelsComponent : IComponent
         if (ColumnsList != null && LabelsList.Count != ColumnsList.Count())
         {
             LabelsList.Clear();
-            foreach (var column in ColumnsList)
+            foreach (ColumnData column in ColumnsList)
             {
                 LabelsList.Add(new SimpleLabel()
                 {
@@ -212,7 +212,7 @@ public class LabelsComponent : IComponent
 
         Cache.Restart();
         Cache["ColumnsCount"] = ColumnsList.Count();
-        foreach (var label in LabelsList)
+        foreach (SimpleLabel label in LabelsList)
         {
             Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;
         }

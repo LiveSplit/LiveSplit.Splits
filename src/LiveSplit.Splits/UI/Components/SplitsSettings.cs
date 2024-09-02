@@ -19,7 +19,7 @@ public partial class SplitsSettings : UserControl
         set
         {
             _VisualSplitCount = value;
-            var max = Math.Max(0, _VisualSplitCount - (AlwaysShowLastSplit ? 2 : 1));
+            int max = Math.Max(0, _VisualSplitCount - (AlwaysShowLastSplit ? 2 : 1));
             if (dmnUpcomingSegments.Value > max)
             {
                 dmnUpcomingSegments.Value = max;
@@ -412,9 +412,9 @@ public partial class SplitsSettings : UserControl
 
         if (version >= new Version(1, 5))
         {
-            var columnsElement = element["Columns"];
+            XmlElement columnsElement = element["Columns"];
             ColumnsList.Clear();
-            foreach (var child in columnsElement.ChildNodes)
+            foreach (object child in columnsElement.ChildNodes)
             {
                 var columnData = ColumnData.FromXml((XmlNode)child);
                 ColumnsList.Add(new ColumnSettings(CurrentState, columnData.Name, ColumnsList) { Data = columnData });
@@ -423,7 +423,7 @@ public partial class SplitsSettings : UserControl
         else
         {
             ColumnsList.Clear();
-            var comparison = SettingsHelper.ParseString(element["Comparison"]);
+            string comparison = SettingsHelper.ParseString(element["Comparison"]);
             if (SettingsHelper.ParseBool(element["ShowSplitTimes"]))
             {
                 ColumnsList.Add(new ColumnSettings(CurrentState, "+/-", ColumnsList) { Data = new ColumnData("+/-", ColumnType.Delta, comparison, "Current Timing Method") });
@@ -461,7 +461,7 @@ public partial class SplitsSettings : UserControl
 
     public XmlNode GetSettings(XmlDocument document)
     {
-        var parent = document.CreateElement("Settings");
+        XmlElement parent = document.CreateElement("Settings");
         CreateSettingsNode(document, parent);
         return parent;
     }
@@ -473,7 +473,7 @@ public partial class SplitsSettings : UserControl
 
     private int CreateSettingsNode(XmlDocument document, XmlElement parent)
     {
-        var hashCode = SettingsHelper.CreateSetting(document, parent, "Version", "1.6") ^
+        int hashCode = SettingsHelper.CreateSetting(document, parent, "Version", "1.6") ^
         SettingsHelper.CreateSetting(document, parent, "CurrentSplitTopColor", CurrentSplitTopColor) ^
         SettingsHelper.CreateSetting(document, parent, "CurrentSplitBottomColor", CurrentSplitBottomColor) ^
         SettingsHelper.CreateSetting(document, parent, "VisualSplitCount", VisualSplitCount) ^
@@ -517,8 +517,8 @@ public partial class SplitsSettings : UserControl
             parent.AppendChild(columnsElement);
         }
 
-        var count = 1;
-        foreach (var columnData in ColumnsList.Select(x => x.Data))
+        int count = 1;
+        foreach (ColumnData columnData in ColumnsList.Select(x => x.Data))
         {
             XmlElement settings = null;
             if (document != null)
@@ -542,8 +542,8 @@ public partial class SplitsSettings : UserControl
     private void ResetColumns()
     {
         ClearLayout();
-        var index = 1;
-        foreach (var column in ColumnsList)
+        int index = 1;
+        foreach (ColumnSettings column in ColumnsList)
         {
             UpdateLayoutForColumn();
             AddColumnToLayout(column, index);
@@ -567,7 +567,7 @@ public partial class SplitsSettings : UserControl
     private void column_MovedDown(object sender, EventArgs e)
     {
         var column = (ColumnSettings)sender;
-        var index = ColumnsList.IndexOf(column);
+        int index = ColumnsList.IndexOf(column);
         ColumnsList.Remove(column);
         ColumnsList.Insert(index + 1, column);
         ResetColumns();
@@ -577,7 +577,7 @@ public partial class SplitsSettings : UserControl
     private void column_MovedUp(object sender, EventArgs e)
     {
         var column = (ColumnSettings)sender;
-        var index = ColumnsList.IndexOf(column);
+        int index = ColumnsList.IndexOf(column);
         ColumnsList.Remove(column);
         ColumnsList.Insert(index - 1, column);
         ResetColumns();
@@ -587,7 +587,7 @@ public partial class SplitsSettings : UserControl
     private void column_ColumnRemoved(object sender, EventArgs e)
     {
         var column = (ColumnSettings)sender;
-        var index = ColumnsList.IndexOf(column);
+        int index = ColumnsList.IndexOf(column);
         ColumnsList.Remove(column);
         ResetColumns();
         if (ColumnsList.Count > 0)
@@ -606,7 +606,7 @@ public partial class SplitsSettings : UserControl
         tableColumns.RowStyles.Clear();
         tableColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, StartingTableLayoutSize.Height));
         tableColumns.Size = StartingTableLayoutSize;
-        foreach (var control in tableColumns.Controls.OfType<ColumnSettings>().ToList())
+        foreach (ColumnSettings control in tableColumns.Controls.OfType<ColumnSettings>().ToList())
         {
             tableColumns.Controls.Remove(control);
         }
@@ -631,7 +631,7 @@ public partial class SplitsSettings : UserControl
         ColumnsList.Add(columnControl);
         AddColumnToLayout(columnControl, ColumnsList.Count);
 
-        foreach (var column in ColumnsList)
+        foreach (ColumnSettings column in ColumnsList)
         {
             column.UpdateEnabledButtons();
         }

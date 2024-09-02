@@ -69,7 +69,7 @@ public class SplitsComponent : IComponent
     private void state_ComparisonRenamed(object sender, EventArgs e)
     {
         var args = (RenameEventArgs)e;
-        foreach (var column in ColumnsList)
+        foreach (ColumnData column in ColumnsList)
         {
             if (column.Comparison == args.OldName)
             {
@@ -90,7 +90,7 @@ public class SplitsComponent : IComponent
         SplitComponents = [];
         InternalComponent.VisibleComponents = Components;
 
-        var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
+        int totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
 
         if (Settings.ShowColumnLabels && CurrentState.Layout?.Mode == LayoutMode.Vertical)
         {
@@ -98,7 +98,7 @@ public class SplitsComponent : IComponent
             Components.Add(new SeparatorComponent());
         }
 
-        for (var i = 0; i < totalSplits; ++i)
+        for (int i = 0; i < totalSplits; ++i)
         {
             if (i == totalSplits - 1 && i > 0)
             {
@@ -141,7 +141,7 @@ public class SplitsComponent : IComponent
             OldState = state;
         }
 
-        var previousSplitCount = visualSplitCount;
+        int previousSplitCount = visualSplitCount;
         visualSplitCount = Math.Min(state.Run.Count, Settings.VisualSplitCount);
         if (previousSplitCount != visualSplitCount
             || (Settings.ShowBlankSplits && settingsSplitCount != Settings.VisualSplitCount)
@@ -155,7 +155,7 @@ public class SplitsComponent : IComponent
 
         settingsSplitCount = Settings.VisualSplitCount;
 
-        var skipCount = Math.Min(
+        int skipCount = Math.Min(
             Math.Max(
                 0,
                 state.CurrentSplitIndex - (visualSplitCount - 2 - Settings.SplitPreviewCount + (Settings.AlwaysShowLastSplit ? 0 : 1))),
@@ -168,7 +168,7 @@ public class SplitsComponent : IComponent
             ShadowImages.Clear();
         }
 
-        foreach (var split in state.Run)
+        foreach (ISegment split in state.Run)
         {
             if (split.Icon != null && (!ShadowImages.ContainsKey(split.Icon) || OldShadowsColor != state.LayoutSettings.ShadowsColor))
             {
@@ -176,8 +176,8 @@ public class SplitsComponent : IComponent
             }
         }
 
-        var iconsNotBlank = state.Run.Count(x => x.Icon != null) > 0;
-        foreach (var split in SplitComponents)
+        bool iconsNotBlank = state.Run.Count(x => x.Icon != null) > 0;
+        foreach (SplitComponent split in SplitComponents)
         {
             split.DisplayIcon = iconsNotBlank && Settings.DisplayIcons;
 
@@ -193,11 +193,11 @@ public class SplitsComponent : IComponent
 
         OldShadowsColor = state.LayoutSettings.ShadowsColor;
 
-        foreach (var component in Components)
+        foreach (IComponent component in Components)
         {
             if (component is SeparatorComponent separator)
             {
-                var index = Components.IndexOf(separator);
+                int index = Components.IndexOf(separator);
                 if (state.CurrentPhase is TimerPhase.Running or TimerPhase.Paused)
                 {
                     if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
@@ -234,7 +234,7 @@ public class SplitsComponent : IComponent
             }
             else if (component is ThinSeparatorComponent thinSeparator)
             {
-                var index = Components.IndexOf(thinSeparator);
+                int index = Components.IndexOf(thinSeparator);
                 if (state.CurrentPhase is TimerPhase.Running or TimerPhase.Paused)
                 {
                     if (((SplitComponent)Components[index + 1]).Split == state.CurrentSplit)
@@ -338,7 +338,7 @@ public class SplitsComponent : IComponent
 
     public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
     {
-        var skipCount = Math.Min(
+        int skipCount = Math.Min(
             Math.Max(
                 0,
                 state.CurrentSplitIndex - (visualSplitCount - 2 - Settings.SplitPreviewCount + (Settings.AlwaysShowLastSplit ? 0 : 1))),
@@ -346,10 +346,10 @@ public class SplitsComponent : IComponent
         ScrollOffset = Math.Min(Math.Max(ScrollOffset, -skipCount), state.Run.Count - skipCount - visualSplitCount);
         skipCount += ScrollOffset;
 
-        var i = 0;
+        int i = 0;
         if (SplitComponents.Count >= visualSplitCount)
         {
-            foreach (var split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
+            foreach (ISegment split in state.Run.Skip(skipCount).Take(visualSplitCount - 1 + (Settings.AlwaysShowLastSplit ? 0 : 1)))
             {
                 SplitComponents[i].Split = split;
                 i++;
