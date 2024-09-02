@@ -15,7 +15,10 @@ public class SplitsComponentFactory : IComponentFactory
 
     public ComponentCategory Category => ComponentCategory.List;
 
-    public IComponent Create(LiveSplitState state) => new SplitsComponent(state);
+    public IComponent Create(LiveSplitState state)
+    {
+        return new SplitsComponent(state);
+    }
 
     public string UpdateName => ComponentName;
 

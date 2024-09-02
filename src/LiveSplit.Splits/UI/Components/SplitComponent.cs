@@ -296,25 +296,13 @@ public class SplitComponent : IComponent
         throw new NotSupportedException();
     }
 
-    public string UpdateName
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public string UpdateName => throw new NotSupportedException();
 
-    public string XMLURL
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public string XMLURL => throw new NotSupportedException();
 
-    public string UpdateURL
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public string UpdateURL => throw new NotSupportedException();
 
-    public Version Version
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public Version Version => throw new NotSupportedException();
 
     protected void UpdateAll(LiveSplitState state)
     {

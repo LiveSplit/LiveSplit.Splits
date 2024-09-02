@@ -10,18 +10,18 @@ namespace LiveSplit.UI.Components;
 
 public partial class ColumnSettings : UserControl
 {
-    public string ColumnName { get { return Data.Name; } set { Data.Name = value; } }
+    public string ColumnName { get => Data.Name; set => Data.Name = value; }
     public string Type
     {
-        get { return GetColumnType(Data.Type); }
+        get => GetColumnType(Data.Type);
         set
         {
             Data.Type = ParseColumnType(value);
             UpdateComparisonItems();
         }
     }
-    public string Comparison { get { return Data.Comparison; } set { Data.Comparison = value; } }
-    public string TimingMethod { get { return Data.TimingMethod; } set { Data.TimingMethod = value; } }
+    public string Comparison { get => Data.Comparison; set => Data.Comparison = value; }
+    public string TimingMethod { get => Data.TimingMethod; set => Data.TimingMethod = value; }
 
     public ColumnData Data { get; set; }
     protected LiveSplitState CurrentState { get; set; }
