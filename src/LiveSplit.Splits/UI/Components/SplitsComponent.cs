@@ -66,7 +66,7 @@ public class SplitsComponent : IComponent
         state.ComparisonRenamed += state_ComparisonRenamed;
     }
 
-    void state_ComparisonRenamed(object sender, EventArgs e)
+    private void state_ComparisonRenamed(object sender, EventArgs e)
     {
         var args = (RenameEventArgs)e;
         foreach (var column in ColumnsList)
@@ -79,7 +79,7 @@ public class SplitsComponent : IComponent
         }
     }
 
-    void Settings_SplitLayoutChanged(object sender, EventArgs e)
+    private void Settings_SplitLayoutChanged(object sender, EventArgs e)
     {
         RebuildVisualSplits();
     }
@@ -223,42 +223,42 @@ public class SplitsComponent : IComponent
         }
     }
 
-    void state_OnUndoSplit(object sender, EventArgs e)
+    private void state_OnUndoSplit(object sender, EventArgs e)
     {
         ScrollOffset = 0;
     }
 
-    void state_OnSkipSplit(object sender, EventArgs e)
+    private void state_OnSkipSplit(object sender, EventArgs e)
     {
         ScrollOffset = 0;
     }
 
-    void state_OnSplit(object sender, EventArgs e)
+    private void state_OnSplit(object sender, EventArgs e)
     {
         ScrollOffset = 0;
     }
 
-    void state_OnReset(object sender, TimerPhase e)
+    private void state_OnReset(object sender, TimerPhase e)
     {
         ScrollOffset = 0;
     }
 
-    void state_OnStart(object sender, EventArgs e)
+    private void state_OnStart(object sender, EventArgs e)
     {
         ScrollOffset = 0;
     }
 
-    void state_OnScrollUp(object sender, EventArgs e)
+    private void state_OnScrollUp(object sender, EventArgs e)
     {
         ScrollOffset--;
     }
 
-    void state_OnScrollDown(object sender, EventArgs e)
+    private void state_OnScrollDown(object sender, EventArgs e)
     {
         ScrollOffset++;
     }
 
-    void DrawBackground(Graphics g, float width, float height)
+    private void DrawBackground(Graphics g, float width, float height)
     {
         if (Settings.BackgroundGradient != ExtendedGradientType.Alternating
             && (Settings.BackgroundColor.A > 0

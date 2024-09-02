@@ -44,22 +44,22 @@ public partial class ColumnSettings : UserControl
         ColumnsList = columnsList;
     }
 
-    void cmbTimingMethod_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbTimingMethod_SelectedIndexChanged(object sender, EventArgs e)
     {
         TimingMethod = cmbTimingMethod.SelectedItem.ToString();
     }
 
-    void cmbComparison_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbComparison_SelectedIndexChanged(object sender, EventArgs e)
     {
         Comparison = cmbComparison.SelectedItem.ToString();
     }
 
-    void cmbColumnType_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbColumnType_SelectedIndexChanged(object sender, EventArgs e)
     {
         Type = cmbColumnType.SelectedItem.ToString();
     }
 
-    void ColumnSettings_Load(object sender, EventArgs e)
+    private void ColumnSettings_Load(object sender, EventArgs e)
     {
         UpdateComparisonItems();
 
@@ -77,7 +77,7 @@ public partial class ColumnSettings : UserControl
         btnMoveUp.Enabled = ColumnIndex > 0;
     }
 
-    void txtName_TextChanged(object sender, EventArgs e)
+    private void txtName_TextChanged(object sender, EventArgs e)
     {
         groupColumn.Text = $"Column: {txtName.Text}";
     }

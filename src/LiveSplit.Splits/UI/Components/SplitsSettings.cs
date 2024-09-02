@@ -174,55 +174,55 @@ public partial class SplitsSettings : UserControl
         StartingColumnSettingHeight = ColumnsList[0].Height;
     }
 
-    void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
+    private void chkColumnLabels_CheckedChanged(object sender, EventArgs e)
     {
         btnLabelColor.Enabled = lblLabelsColor.Enabled = chkColumnLabels.Checked;
     }
 
-    void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
+    private void chkDisplayIcons_CheckedChanged(object sender, EventArgs e)
     {
         trkIconSize.Enabled = label5.Enabled = chkIconShadows.Enabled = chkDisplayIcons.Checked;
     }
 
-    void chkOverrideTimesColor_CheckedChanged(object sender, EventArgs e)
+    private void chkOverrideTimesColor_CheckedChanged(object sender, EventArgs e)
     {
         label6.Enabled = label9.Enabled = label7.Enabled = btnBeforeTimesColor.Enabled
             = btnCurrentTimesColor.Enabled = btnAfterTimesColor.Enabled = chkOverrideTimesColor.Checked;
     }
 
-    void chkOverrideDeltaColor_CheckedChanged(object sender, EventArgs e)
+    private void chkOverrideDeltaColor_CheckedChanged(object sender, EventArgs e)
     {
         label8.Enabled = btnDeltaColor.Enabled = chkOverrideDeltaColor.Checked;
     }
 
-    void chkOverrideTextColor_CheckedChanged(object sender, EventArgs e)
+    private void chkOverrideTextColor_CheckedChanged(object sender, EventArgs e)
     {
         label3.Enabled = label10.Enabled = label13.Enabled = btnBeforeNamesColor.Enabled
         = btnCurrentNamesColor.Enabled = btnAfterNamesColor.Enabled = chkOverrideTextColor.Checked;
     }
 
-    void rdoDeltaHundredths_CheckedChanged(object sender, EventArgs e)
+    private void rdoDeltaHundredths_CheckedChanged(object sender, EventArgs e)
     {
         UpdateDeltaAccuracy();
     }
 
-    void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
+    private void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
     {
         UpdateDeltaAccuracy();
     }
 
-    void rdoDeltaSeconds_CheckedChanged(object sender, EventArgs e)
+    private void rdoDeltaSeconds_CheckedChanged(object sender, EventArgs e)
     {
         UpdateDeltaAccuracy();
     }
 
-    void chkSeparatorLastSplit_CheckedChanged(object sender, EventArgs e)
+    private void chkSeparatorLastSplit_CheckedChanged(object sender, EventArgs e)
     {
         SeparatorLastSplit = chkSeparatorLastSplit.Checked;
         SplitLayoutChanged(this, null);
     }
 
-    void cmbGradientType_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbGradientType_SelectedIndexChanged(object sender, EventArgs e)
     {
         btnColor1.Visible = cmbGradientType.SelectedItem.ToString() != "Plain";
         btnColor2.DataBindings.Clear();
@@ -230,7 +230,7 @@ public partial class SplitsSettings : UserControl
         GradientString = cmbGradientType.SelectedItem.ToString();
     }
 
-    void cmbSplitGradient_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbSplitGradient_SelectedIndexChanged(object sender, EventArgs e)
     {
         btnTopColor.Visible = cmbSplitGradient.SelectedItem.ToString() != "Plain";
         btnBottomColor.DataBindings.Clear();
@@ -238,34 +238,34 @@ public partial class SplitsSettings : UserControl
         SplitGradientString = cmbSplitGradient.SelectedItem.ToString();
     }
 
-    void chkLockLastSplit_CheckedChanged(object sender, EventArgs e)
+    private void chkLockLastSplit_CheckedChanged(object sender, EventArgs e)
     {
         LockLastSplit = chkLockLastSplit.Checked;
         SplitLayoutChanged(this, null);
     }
 
-    void chkShowBlankSplits_CheckedChanged(object sender, EventArgs e)
+    private void chkShowBlankSplits_CheckedChanged(object sender, EventArgs e)
     {
         ShowBlankSplits = chkLockLastSplit.Enabled = chkShowBlankSplits.Checked;
         SplitLayoutChanged(this, null);
     }
 
-    void rdoHundredths_CheckedChanged(object sender, EventArgs e)
+    private void rdoHundredths_CheckedChanged(object sender, EventArgs e)
     {
         UpdateAccuracy();
     }
 
-    void rdoTenths_CheckedChanged(object sender, EventArgs e)
+    private void rdoTenths_CheckedChanged(object sender, EventArgs e)
     {
         UpdateAccuracy();
     }
 
-    void rdoSeconds_CheckedChanged(object sender, EventArgs e)
+    private void rdoSeconds_CheckedChanged(object sender, EventArgs e)
     {
         UpdateAccuracy();
     }
 
-    void UpdateAccuracy()
+    private void UpdateAccuracy()
     {
         if (rdoSeconds.Checked)
             SplitTimesAccuracy = TimeAccuracy.Seconds;
@@ -277,7 +277,7 @@ public partial class SplitsSettings : UserControl
             SplitTimesAccuracy = TimeAccuracy.Milliseconds;
     }
 
-    void UpdateDeltaAccuracy()
+    private void UpdateDeltaAccuracy()
     {
         if (rdoDeltaSeconds.Checked)
             DeltasAccuracy = TimeAccuracy.Seconds;
@@ -289,20 +289,20 @@ public partial class SplitsSettings : UserControl
             DeltasAccuracy = TimeAccuracy.Milliseconds;
     }
 
-    void chkLastSplit_CheckedChanged(object sender, EventArgs e)
+    private void chkLastSplit_CheckedChanged(object sender, EventArgs e)
     {
         AlwaysShowLastSplit = chkLastSplit.Checked;
         VisualSplitCount = VisualSplitCount;
         SplitLayoutChanged(this, null);
     }
 
-    void chkThinSeparators_CheckedChanged(object sender, EventArgs e)
+    private void chkThinSeparators_CheckedChanged(object sender, EventArgs e)
     {
         ShowThinSeparators = chkThinSeparators.Checked;
         SplitLayoutChanged(this, null);
     }
 
-    void SplitsSettings_Load(object sender, EventArgs e)
+    private void SplitsSettings_Load(object sender, EventArgs e)
     {
         ResetColumns();
 
@@ -540,7 +540,7 @@ public partial class SplitsSettings : UserControl
         column.MovedDown += column_MovedDown;
     }
 
-    void column_MovedDown(object sender, EventArgs e)
+    private void column_MovedDown(object sender, EventArgs e)
     {
         var column = (ColumnSettings)sender;
         var index = ColumnsList.IndexOf(column);
@@ -550,7 +550,7 @@ public partial class SplitsSettings : UserControl
         column.SelectControl();
     }
 
-    void column_MovedUp(object sender, EventArgs e)
+    private void column_MovedUp(object sender, EventArgs e)
     {
         var column = (ColumnSettings)sender;
         var index = ColumnsList.IndexOf(column);
@@ -560,7 +560,7 @@ public partial class SplitsSettings : UserControl
         column.SelectControl();
     }
 
-    void column_ColumnRemoved(object sender, EventArgs e)
+    private void column_ColumnRemoved(object sender, EventArgs e)
     {
         var column = (ColumnSettings)sender;
         var index = ColumnsList.IndexOf(column);
