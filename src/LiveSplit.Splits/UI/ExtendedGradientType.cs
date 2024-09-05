@@ -1,7 +1,6 @@
-﻿namespace LiveSplit.UI
+﻿namespace LiveSplit.UI;
+
+public enum ExtendedGradientType
 {
-    public enum ExtendedGradientType
-    {
-        Plain, Vertical, Horizontal, Alternating
-    }
+    Plain, Vertical, Horizontal, Alternating
 }

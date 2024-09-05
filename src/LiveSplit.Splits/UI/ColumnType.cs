@@ -1,7 +1,6 @@
-﻿namespace LiveSplit.UI
+﻿namespace LiveSplit.UI;
+
+public enum ColumnType
 {
-    public enum ColumnType
-    {
-        Delta, SplitTime, DeltaorSplitTime, SegmentDelta, SegmentTime, SegmentDeltaorSegmentTime
-    }
+    Delta, SplitTime, DeltaorSplitTime, SegmentDelta, SegmentTime, SegmentDeltaorSegmentTime
 }
