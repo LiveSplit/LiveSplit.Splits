@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 using LiveSplit.Model;
+using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -20,6 +21,7 @@ public class SplitsComponent : IComponent
 
     protected IList<IComponent> Components { get; set; }
     protected IList<SplitComponent> SplitComponents { get; set; }
+    protected IList<Dictionary<string, string>> CustomVariableValues { get; }
 
     protected SplitsSettings Settings { get; set; }
 
@@ -56,6 +58,7 @@ public class SplitsComponent : IComponent
     {
         CurrentState = state;
         Settings = new SplitsSettings(state);
+        CustomVariableValues = [];
         InternalComponent = new ComponentRendererComponent();
         ShadowImages = [];
         visualSplitCount = Settings.VisualSplitCount;
@@ -113,7 +116,7 @@ public class SplitsComponent : IComponent
                 }
             }
 
-            var splitComponent = new SplitComponent(Settings, ColumnsList);
+            var splitComponent = new SplitComponent(Settings, ColumnsList, CustomVariableValues);
             Components.Add(splitComponent);
             if (i < visualSplitCount - 1 || i == (Settings.LockLastSplit ? totalSplits - 1 : visualSplitCount - 1))
             {
@@ -338,6 +341,22 @@ public class SplitsComponent : IComponent
 
     public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
     {
+        if (state.CurrentPhase is TimerPhase.Running or TimerPhase.Paused)
+        {
+            while (CustomVariableValues.Count <= state.CurrentSplitIndex)
+            {
+                CustomVariableValues.Add([]);
+            }
+
+            foreach (ColumnData column in ColumnsList)
+            {
+                if (column.Type is ColumnType.CustomVariable)
+                {
+                    CustomVariableValues[state.CurrentSplitIndex][column.Name] = state.Run.Metadata.CustomVariableValue(column.Name) ?? TimeFormatConstants.DASH;
+                }
+            }
+        }
+
         int skipCount = Math.Min(
             Math.Max(
                 0,

@@ -48,6 +48,8 @@ public class SplitComponent : IComponent
     public IEnumerable<ColumnData> ColumnsList { get; set; }
     public IList<SimpleLabel> LabelsList { get; set; }
 
+    protected IList<Dictionary<string, string>> CustomVariableValues { get; }
+
     public float VerticalHeight { get; set; }
 
     public float MinimumWidth
@@ -60,7 +62,7 @@ public class SplitComponent : IComponent
 
     public IDictionary<string, Action> ContextMenuControls => null;
 
-    public SplitComponent(SplitsSettings settings, IEnumerable<ColumnData> columnsList)
+    public SplitComponent(SplitsSettings settings, IEnumerable<ColumnData> columnsList, IList<Dictionary<string, string>> customVariableValues)
     {
         NameLabel = new SimpleLabel()
         {
@@ -71,6 +73,7 @@ public class SplitComponent : IComponent
         MeasureDeltaLabel = new SimpleLabel();
         Settings = settings;
         ColumnsList = columnsList;
+        CustomVariableValues = customVariableValues;
         TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
         DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
         MinimumHeight = 25;
@@ -458,10 +461,25 @@ public class SplitComponent : IComponent
                     label.Text = DeltaTimeFormatter.Format(segmentDelta);
                 }
             }
+
+            else if (type is ColumnType.CustomVariable)
+            {
+                // if the split was skipped, wipe the custom variable column entry for the split
+                if (Split.SplitTime[timingMethod] == null)
+                {
+                    label.Text = "";
+                    CustomVariableValues[splitIndex].Clear();
+                }
+                else
+                {
+                    CustomVariableValues[splitIndex].TryGetValue(data.Name, out string text);
+                    label.Text = text ?? "";
+                }
+            }
         }
         else
         {
-            if (type is ColumnType.SplitTime or ColumnType.SegmentTime or ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
+            if (type is ColumnType.SplitTime or ColumnType.SegmentTime or ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime or ColumnType.CustomVariable)
             {
                 if (Split == state.CurrentSplit)
                 {
@@ -476,7 +494,7 @@ public class SplitComponent : IComponent
                 {
                     label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod]);
                 }
-                else //SegmentTime or SegmentTimeorSegmentDeltaTime
+                else if (type is ColumnType.SegmentTime or ColumnType.SegmentDeltaorSegmentTime)
                 {
                     TimeSpan previousTime = TimeSpan.Zero;
                     for (int index = splitIndex - 1; index >= 0; index--)
@@ -505,6 +523,18 @@ public class SplitComponent : IComponent
             else if (type is ColumnType.Delta or ColumnType.SegmentDelta)
             {
                 label.Text = "";
+            }
+            else if (type is ColumnType.CustomVariable)
+            {
+                if (Split == state.CurrentSplit)
+                {
+                    CustomVariableValues[splitIndex].TryGetValue(data.Name, out string text);
+                    label.Text = text ?? "";
+                }
+                else
+                {
+                    label.Text = "";
+                }
             }
         }
     }
