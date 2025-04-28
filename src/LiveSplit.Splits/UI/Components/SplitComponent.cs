@@ -461,16 +461,8 @@ public class SplitComponent : IComponent
 
             else if (type is ColumnType.CustomVariable)
             {
-                // if the split was skipped, wipe the custom variable column entry for the split
-                if (Split.SplitTime[timingMethod] == null)
-                {
-                    label.Text = "";
-                }
-                else
-                {
-                    Split.CustomVariableValues.TryGetValue(data.Name, out string text);
-                    label.Text = text ?? "";
-                }
+                Split.CustomVariableValues.TryGetValue(data.Name, out string text);
+                label.Text = text ?? "";
             }
         }
         else
