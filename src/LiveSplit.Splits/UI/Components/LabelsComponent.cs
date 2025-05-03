@@ -119,9 +119,13 @@ public class LabelsComponent : IComponent
                 {
                     labelWidth = MeasureDeltaLabel.ActualWidth;
                 }
-                else
+                else if (column.Type is ColumnType.SplitTime or ColumnType.SegmentTime)
                 {
                     labelWidth = MeasureTimeLabel.ActualWidth;
+                }
+                else if (column.Type is ColumnType.CustomVariable)
+                {
+                    labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
                 }
 
                 curX -= labelWidth + 5;

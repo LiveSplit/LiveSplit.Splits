@@ -244,9 +244,13 @@ public class SplitComponent : IComponent
                     {
                         labelWidth = MeasureDeltaLabel.ActualWidth;
                     }
-                    else
+                    else if (column.Type is ColumnType.SplitTime or ColumnType.SegmentTime)
                     {
                         labelWidth = MeasureTimeLabel.ActualWidth;
+                    }
+                    else if (column.Type is ColumnType.CustomVariable)
+                    {
+                        labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
                     }
 
                     label.Width = labelWidth + 20;
@@ -497,6 +501,17 @@ public class SplitComponent : IComponent
 
                     label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
                 }
+                else if (type is ColumnType.CustomVariable)
+                {
+                    if (splitIndex == state.CurrentSplitIndex)
+                    {
+                        label.Text = state.Run.Metadata.CustomVariableValue(data.Name) ?? "";
+                    }
+                    else if (splitIndex > state.CurrentSplitIndex)
+                    {
+                        label.Text = "";
+                    }
+                }
             }
 
             //Live Delta
@@ -512,17 +527,6 @@ public class SplitComponent : IComponent
             {
                 label.Text = "";
             }
-            else if (type is ColumnType.CustomVariable)
-            {
-                if (Split == state.CurrentSplit)
-                {
-                    label.Text = state.Run.Metadata.CustomVariableValue(data.Name) ?? "";
-                }
-                else
-                {
-                    label.Text = "";
-                }
-            }
         }
     }
 
@@ -533,9 +537,11 @@ public class SplitComponent : IComponent
             int mixedCount = ColumnsList.Count(x => x.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime);
             int deltaCount = ColumnsList.Count(x => x.Type is ColumnType.Delta or ColumnType.SegmentDelta);
             int timeCount = ColumnsList.Count(x => x.Type is ColumnType.SplitTime or ColumnType.SegmentTime);
+            int varCount = ColumnsList.Count(x => x.Type is ColumnType.CustomVariable);
             return (mixedCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5))
                 + (deltaCount * (MeasureDeltaLabel.ActualWidth + 5))
-                + (timeCount * (MeasureTimeLabel.ActualWidth + 5));
+                + (timeCount * (MeasureTimeLabel.ActualWidth + 5))
+                + (varCount * (Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth) + 5));
         }
 
         return 0f;
