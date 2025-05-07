@@ -345,6 +345,7 @@ public class SplitsComponent : IComponent
         Prepare(state);
         DrawBackground(g, width, VerticalHeight);
         SetMeasureLabels(g, state);
+        CalculateColumnWidths(state.Run);
         InternalComponent.DrawVertical(g, state, width, clipRegion);
     }
 
@@ -353,6 +354,7 @@ public class SplitsComponent : IComponent
         Prepare(state);
         DrawBackground(g, HorizontalWidth, height);
         SetMeasureLabels(g, state);
+        CalculateColumnWidths(state.Run);
         InternalComponent.DrawHorizontal(g, state, height, clipRegion);
     }
 
@@ -397,8 +399,6 @@ public class SplitsComponent : IComponent
                 SplitComponents[i].Split = state.Run.Last();
             }
         }
-
-        CalculateColumnWidths(state.Run);
 
         if (invalidator != null)
         {
