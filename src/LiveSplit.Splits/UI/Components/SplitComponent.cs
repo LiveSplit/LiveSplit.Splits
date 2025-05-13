@@ -558,10 +558,15 @@ public class SplitComponent : IComponent
             Cache["IsActive"] = IsActive;
             Cache["NameColor"] = NameLabel.ForeColor.ToArgb();
             Cache["ColumnsCount"] = ColumnsList.Count();
-            foreach (SimpleLabel label in LabelsList)
+            for (int index = 0; index < LabelsList.Count; index++)
             {
-                Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;
-                Cache["Columns" + LabelsList.IndexOf(label) + "Color"] = label.ForeColor.ToArgb();
+                SimpleLabel label = LabelsList[index];
+                Cache["Columns" + index + "Text"] = label.Text;
+                Cache["Columns" + index + "Color"] = label.ForeColor.ToArgb();
+                if (index < ColumnWidths.Count)
+                {
+                    Cache["Columns" + index + "Width"] = ColumnWidths[index];
+                }
             }
 
             if (invalidator != null && (Cache.HasChanged || FrameCount > 1))
