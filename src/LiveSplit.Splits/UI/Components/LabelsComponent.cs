@@ -165,9 +165,14 @@ public class LabelsComponent : IComponent
 
         Cache.Restart();
         Cache["ColumnsCount"] = ColumnsList.Count();
-        foreach (SimpleLabel label in LabelsList)
+        for (int index = 0; index < LabelsList.Count; index++)
         {
-            Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;
+            SimpleLabel label = LabelsList[index];
+            Cache["Columns" + index + "Text"] = label.Text;
+            if (index < ColumnWidths.Count)
+            {
+                Cache["Columns" + index + "Width"] = ColumnWidths[index];
+            }
         }
 
         if (invalidator != null && (Cache.HasChanged || FrameCount > 1))
