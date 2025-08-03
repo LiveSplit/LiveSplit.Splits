@@ -415,6 +415,41 @@ public class SplitsComponent : IComponent
                 ColumnWidths.Add(0f);
             }
 
+            TimeSpan longest_time = new TimeSpan(24, 0, 0);
+            TimeSpan longest_delta = new TimeSpan(0, 9, 0, 0);
+            foreach (ISegment split in run.Reverse())
+            {
+                if (split.SplitTime.RealTime is TimeSpan real_time && longest_time < real_time)
+                {
+                    longest_time = real_time;
+                }
+
+                foreach (KeyValuePair<string, Time> kv in split.Comparisons)
+                {
+                    if (kv.Value.RealTime is TimeSpan cmp_real_time && longest_time < cmp_real_time)
+                    {
+                        longest_time = cmp_real_time;
+                    }
+
+                    if (split.SplitTime.RealTime - kv.Value.RealTime is TimeSpan real_delta)
+                    {
+                        if (longest_delta < real_delta)
+                        {
+                            longest_delta = real_delta;
+                        }
+                        else if (longest_delta < (- real_delta))
+                        {
+                            longest_delta = - real_delta;
+                        }
+                    }
+                }
+            }
+
+            int time_length = TimeFormatter.Format(longest_time).Length;
+            int delta_length = DeltaTimeFormatter.Format(longest_delta).Length;
+            float time_width = Math.Max(MeasureTimeLabel.ActualWidth, MeasureCharLabel.ActualWidth * time_length);
+            float delta_width = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureCharLabel.ActualWidth * delta_length);
+
             for (int i = 0; i < ColumnsList.Count(); i++)
             {
                 ColumnData column = ColumnsList.ElementAt(i);
@@ -422,15 +457,15 @@ public class SplitsComponent : IComponent
                 float labelWidth = 0f;
                 if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
                 {
-                    labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
+                    labelWidth = Math.Max(delta_width, time_width);
                 }
                 else if (column.Type is ColumnType.Delta or ColumnType.SegmentDelta)
                 {
-                    labelWidth = MeasureDeltaLabel.ActualWidth;
+                    labelWidth = delta_width;
                 }
                 else if (column.Type is ColumnType.SplitTime or ColumnType.SegmentTime)
                 {
-                    labelWidth = MeasureTimeLabel.ActualWidth;
+                    labelWidth = time_width;
                 }
                 else if (column.Type is ColumnType.CustomVariable)
                 {
