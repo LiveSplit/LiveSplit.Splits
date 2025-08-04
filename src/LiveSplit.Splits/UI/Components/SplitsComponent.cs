@@ -415,8 +415,8 @@ public class SplitsComponent : IComponent
                 ColumnWidths.Add(0f);
             }
 
-            TimeSpan longest_time = new TimeSpan(24, 0, 0);
-            TimeSpan longest_delta = new TimeSpan(0, 9, 0, 0);
+            TimeSpan longest_time = TimeSpan.Zero;
+            TimeSpan longest_delta = TimeSpan.Zero;
             foreach (ISegment split in run.Reverse())
             {
                 if (split.SplitTime.RealTime is TimeSpan real_time && longest_time < real_time)
