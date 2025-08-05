@@ -415,8 +415,8 @@ public class SplitsComponent : IComponent
                 ColumnWidths.Add(0f);
             }
 
-            TimeSpan longest_time = TimeSpan.Zero;
-            TimeSpan longest_delta = TimeSpan.Zero;
+            TimeSpan longest_time = new TimeSpan(24, 0, 0);
+            TimeSpan longest_delta = new TimeSpan(0, 9, 0, 0);
             foreach (ISegment split in run.Reverse())
             {
                 if (split.SplitTime.RealTime is TimeSpan real_time && longest_time < real_time)
@@ -447,8 +447,9 @@ public class SplitsComponent : IComponent
 
             int time_length = TimeFormatter.Format(longest_time).Length;
             int delta_length = DeltaTimeFormatter.Format(longest_delta).Length;
-            float time_width = Math.Max(MeasureTimeLabel.ActualWidth, MeasureCharLabel.ActualWidth * time_length);
-            float delta_width = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureCharLabel.ActualWidth * delta_length);
+            float char_width = MeasureTimeLabel.Text.Length > 0 ? MeasureTimeLabel.ActualWidth / MeasureTimeLabel.Text.Length : MeasureCharLabel.ActualWidth;
+            float time_width = Math.Max(MeasureTimeLabel.ActualWidth, char_width * time_length);
+            float delta_width = Math.Max(MeasureDeltaLabel.ActualWidth, char_width * delta_length);
 
             for (int i = 0; i < ColumnsList.Count(); i++)
             {
