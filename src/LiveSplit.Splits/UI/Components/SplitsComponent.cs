@@ -47,7 +47,7 @@ public class SplitsComponent : IComponent
     protected Color OldShadowsColor { get; set; }
 
     protected IEnumerable<ColumnData> ColumnsList => Settings.ColumnsList.Select(x => x.Data);
-    protected List<float> ColumnWidths { get; set; }
+    protected List<(int exLength, float exWidth, float width)> ColumnWidths { get; set; }
 
     public string ComponentName => "Splits";
 
@@ -77,7 +77,7 @@ public class SplitsComponent : IComponent
         visualSplitCount = Settings.VisualSplitCount;
         settingsSplitCount = Settings.VisualSplitCount;
         Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
-        ColumnWidths = Settings.ColumnsList.Select(_ => 0f).ToList();
+        ColumnWidths = Settings.ColumnsList.Select(_ => (0, 0f, 0f)).ToList();
         ScrollOffset = 0;
         RebuildVisualSplits();
         state.ComparisonRenamed += state_ComparisonRenamed;
@@ -412,11 +412,11 @@ public class SplitsComponent : IComponent
         {
             while (ColumnWidths.Count < ColumnsList.Count())
             {
-                ColumnWidths.Add(0f);
+                ColumnWidths.Add((0, 0f, 0f));
             }
 
-            TimeSpan longest_time = new TimeSpan(24, 0, 0);
-            TimeSpan longest_delta = new TimeSpan(0, 9, 0, 0);
+            TimeSpan longest_time = new TimeSpan(9, 0, 0);
+            TimeSpan longest_delta = new TimeSpan(0, 0, 59, 0);
             foreach (ISegment split in run.Reverse())
             {
                 if (split.SplitTime.RealTime is TimeSpan real_time && longest_time < real_time)
@@ -448,8 +448,8 @@ public class SplitsComponent : IComponent
             int time_length = TimeFormatter.Format(longest_time).Length;
             int delta_length = DeltaTimeFormatter.Format(longest_delta).Length;
             float char_width = MeasureTimeLabel.Text.Length > 0 ? MeasureTimeLabel.ActualWidth / MeasureTimeLabel.Text.Length : MeasureCharLabel.ActualWidth;
-            float time_width = Math.Max(MeasureTimeLabel.ActualWidth, char_width * time_length);
-            float delta_width = Math.Max(MeasureDeltaLabel.ActualWidth, char_width * delta_length);
+            float time_width = Math.Max(MeasureTimeLabel.ActualWidth, char_width * (time_length + 1));
+            float delta_width = Math.Max(MeasureDeltaLabel.ActualWidth, char_width * (delta_length + 1));
 
             for (int i = 0; i < ColumnsList.Count(); i++)
             {
@@ -479,10 +479,11 @@ public class SplitsComponent : IComponent
                         }
                     }
 
-                    labelWidth = MeasureCharLabel.ActualWidth * longest_length;
+                    float charWidth = ColumnWidths[i].exLength > 0 ? ColumnWidths[i].exWidth / ColumnWidths[i].exLength : MeasureCharLabel.ActualWidth;
+                    labelWidth = charWidth * (longest_length + 1);
                 }
 
-                ColumnWidths[i] = labelWidth;
+                ColumnWidths[i] = (ColumnWidths[i].exLength, ColumnWidths[i].exWidth, labelWidth);
             }
         }
     }
