@@ -26,5 +26,5 @@ public class SplitsComponentFactory : IComponentFactory
 
     public string UpdateURL => "http://livesplit.org/update/";
 
-    public Version Version => Version.Parse("1.8.30");
+    public Version Version => Version.Parse("1.8.34");
 }
