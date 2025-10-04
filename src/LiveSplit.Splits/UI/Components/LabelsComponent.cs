@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using LiveSplit.Model;
 using LiveSplit.Model.Comparisons;
+using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -13,13 +14,22 @@ public class LabelsComponent : IComponent
 {
     public SplitsSettings Settings { get; set; }
 
+    protected SimpleLabel MeasureTimeLabel { get; set; }
+    protected SimpleLabel MeasureDeltaLabel { get; set; }
+
+    protected ITimeFormatter TimeFormatter { get; set; }
+    protected ITimeFormatter DeltaTimeFormatter { get; set; }
+
+    protected TimeAccuracy CurrentAccuracy { get; set; }
+    protected TimeAccuracy CurrentDeltaAccuracy { get; set; }
+    protected bool CurrentDropDecimals { get; set; }
+
     protected int FrameCount { get; set; }
 
     public GraphicsCache Cache { get; set; }
 
     public IEnumerable<ColumnData> ColumnsList { get; set; }
     public IList<SimpleLabel> LabelsList { get; set; }
-    protected List<float> ColumnWidths { get; }
 
     public float PaddingTop => 0f;
     public float PaddingLeft => 0f;
@@ -35,15 +45,19 @@ public class LabelsComponent : IComponent
     public float MinimumHeight { get; set; }
 
     public IDictionary<string, Action> ContextMenuControls => null;
-    public LabelsComponent(SplitsSettings settings, IEnumerable<ColumnData> columns, List<float> columnWidths)
+    public LabelsComponent(SplitsSettings settings, IEnumerable<ColumnData> columns)
     {
         Settings = settings;
         MinimumHeight = 31;
 
+        MeasureTimeLabel = new SimpleLabel();
+        MeasureDeltaLabel = new SimpleLabel();
+        TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
+        DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+
         Cache = new GraphicsCache();
         LabelsList = [];
         ColumnsList = columns;
-        ColumnWidths = columnWidths;
     }
 
     private void DrawGeneral(Graphics g, LiveSplitState state, float width, float height, LayoutMode mode)
@@ -53,6 +67,30 @@ public class LabelsComponent : IComponent
             g.FillRectangle(new SolidBrush(
                 Settings.BackgroundColor
                 ), 0, 0, width, height);
+        }
+
+        MeasureTimeLabel.Text = TimeFormatter.Format(new TimeSpan(24, 0, 0));
+        MeasureDeltaLabel.Text = DeltaTimeFormatter.Format(new TimeSpan(0, 9, 0, 0));
+
+        MeasureTimeLabel.Font = state.LayoutSettings.TimesFont;
+        MeasureTimeLabel.IsMonospaced = true;
+        MeasureDeltaLabel.Font = state.LayoutSettings.TimesFont;
+        MeasureDeltaLabel.IsMonospaced = true;
+
+        MeasureTimeLabel.SetActualWidth(g);
+        MeasureDeltaLabel.SetActualWidth(g);
+
+        if (Settings.SplitTimesAccuracy != CurrentAccuracy)
+        {
+            TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
+            CurrentAccuracy = Settings.SplitTimesAccuracy;
+        }
+
+        if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
+        {
+            DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+            CurrentDeltaAccuracy = Settings.DeltasAccuracy;
+            CurrentDropDecimals = Settings.DropDecimals;
         }
 
         foreach (SimpleLabel label in LabelsList)
@@ -67,15 +105,24 @@ public class LabelsComponent : IComponent
 
         if (ColumnsList.Count() == LabelsList.Count)
         {
-            while (ColumnWidths.Count < LabelsList.Count)
-            {
-                ColumnWidths.Add(0f);
-            }
-
             float curX = width - 7;
             foreach (SimpleLabel label in LabelsList.Reverse())
             {
-                float labelWidth = ColumnWidths[LabelsList.IndexOf(label)];
+                ColumnData column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
+
+                float labelWidth = 0f;
+                if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
+                {
+                    labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
+                }
+                else if (column.Type is ColumnType.Delta or ColumnType.SegmentDelta)
+                {
+                    labelWidth = MeasureDeltaLabel.ActualWidth;
+                }
+                else
+                {
+                    labelWidth = MeasureTimeLabel.ActualWidth;
+                }
 
                 curX -= labelWidth + 5;
                 label.Width = labelWidth;

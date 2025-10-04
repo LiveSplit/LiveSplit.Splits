@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 
 using LiveSplit.Model;
-using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -24,13 +23,6 @@ public class SplitsComponent : IComponent
 
     protected SplitsSettings Settings { get; set; }
 
-    protected SimpleLabel MeasureTimeLabel { get; set; }
-    protected SimpleLabel MeasureDeltaLabel { get; set; }
-    protected SimpleLabel MeasureCharLabel { get; set; }
-
-    protected ITimeFormatter TimeFormatter { get; set; }
-    protected ITimeFormatter DeltaTimeFormatter { get; set; }
-
     private Dictionary<Image, Image> ShadowImages { get; set; }
 
     private int visualSplitCount;
@@ -47,7 +39,6 @@ public class SplitsComponent : IComponent
     protected Color OldShadowsColor { get; set; }
 
     protected IEnumerable<ColumnData> ColumnsList => Settings.ColumnsList.Select(x => x.Data);
-    protected List<float> ColumnWidths { get; set; }
 
     public string ComponentName => "Splits";
 
@@ -66,18 +57,10 @@ public class SplitsComponent : IComponent
         CurrentState = state;
         Settings = new SplitsSettings(state);
         InternalComponent = new ComponentRendererComponent();
-
-        MeasureTimeLabel = new SimpleLabel();
-        MeasureDeltaLabel = new SimpleLabel();
-        MeasureCharLabel = new SimpleLabel();
-        TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
-        DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
-
         ShadowImages = [];
         visualSplitCount = Settings.VisualSplitCount;
         settingsSplitCount = Settings.VisualSplitCount;
         Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
-        ColumnWidths = Settings.ColumnsList.Select(_ => 0f).ToList();
         ScrollOffset = 0;
         RebuildVisualSplits();
         state.ComparisonRenamed += state_ComparisonRenamed;
@@ -111,7 +94,7 @@ public class SplitsComponent : IComponent
 
         if (Settings.ShowColumnLabels && CurrentState.Layout?.Mode == LayoutMode.Vertical)
         {
-            Components.Add(new LabelsComponent(Settings, ColumnsList, ColumnWidths));
+            Components.Add(new LabelsComponent(Settings, ColumnsList));
             Components.Add(new SeparatorComponent());
         }
 
@@ -130,7 +113,7 @@ public class SplitsComponent : IComponent
                 }
             }
 
-            var splitComponent = new SplitComponent(Settings, ColumnsList, ColumnWidths);
+            var splitComponent = new SplitComponent(Settings, ColumnsList);
             Components.Add(splitComponent);
             if (i < visualSplitCount - 1 || i == (Settings.LockLastSplit ? totalSplits - 1 : visualSplitCount - 1))
             {
@@ -322,29 +305,10 @@ public class SplitsComponent : IComponent
         }
     }
 
-    private void SetMeasureLabels(Graphics g, LiveSplitState state)
-    {
-        MeasureTimeLabel.Text = TimeFormatter.Format(new TimeSpan(24, 0, 0));
-        MeasureDeltaLabel.Text = DeltaTimeFormatter.Format(new TimeSpan(0, 9, 0, 0));
-        MeasureCharLabel.Text = "W";
-
-        MeasureTimeLabel.Font = state.LayoutSettings.TimesFont;
-        MeasureTimeLabel.IsMonospaced = true;
-        MeasureDeltaLabel.Font = state.LayoutSettings.TimesFont;
-        MeasureDeltaLabel.IsMonospaced = true;
-        MeasureCharLabel.Font = state.LayoutSettings.TimesFont;
-        MeasureCharLabel.IsMonospaced = true;
-
-        MeasureTimeLabel.SetActualWidth(g);
-        MeasureDeltaLabel.SetActualWidth(g);
-        MeasureCharLabel.SetActualWidth(g);
-    }
-
     public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
     {
         Prepare(state);
         DrawBackground(g, width, VerticalHeight);
-        SetMeasureLabels(g, state);
         InternalComponent.DrawVertical(g, state, width, clipRegion);
     }
 
@@ -352,7 +316,6 @@ public class SplitsComponent : IComponent
     {
         Prepare(state);
         DrawBackground(g, HorizontalWidth, height);
-        SetMeasureLabels(g, state);
         InternalComponent.DrawHorizontal(g, state, height, clipRegion);
     }
 
@@ -398,56 +361,9 @@ public class SplitsComponent : IComponent
             }
         }
 
-        CalculateColumnWidths(state.Run);
-
         if (invalidator != null)
         {
             InternalComponent.Update(invalidator, state, width, height, mode);
-        }
-    }
-
-    private void CalculateColumnWidths(IRun run)
-    {
-        if (ColumnsList != null)
-        {
-            while (ColumnWidths.Count < ColumnsList.Count())
-            {
-                ColumnWidths.Add(0f);
-            }
-
-            for (int i = 0; i < ColumnsList.Count(); i++)
-            {
-                ColumnData column = ColumnsList.ElementAt(i);
-
-                float labelWidth = 0f;
-                if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
-                {
-                    labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
-                }
-                else if (column.Type is ColumnType.Delta or ColumnType.SegmentDelta)
-                {
-                    labelWidth = MeasureDeltaLabel.ActualWidth;
-                }
-                else if (column.Type is ColumnType.SplitTime or ColumnType.SegmentTime)
-                {
-                    labelWidth = MeasureTimeLabel.ActualWidth;
-                }
-                else if (column.Type is ColumnType.CustomVariable)
-                {
-                    int longest_length = run.Metadata.CustomVariableValue(column.Name).Length;
-                    foreach (ISegment split in run)
-                    {
-                        if (split.CustomVariableValues.TryGetValue(column.Name, out string value) && !string.IsNullOrEmpty(value))
-                        {
-                            longest_length = Math.Max(longest_length, value.Length);
-                        }
-                    }
-
-                    labelWidth = MeasureCharLabel.ActualWidth * longest_length;
-                }
-
-                ColumnWidths[i] = labelWidth;
-            }
         }
     }
 

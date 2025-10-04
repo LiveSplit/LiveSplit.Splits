@@ -2,5 +2,5 @@
 
 public enum ColumnType
 {
-    Delta, SplitTime, DeltaorSplitTime, SegmentDelta, SegmentTime, SegmentDeltaorSegmentTime, CustomVariable
+    Delta, SplitTime, DeltaorSplitTime, SegmentDelta, SegmentTime, SegmentDeltaorSegmentTime
 }
