@@ -19,7 +19,7 @@ public class LabelsComponent : IComponent
 
     public IEnumerable<ColumnData> ColumnsList { get; set; }
     public IList<SimpleLabel> LabelsList { get; set; }
-    protected List<(int exLength, float exWidth, float width)> ColumnWidths { get; }
+    protected List<float> ColumnWidths { get; }
 
     public float PaddingTop => 0f;
     public float PaddingLeft => 0f;
@@ -35,7 +35,7 @@ public class LabelsComponent : IComponent
     public float MinimumHeight { get; set; }
 
     public IDictionary<string, Action> ContextMenuControls => null;
-    public LabelsComponent(SplitsSettings settings, IEnumerable<ColumnData> columns, List<(int exLength, float exWidth, float width)> columnWidths)
+    public LabelsComponent(SplitsSettings settings, IEnumerable<ColumnData> columns, List<float> columnWidths)
     {
         Settings = settings;
         MinimumHeight = 31;
@@ -69,13 +69,13 @@ public class LabelsComponent : IComponent
         {
             while (ColumnWidths.Count < LabelsList.Count)
             {
-                ColumnWidths.Add((0, 0f, 0f));
+                ColumnWidths.Add(0f);
             }
 
             float curX = width - 7;
             foreach (SimpleLabel label in LabelsList.Reverse())
             {
-                float labelWidth = ColumnWidths[LabelsList.IndexOf(label)].width;
+                float labelWidth = ColumnWidths[LabelsList.IndexOf(label)];
 
                 curX -= labelWidth + 5;
                 label.Width = labelWidth;
@@ -165,14 +165,9 @@ public class LabelsComponent : IComponent
 
         Cache.Restart();
         Cache["ColumnsCount"] = ColumnsList.Count();
-        for (int index = 0; index < LabelsList.Count; index++)
+        foreach (SimpleLabel label in LabelsList)
         {
-            SimpleLabel label = LabelsList[index];
-            Cache["Columns" + index + "Text"] = label.Text;
-            if (index < ColumnWidths.Count)
-            {
-                Cache["Columns" + index + "Width"] = ColumnWidths[index].width;
-            }
+            Cache["Columns" + LabelsList.IndexOf(label) + "Text"] = label.Text;
         }
 
         if (invalidator != null && (Cache.HasChanged || FrameCount > 1))

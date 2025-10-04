@@ -47,7 +47,7 @@ public class SplitsComponent : IComponent
     protected Color OldShadowsColor { get; set; }
 
     protected IEnumerable<ColumnData> ColumnsList => Settings.ColumnsList.Select(x => x.Data);
-    protected List<(int exLength, float exWidth, float width)> ColumnWidths { get; set; }
+    protected List<float> ColumnWidths { get; set; }
 
     public string ComponentName => "Splits";
 
@@ -77,7 +77,7 @@ public class SplitsComponent : IComponent
         visualSplitCount = Settings.VisualSplitCount;
         settingsSplitCount = Settings.VisualSplitCount;
         Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
-        ColumnWidths = Settings.ColumnsList.Select(_ => (0, 0f, 0f)).ToList();
+        ColumnWidths = Settings.ColumnsList.Select(_ => 0f).ToList();
         ScrollOffset = 0;
         RebuildVisualSplits();
         state.ComparisonRenamed += state_ComparisonRenamed;
@@ -412,44 +412,8 @@ public class SplitsComponent : IComponent
         {
             while (ColumnWidths.Count < ColumnsList.Count())
             {
-                ColumnWidths.Add((0, 0f, 0f));
+                ColumnWidths.Add(0f);
             }
-
-            TimeSpan longestTime = new TimeSpan(9, 0, 0);
-            TimeSpan longestDelta = new TimeSpan(0, 0, 59, 0);
-            foreach (ISegment split in run.Reverse())
-            {
-                if (split.SplitTime.RealTime is TimeSpan splitRealTime && longestTime < splitRealTime)
-                {
-                    longestTime = splitRealTime;
-                }
-
-                foreach (KeyValuePair<string, Time> kv in split.Comparisons)
-                {
-                    if (kv.Value.RealTime is TimeSpan cmpRealTime && longestTime < cmpRealTime)
-                    {
-                        longestTime = cmpRealTime;
-                    }
-
-                    if (split.SplitTime.RealTime - kv.Value.RealTime is TimeSpan deltaRealTime)
-                    {
-                        if (longestDelta < deltaRealTime)
-                        {
-                            longestDelta = deltaRealTime;
-                        }
-                        else if (longestDelta < (- deltaRealTime))
-                        {
-                            longestDelta = - deltaRealTime;
-                        }
-                    }
-                }
-            }
-
-            int timeLength = TimeFormatter.Format(longestTime).Length;
-            int deltaLength = DeltaTimeFormatter.Format(longestDelta).Length;
-            float timeCharWidth = MeasureTimeLabel.Text.Length > 0 ? MeasureTimeLabel.ActualWidth / MeasureTimeLabel.Text.Length : MeasureCharLabel.ActualWidth;
-            float timeWidth = Math.Max(MeasureTimeLabel.ActualWidth, timeCharWidth * (timeLength + 1));
-            float deltaWidth = Math.Max(MeasureDeltaLabel.ActualWidth, timeCharWidth * (deltaLength + 1));
 
             for (int i = 0; i < ColumnsList.Count(); i++)
             {
@@ -458,32 +422,31 @@ public class SplitsComponent : IComponent
                 float labelWidth = 0f;
                 if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
                 {
-                    labelWidth = Math.Max(deltaWidth, timeWidth);
+                    labelWidth = Math.Max(MeasureDeltaLabel.ActualWidth, MeasureTimeLabel.ActualWidth);
                 }
                 else if (column.Type is ColumnType.Delta or ColumnType.SegmentDelta)
                 {
-                    labelWidth = deltaWidth;
+                    labelWidth = MeasureDeltaLabel.ActualWidth;
                 }
                 else if (column.Type is ColumnType.SplitTime or ColumnType.SegmentTime)
                 {
-                    labelWidth = timeWidth;
+                    labelWidth = MeasureTimeLabel.ActualWidth;
                 }
                 else if (column.Type is ColumnType.CustomVariable)
                 {
-                    int longestLength = run.Metadata.CustomVariableValue(column.Name).Length;
+                    int longest_length = run.Metadata.CustomVariableValue(column.Name).Length;
                     foreach (ISegment split in run)
                     {
                         if (split.CustomVariableValues.TryGetValue(column.Name, out string value) && !string.IsNullOrEmpty(value))
                         {
-                            longestLength = Math.Max(longestLength, value.Length);
+                            longest_length = Math.Max(longest_length, value.Length);
                         }
                     }
 
-                    float exCharWidth = ColumnWidths[i].exLength > 0 ? ColumnWidths[i].exWidth / ColumnWidths[i].exLength : MeasureCharLabel.ActualWidth;
-                    labelWidth = exCharWidth * (longestLength + 1);
+                    labelWidth = MeasureCharLabel.ActualWidth * longest_length;
                 }
 
-                ColumnWidths[i] = (ColumnWidths[i].exLength, ColumnWidths[i].exWidth, labelWidth);
+                ColumnWidths[i] = labelWidth;
             }
         }
     }
