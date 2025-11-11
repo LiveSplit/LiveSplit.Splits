@@ -28,6 +28,10 @@ public class SplitsComponent : IComponent
     protected SimpleLabel MeasureDeltaLabel { get; set; }
     protected SimpleLabel MeasureCharLabel { get; set; }
 
+    protected TimeAccuracy CurrentAccuracy { get; set; }
+    protected TimeAccuracy CurrentDeltaAccuracy { get; set; }
+    protected bool CurrentDropDecimals { get; set; }
+
     protected ITimeFormatter TimeFormatter { get; set; }
     protected ITimeFormatter DeltaTimeFormatter { get; set; }
 
@@ -70,8 +74,11 @@ public class SplitsComponent : IComponent
         MeasureTimeLabel = new SimpleLabel();
         MeasureDeltaLabel = new SimpleLabel();
         MeasureCharLabel = new SimpleLabel();
-        TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
-        DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+        CurrentAccuracy = Settings.SplitTimesAccuracy;
+        CurrentDeltaAccuracy = Settings.DeltasAccuracy;
+        CurrentDropDecimals = Settings.DropDecimals;
+        TimeFormatter = new SplitTimeFormatter(CurrentAccuracy);
+        DeltaTimeFormatter = new DeltaSplitTimeFormatter(CurrentDeltaAccuracy, CurrentDropDecimals);
 
         ShadowImages = [];
         visualSplitCount = Settings.VisualSplitCount;
@@ -156,6 +163,19 @@ public class SplitsComponent : IComponent
             state.OnSkipSplit += state_OnSkipSplit;
             state.OnUndoSplit += state_OnUndoSplit;
             OldState = state;
+        }
+
+        if (Settings.SplitTimesAccuracy != CurrentAccuracy)
+        {
+            TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
+            CurrentAccuracy = Settings.SplitTimesAccuracy;
+        }
+
+        if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
+        {
+            DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+            CurrentDeltaAccuracy = Settings.DeltasAccuracy;
+            CurrentDropDecimals = Settings.DropDecimals;
         }
 
         int previousSplitCount = visualSplitCount;
