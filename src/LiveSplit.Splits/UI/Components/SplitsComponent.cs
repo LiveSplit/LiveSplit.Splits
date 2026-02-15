@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 using LiveSplit.Model;
+using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -23,6 +24,17 @@ public class SplitsComponent : IComponent
 
     protected SplitsSettings Settings { get; set; }
 
+    protected SimpleLabel MeasureTimeLabel { get; set; }
+    protected SimpleLabel MeasureDeltaLabel { get; set; }
+    protected SimpleLabel MeasureCharLabel { get; set; }
+
+    protected TimeAccuracy CurrentAccuracy { get; set; }
+    protected TimeAccuracy CurrentDeltaAccuracy { get; set; }
+    protected bool CurrentDropDecimals { get; set; }
+
+    protected ITimeFormatter TimeFormatter { get; set; }
+    protected ITimeFormatter DeltaTimeFormatter { get; set; }
+
     private Dictionary<Image, Image> ShadowImages { get; set; }
 
     private int visualSplitCount;
@@ -39,6 +51,7 @@ public class SplitsComponent : IComponent
     protected Color OldShadowsColor { get; set; }
 
     protected IEnumerable<ColumnData> ColumnsList => Settings.ColumnsList.Select(x => x.Data);
+    protected List<(int exLength, float exWidth, float width)> ColumnWidths { get; set; }
 
     public string ComponentName => "Splits";
 
@@ -57,10 +70,21 @@ public class SplitsComponent : IComponent
         CurrentState = state;
         Settings = new SplitsSettings(state);
         InternalComponent = new ComponentRendererComponent();
+
+        MeasureTimeLabel = new SimpleLabel();
+        MeasureDeltaLabel = new SimpleLabel();
+        MeasureCharLabel = new SimpleLabel();
+        CurrentAccuracy = Settings.SplitTimesAccuracy;
+        CurrentDeltaAccuracy = Settings.DeltasAccuracy;
+        CurrentDropDecimals = Settings.DropDecimals;
+        TimeFormatter = new SplitTimeFormatter(CurrentAccuracy);
+        DeltaTimeFormatter = new DeltaSplitTimeFormatter(CurrentDeltaAccuracy, CurrentDropDecimals);
+
         ShadowImages = [];
         visualSplitCount = Settings.VisualSplitCount;
         settingsSplitCount = Settings.VisualSplitCount;
         Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
+        ColumnWidths = Settings.ColumnsList.Select(_ => (0, 0f, 0f)).ToList();
         ScrollOffset = 0;
         RebuildVisualSplits();
         state.ComparisonRenamed += state_ComparisonRenamed;
@@ -94,7 +118,7 @@ public class SplitsComponent : IComponent
 
         if (Settings.ShowColumnLabels && CurrentState.Layout?.Mode == LayoutMode.Vertical)
         {
-            Components.Add(new LabelsComponent(Settings, ColumnsList));
+            Components.Add(new LabelsComponent(Settings, ColumnsList, ColumnWidths));
             Components.Add(new SeparatorComponent());
         }
 
@@ -113,7 +137,7 @@ public class SplitsComponent : IComponent
                 }
             }
 
-            var splitComponent = new SplitComponent(Settings, ColumnsList);
+            var splitComponent = new SplitComponent(Settings, ColumnsList, ColumnWidths);
             Components.Add(splitComponent);
             if (i < visualSplitCount - 1 || i == (Settings.LockLastSplit ? totalSplits - 1 : visualSplitCount - 1))
             {
@@ -139,6 +163,19 @@ public class SplitsComponent : IComponent
             state.OnSkipSplit += state_OnSkipSplit;
             state.OnUndoSplit += state_OnUndoSplit;
             OldState = state;
+        }
+
+        if (Settings.SplitTimesAccuracy != CurrentAccuracy)
+        {
+            TimeFormatter = new SplitTimeFormatter(Settings.SplitTimesAccuracy);
+            CurrentAccuracy = Settings.SplitTimesAccuracy;
+        }
+
+        if (Settings.DeltasAccuracy != CurrentDeltaAccuracy || Settings.DropDecimals != CurrentDropDecimals)
+        {
+            DeltaTimeFormatter = new DeltaSplitTimeFormatter(Settings.DeltasAccuracy, Settings.DropDecimals);
+            CurrentDeltaAccuracy = Settings.DeltasAccuracy;
+            CurrentDropDecimals = Settings.DropDecimals;
         }
 
         int previousSplitCount = visualSplitCount;
@@ -305,10 +342,29 @@ public class SplitsComponent : IComponent
         }
     }
 
+    private void SetMeasureLabels(Graphics g, LiveSplitState state)
+    {
+        MeasureTimeLabel.Text = TimeFormatter.Format(new TimeSpan(24, 0, 0));
+        MeasureDeltaLabel.Text = DeltaTimeFormatter.Format(new TimeSpan(0, 9, 0, 0));
+        MeasureCharLabel.Text = "W";
+
+        MeasureTimeLabel.Font = state.LayoutSettings.TimesFont;
+        MeasureTimeLabel.IsMonospaced = true;
+        MeasureDeltaLabel.Font = state.LayoutSettings.TimesFont;
+        MeasureDeltaLabel.IsMonospaced = true;
+        MeasureCharLabel.Font = state.LayoutSettings.TimesFont;
+        MeasureCharLabel.IsMonospaced = true;
+
+        MeasureTimeLabel.SetActualWidth(g);
+        MeasureDeltaLabel.SetActualWidth(g);
+        MeasureCharLabel.SetActualWidth(g);
+    }
+
     public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
     {
         Prepare(state);
         DrawBackground(g, width, VerticalHeight);
+        SetMeasureLabels(g, state);
         InternalComponent.DrawVertical(g, state, width, clipRegion);
     }
 
@@ -316,6 +372,7 @@ public class SplitsComponent : IComponent
     {
         Prepare(state);
         DrawBackground(g, HorizontalWidth, height);
+        SetMeasureLabels(g, state);
         InternalComponent.DrawHorizontal(g, state, height, clipRegion);
     }
 
@@ -361,9 +418,93 @@ public class SplitsComponent : IComponent
             }
         }
 
+        CalculateColumnWidths(state.Run);
+
         if (invalidator != null)
         {
             InternalComponent.Update(invalidator, state, width, height, mode);
+        }
+    }
+
+    private void CalculateColumnWidths(IRun run)
+    {
+        if (ColumnsList != null)
+        {
+            while (ColumnWidths.Count < ColumnsList.Count())
+            {
+                ColumnWidths.Add((0, 0f, 0f));
+            }
+
+            TimeSpan longestTime = new TimeSpan(9, 0, 0);
+            TimeSpan longestDelta = new TimeSpan(0, 0, 59, 0);
+            foreach (ISegment split in run.Reverse())
+            {
+                if (split.SplitTime.RealTime is TimeSpan splitRealTime && longestTime < splitRealTime)
+                {
+                    longestTime = splitRealTime;
+                }
+
+                foreach (KeyValuePair<string, Time> kv in split.Comparisons)
+                {
+                    if (kv.Value.RealTime is TimeSpan cmpRealTime && longestTime < cmpRealTime)
+                    {
+                        longestTime = cmpRealTime;
+                    }
+
+                    if (split.SplitTime.RealTime - kv.Value.RealTime is TimeSpan deltaRealTime)
+                    {
+                        if (longestDelta < deltaRealTime)
+                        {
+                            longestDelta = deltaRealTime;
+                        }
+                        else if (longestDelta < (- deltaRealTime))
+                        {
+                            longestDelta = - deltaRealTime;
+                        }
+                    }
+                }
+            }
+
+            int timeLength = TimeFormatter.Format(longestTime).Length;
+            int deltaLength = DeltaTimeFormatter.Format(longestDelta).Length;
+            float timeCharWidth = MeasureTimeLabel.Text.Length > 0 ? MeasureTimeLabel.ActualWidth / MeasureTimeLabel.Text.Length : MeasureCharLabel.ActualWidth;
+            float timeWidth = Math.Max(MeasureTimeLabel.ActualWidth, timeCharWidth * (timeLength + 1));
+            float deltaWidth = Math.Max(MeasureDeltaLabel.ActualWidth, timeCharWidth * (deltaLength + 1));
+
+            for (int i = 0; i < ColumnsList.Count(); i++)
+            {
+                ColumnData column = ColumnsList.ElementAt(i);
+
+                float labelWidth = 0f;
+                if (column.Type is ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime)
+                {
+                    labelWidth = Math.Max(deltaWidth, timeWidth);
+                }
+                else if (column.Type is ColumnType.Delta or ColumnType.SegmentDelta)
+                {
+                    labelWidth = deltaWidth;
+                }
+                else if (column.Type is ColumnType.SplitTime or ColumnType.SegmentTime)
+                {
+                    labelWidth = timeWidth;
+                }
+                else if (column.Type is ColumnType.CustomVariable)
+                {
+                    int longestLength = run.Metadata.CustomVariableValue(column.Name).Length;
+                    foreach (ISegment split in run)
+                    {
+                        if (split.CustomVariableValues.TryGetValue(column.Name, out string value) && !string.IsNullOrEmpty(value))
+                        {
+                            longestLength = Math.Max(longestLength, value.Length);
+                        }
+                    }
+
+                    float exCharWidth = ColumnWidths[i].exLength > 0 ? ColumnWidths[i].exWidth / ColumnWidths[i].exLength : MeasureCharLabel.ActualWidth;
+                    labelWidth = exCharWidth * (longestLength + 1);
+                }
+
+                ColumnWidths[i] = (ColumnWidths[i].exLength, ColumnWidths[i].exWidth, labelWidth);
+            }
         }
     }
 
