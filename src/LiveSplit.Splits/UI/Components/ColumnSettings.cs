@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using LiveSplit.Localization;
 using LiveSplit.Model;
 using LiveSplit.Model.Comparisons;
 
@@ -10,6 +11,8 @@ namespace LiveSplit.UI.Components;
 
 public partial class ColumnSettings : UserControl
 {
+    private static string T(string source) => UiLocalizer.Translate(source, LanguageResolver.ResolveCurrentCultureLanguage());
+
     public string ColumnName { get => Data.Name; set => Data.Name = value; }
     public string Type
     {
@@ -61,6 +64,11 @@ public partial class ColumnSettings : UserControl
 
     private void ColumnSettings_Load(object sender, EventArgs e)
     {
+        if (string.Equals(ColumnName, "Time", StringComparison.Ordinal))
+        {
+            ColumnName = T("Time");
+        }
+
         UpdateComparisonItems();
 
         txtName.DataBindings.Clear();
@@ -69,6 +77,7 @@ public partial class ColumnSettings : UserControl
         txtName.DataBindings.Add("Text", this, "ColumnName", false, DataSourceUpdateMode.OnPropertyChanged);
         cmbColumnType.DataBindings.Add("SelectedItem", this, "Type", false, DataSourceUpdateMode.OnPropertyChanged);
         cmbTimingMethod.DataBindings.Add("SelectedItem", this, "TimingMethod", false, DataSourceUpdateMode.OnPropertyChanged);
+        txtName_TextChanged(null, EventArgs.Empty);
     }
 
     public void UpdateEnabledButtons()
@@ -79,7 +88,7 @@ public partial class ColumnSettings : UserControl
 
     private void txtName_TextChanged(object sender, EventArgs e)
     {
-        groupColumn.Text = $"Column: {txtName.Text}";
+        groupColumn.Text = string.Format(T("Column: {0}"), txtName.Text);
     }
 
     private void UpdateComparisonItems()
