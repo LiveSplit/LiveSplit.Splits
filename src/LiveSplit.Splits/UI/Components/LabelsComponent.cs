@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,6 +9,7 @@ using LiveSplit.Model.Comparisons;
 
 namespace LiveSplit.UI.Components;
 
+[GlobalFontConsumer(GlobalFont.TextFont)]
 public class LabelsComponent : IComponent
 {
     public SplitsSettings Settings { get; set; }
