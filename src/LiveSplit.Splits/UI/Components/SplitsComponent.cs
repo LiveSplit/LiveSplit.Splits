@@ -491,7 +491,7 @@ public class SplitsComponent : IComponent
                 }
                 else if (column.Type is ColumnType.CustomVariable)
                 {
-                    int longestLength = run.Metadata.CustomVariableValue(column.Name).Length;
+                    int longestLength = run.Metadata.CustomVariableValue(column.Name)?.Length ?? 0;
                     foreach (ISegment split in run)
                     {
                         if (split.CustomVariableValues.TryGetValue(column.Name, out string value) && !string.IsNullOrEmpty(value))
