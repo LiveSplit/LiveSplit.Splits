@@ -1,12 +1,11 @@
+﻿using LiveSplit.Model;
+using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-
-using LiveSplit.Model;
-using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -85,7 +84,7 @@ public class SplitsComponent : IComponent
         visualSplitCount = Settings.VisualSplitCount;
         settingsSplitCount = Settings.VisualSplitCount;
         Settings.SplitLayoutChanged += Settings_SplitLayoutChanged;
-        ColumnWidths = Settings.ColumnsList.Select(_ => (0, 0f, 0f)).ToList();
+        ColumnWidths = [.. Settings.ColumnsList.Select(_ => (0, 0f, 0f))];
         ScrollOffset = 0;
         RebuildVisualSplits();
         state.ComparisonRenamed += state_ComparisonRenamed;
@@ -219,14 +218,7 @@ public class SplitsComponent : IComponent
         {
             split.DisplayIcon = iconsNotBlank && Settings.DisplayIcons;
 
-            if (split.Split != null && split.Split.Icon != null)
-            {
-                split.ShadowImage = ShadowImages[split.Split.Icon];
-            }
-            else
-            {
-                split.ShadowImage = null;
-            }
+            split.ShadowImage = split.Split?.Icon != null ? ShadowImages[split.Split.Icon] : null;
         }
 
         OldShadowsColor = state.LayoutSettings.ShadowsColor;
@@ -252,14 +244,7 @@ public class SplitsComponent : IComponent
                 {
                     if (skipCount >= state.Run.Count - visualSplitCount)
                     {
-                        if (Settings.ShowThinSeparators)
-                        {
-                            separator.DisplayedSize = 1f;
-                        }
-                        else
-                        {
-                            separator.DisplayedSize = 0f;
-                        }
+                        separator.DisplayedSize = Settings.ShowThinSeparators ? 1f : 0f;
 
                         separator.UseSeparatorColor = false;
                     }
@@ -331,14 +316,10 @@ public class SplitsComponent : IComponent
             && Settings.BackgroundColor2.A > 0)))
         {
             var gradientBrush = new LinearGradientBrush(
-                        new PointF(0, 0),
-                        Settings.BackgroundGradient == ExtendedGradientType.Horizontal
-                        ? new PointF(width, 0)
-                        : new PointF(0, height),
-                        Settings.BackgroundColor,
-                        Settings.BackgroundGradient == ExtendedGradientType.Plain
-                        ? Settings.BackgroundColor
-                        : Settings.BackgroundColor2);
+                new PointF(0, 0),
+                Settings.BackgroundGradient == ExtendedGradientType.Horizontal ? new PointF(width, 0) : new PointF(0, height),
+                Settings.BackgroundColor,
+                Settings.BackgroundGradient == ExtendedGradientType.Plain ? Settings.BackgroundColor : Settings.BackgroundColor2);
             g.FillRectangle(gradientBrush, 0, 0, width, height);
         }
     }
@@ -415,7 +396,7 @@ public class SplitsComponent : IComponent
 
             if (Settings.AlwaysShowLastSplit)
             {
-                SplitComponents[i].Split = state.Run.Last();
+                SplitComponents[i].Split = state.Run[^1];
             }
         }
 
@@ -436,8 +417,8 @@ public class SplitsComponent : IComponent
                 ColumnWidths.Add((0, 0f, 0f));
             }
 
-            TimeSpan longestTime = new TimeSpan(9, 0, 0);
-            TimeSpan longestDelta = new TimeSpan(0, 0, 59, 0);
+            var longestTime = new TimeSpan(9, 0, 0);
+            var longestDelta = new TimeSpan(0, 0, 59, 0);
             foreach (ISegment split in run.Reverse())
             {
                 if (split.SplitTime.RealTime is TimeSpan splitRealTime && longestTime < splitRealTime)
@@ -458,9 +439,9 @@ public class SplitsComponent : IComponent
                         {
                             longestDelta = deltaRealTime;
                         }
-                        else if (longestDelta < (- deltaRealTime))
+                        else if (longestDelta < (-deltaRealTime))
                         {
-                            longestDelta = - deltaRealTime;
+                            longestDelta = -deltaRealTime;
                         }
                     }
                 }

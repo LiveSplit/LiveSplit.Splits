@@ -1,11 +1,10 @@
-﻿using System;
+﻿using LiveSplit.Localization;
+using LiveSplit.Model;
+using LiveSplit.Model.Comparisons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-
-using LiveSplit.Localization;
-using LiveSplit.Model;
-using LiveSplit.Model.Comparisons;
 
 namespace LiveSplit.UI.Components;
 

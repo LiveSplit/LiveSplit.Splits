@@ -1,13 +1,12 @@
-﻿using System;
+﻿using LiveSplit.Localization;
+using LiveSplit.Model;
+using LiveSplit.TimeFormatters;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-
-using LiveSplit.Localization;
-using LiveSplit.Model;
-using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -273,42 +272,20 @@ public partial class SplitsSettings : UserControl
 
     private void UpdateAccuracy()
     {
-        if (rdoSeconds.Checked)
-        {
-            SplitTimesAccuracy = TimeAccuracy.Seconds;
-        }
-        else if (rdoTenths.Checked)
-        {
-            SplitTimesAccuracy = TimeAccuracy.Tenths;
-        }
-        else if (rdoHundredths.Checked)
-        {
-            SplitTimesAccuracy = TimeAccuracy.Hundredths;
-        }
-        else
-        {
-            SplitTimesAccuracy = TimeAccuracy.Milliseconds;
-        }
+        SplitTimesAccuracy =
+            rdoSeconds.Checked ? TimeAccuracy.Seconds
+            : rdoTenths.Checked ? TimeAccuracy.Tenths
+            : rdoHundredths.Checked ? TimeAccuracy.Hundredths
+            : TimeAccuracy.Milliseconds;
     }
 
     private void UpdateDeltaAccuracy()
     {
-        if (rdoDeltaSeconds.Checked)
-        {
-            DeltasAccuracy = TimeAccuracy.Seconds;
-        }
-        else if (rdoDeltaTenths.Checked)
-        {
-            DeltasAccuracy = TimeAccuracy.Tenths;
-        }
-        else if (rdoDeltaHundredths.Checked)
-        {
-            DeltasAccuracy = TimeAccuracy.Hundredths;
-        }
-        else
-        {
-            DeltasAccuracy = TimeAccuracy.Milliseconds;
-        }
+        DeltasAccuracy =
+            rdoDeltaSeconds.Checked ? TimeAccuracy.Seconds
+            : rdoDeltaTenths.Checked ? TimeAccuracy.Tenths
+            : rdoDeltaHundredths.Checked ? TimeAccuracy.Hundredths
+            : TimeAccuracy.Milliseconds;
     }
 
     private void chkLastSplit_CheckedChanged(object sender, EventArgs e)
@@ -595,7 +572,7 @@ public partial class SplitsSettings : UserControl
         ResetColumns();
         if (ColumnsList.Count > 0)
         {
-            ColumnsList.Last().SelectControl();
+            ColumnsList[^1].SelectControl();
         }
         else
         {
