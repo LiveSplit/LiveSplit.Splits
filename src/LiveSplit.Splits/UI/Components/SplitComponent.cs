@@ -1,3 +1,5 @@
+﻿using LiveSplit.Model;
+using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -5,9 +7,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
-
-using LiveSplit.Model;
-using LiveSplit.TimeFormatters;
 
 namespace LiveSplit.UI.Components;
 
@@ -311,12 +310,12 @@ public class SplitComponent : IComponent
 
             if (Settings.AutomaticAbbreviations)
             {
-                if (NameLabel.Text != Split.Name || NameLabel.AlternateText == null || !NameLabel.AlternateText.Any())
+                if (NameLabel.Text != Split.Name || NameLabel.AlternateText is not { Count: > 0 })
                 {
-                    NameLabel.AlternateText = Split.Name.GetAbbreviations().ToList();
+                    NameLabel.AlternateText = [.. Split.Name.GetAbbreviations()];
                 }
             }
-            else if (NameLabel.AlternateText != null && NameLabel.AlternateText.Any())
+            else if (NameLabel.AlternateText is { Count: > 0 })
             {
                 NameLabel.AlternateText.Clear();
             }
@@ -324,21 +323,11 @@ public class SplitComponent : IComponent
             NameLabel.Text = Split.Name;
 
             int splitIndex = state.Run.IndexOf(Split);
-            if (splitIndex < state.CurrentSplitIndex)
-            {
-                NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.BeforeNamesColor : state.LayoutSettings.TextColor;
-            }
-            else
-            {
-                if (Split == state.CurrentSplit)
-                {
-                    NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.CurrentNamesColor : state.LayoutSettings.TextColor;
-                }
-                else
-                {
-                    NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
-                }
-            }
+            NameLabel.ForeColor =
+                !Settings.OverrideTextColor ? state.LayoutSettings.TextColor
+                : splitIndex < state.CurrentSplitIndex ? Settings.BeforeNamesColor
+                : Split == state.CurrentSplit ? Settings.CurrentNamesColor
+                : Settings.AfterNamesColor;
 
             foreach (SimpleLabel label in LabelsList)
             {
@@ -394,24 +383,13 @@ public class SplitComponent : IComponent
             if (type is ColumnType.DeltaorSplitTime or ColumnType.Delta)
             {
                 TimeSpan? deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
-                Color? color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, splitIndex, true, true, comparison, timingMethod);
-                if (color == null)
-                {
-                    color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
-                }
-
+                Color? color = LiveSplitStateHelper.GetSplitColor(state, deltaTime, splitIndex, true, true, comparison, timingMethod)
+                    ?? (Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor);
                 label.ForeColor = color.Value;
 
                 if (type == ColumnType.DeltaorSplitTime)
                 {
-                    if (deltaTime != null)
-                    {
-                        label.Text = DeltaTimeFormatter.Format(deltaTime);
-                    }
-                    else
-                    {
-                        label.Text = TimeFormatter.Format(Split.SplitTime[timingMethod]);
-                    }
+                    label.Text = deltaTime != null ? DeltaTimeFormatter.Format(deltaTime) : TimeFormatter.Format(Split.SplitTime[timingMethod]);
                 }
 
                 else if (type == ColumnType.Delta)
@@ -423,24 +401,15 @@ public class SplitComponent : IComponent
             else if (type is ColumnType.SegmentDeltaorSegmentTime or ColumnType.SegmentDelta)
             {
                 TimeSpan? segmentDelta = LiveSplitStateHelper.GetPreviousSegmentDelta(state, splitIndex, comparison, timingMethod);
-                Color? color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod);
-                if (color == null)
-                {
-                    color = Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor;
-                }
-
+                Color? color = LiveSplitStateHelper.GetSplitColor(state, segmentDelta, splitIndex, false, true, comparison, timingMethod)
+                    ?? (Settings.OverrideTimesColor ? Settings.BeforeTimesColor : state.LayoutSettings.TextColor);
                 label.ForeColor = color.Value;
 
                 if (type == ColumnType.SegmentDeltaorSegmentTime)
                 {
-                    if (segmentDelta != null)
-                    {
-                        label.Text = DeltaTimeFormatter.Format(segmentDelta);
-                    }
-                    else
-                    {
-                        label.Text = TimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, timingMethod));
-                    }
+                    label.Text = segmentDelta != null
+                        ? DeltaTimeFormatter.Format(segmentDelta)
+                        : TimeFormatter.Format(LiveSplitStateHelper.GetPreviousSegmentTime(state, splitIndex, timingMethod));
                 }
                 else if (type == ColumnType.SegmentDelta)
                 {
@@ -452,14 +421,9 @@ public class SplitComponent : IComponent
         {
             if (type is ColumnType.SplitTime or ColumnType.SegmentTime or ColumnType.DeltaorSplitTime or ColumnType.SegmentDeltaorSegmentTime or ColumnType.CustomVariable)
             {
-                if (Split == state.CurrentSplit)
-                {
-                    label.ForeColor = Settings.OverrideTimesColor ? Settings.CurrentTimesColor : state.LayoutSettings.TextColor;
-                }
-                else
-                {
-                    label.ForeColor = Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
-                }
+                label.ForeColor = Split == state.CurrentSplit
+                    ? Settings.OverrideTimesColor ? Settings.CurrentTimesColor : state.LayoutSettings.TextColor
+                    : Settings.OverrideTimesColor ? Settings.AfterTimesColor : state.LayoutSettings.TextColor;
 
                 if (type is ColumnType.SplitTime or ColumnType.DeltaorSplitTime)
                 {
@@ -496,8 +460,9 @@ public class SplitComponent : IComponent
             //Live Delta
             bool splitDelta = type is ColumnType.DeltaorSplitTime or ColumnType.Delta;
             TimeSpan? bestDelta = LiveSplitStateHelper.CheckLiveDelta(state, splitDelta, comparison, timingMethod);
-            if (bestDelta != null && Split == state.CurrentSplit &&
-                (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta || type == ColumnType.SegmentDeltaorSegmentTime || type == ColumnType.SegmentDelta))
+            if (bestDelta != null
+                && Split == state.CurrentSplit
+                && type is ColumnType.DeltaorSplitTime or ColumnType.Delta or ColumnType.SegmentDeltaorSegmentTime or ColumnType.SegmentDelta)
             {
                 label.Text = DeltaTimeFormatter.Format(bestDelta);
                 label.ForeColor = Settings.OverrideDeltasColor ? Settings.DeltasColor : state.LayoutSettings.TextColor;
@@ -541,22 +506,14 @@ public class SplitComponent : IComponent
             UpdateAll(state);
             NeedUpdateAll = false;
 
-            IsActive = (state.CurrentPhase == TimerPhase.Running
-                        || state.CurrentPhase == TimerPhase.Paused) &&
-                                                state.CurrentSplit == Split;
+            IsActive = (state.CurrentPhase is TimerPhase.Running or TimerPhase.Paused)
+                && state.CurrentSplit == Split;
 
             Cache.Restart();
             Cache["Icon"] = Split.Icon;
             if (Cache.HasChanged)
             {
-                if (Split.Icon == null)
-                {
-                    FrameCount = 0;
-                }
-                else
-                {
-                    FrameCount = Split.Icon.GetFrameCount(new FrameDimension(Split.Icon.FrameDimensionsList[0]));
-                }
+                FrameCount = Split.Icon == null ? 0 : Split.Icon.GetFrameCount(new FrameDimension(Split.Icon.FrameDimensionsList[0]));
             }
 
             Cache["DisplayIcon"] = DisplayIcon;
